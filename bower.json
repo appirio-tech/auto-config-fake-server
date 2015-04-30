@@ -1,0 +1,7 @@
+{
+  "name": "swagger-fake-server",
+  "private": true,
+  "dependencies": {
+    "sinon": "^1.12.2"
+  }
+}
