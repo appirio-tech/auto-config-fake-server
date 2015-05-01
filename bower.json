@@ -2,6 +2,11 @@
   "name": "swagger-fake-server",
   "private": true,
   "dependencies": {
-    "sinon": "^1.12.2"
+    "sinon": "http://sinonjs.org/releases/sinon-1.9.0.js"
+  },
+  "exportsOverride": {
+    "sinon": {
+      "js": "index.js"
+    }
   }
 }

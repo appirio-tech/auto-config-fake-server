@@ -34,6 +34,7 @@
 
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
+    <script src="bower_components/sinon/index.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -53,7 +54,7 @@
 
         <script type="text/javascript">
 
-        window.SwaggerFakeServer.init('swagger.json');
+        var sfs = new SwaggerFakeServer('swagger.json');
         </script>
 </body>
 </html>
