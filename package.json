@@ -15,6 +15,7 @@
     "karma-coffee-preprocessor": "^0.2.1",
     "karma-mocha": "^0.1.10",
     "karma-phantomjs-launcher": "^0.1.4",
+    "karma-sinon": "^1.0.4",
     "grunt-newer": "^0.7.0",
     "load-grunt-tasks": "^0.4.0",
     "time-grunt": "^0.4.0"

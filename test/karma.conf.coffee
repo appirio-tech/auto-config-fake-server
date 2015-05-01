@@ -10,17 +10,13 @@ module.exports = (config) ->
     basePath: '../'
 
     # testing framework to use (jasmine/mocha/qunit/...)
-    frameworks: ['mocha', 'chai']
+    frameworks: ['mocha', 'chai', 'sinon']
 
     # list of files / patterns to load in the browser
     files: [
-      # vendors
-      'bower_components/sinon/lib/sinon.js'
-
-      # app
+      'test/swagger.coffee'
+      'test/helper.coffee'
       'app/scripts/main.coffee'
-
-      #tests
       'test/spec/**/*.coffee'
     ]
 
@@ -44,14 +40,6 @@ module.exports = (config) ->
     # - IE (only Windows)
     browsers: [
       'PhantomJS'
-    ]
-
-    # Which plugins to enable
-    plugins: [
-      'karma-phantomjs-launcher'
-      'karma-mocha'
-      'karma-chai'
-      'karma-coffee-preprocessor'
     ]
 
     # enable / disable watching file and executing tests whenever any file changes
