@@ -34,7 +34,7 @@ api =
 build           = null
 buildDefinition = window.SwaggerFakeServerPrivates.buildDefinition
 
-describe.only 'build definitions', ->
+describe 'build definitions', ->
   context 'Activities', ->
     beforeEach ->
       build = buildDefinition '#/definitions/Activities', api

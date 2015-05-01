@@ -21,7 +21,7 @@ getJSON = (url, success) ->
   xhr.responseType = 'text'
   xhr.send()
 
-matchBasePath = (url, host, schemes, basePath) ->
+isApiCall = (url, host, schemes, basePath) ->
   hostRegex   = /^((http[s]?|ftp):\/)?\/?([^:\/\s]+)(:([0-9])*)?((\/\w+)*\/)([\w\-\.]+[^#?\s]+)(.*)?(#[\w\-]+)?$/
   urlParts    = url.match hostRegex
   port        = urlParts[4] || ''
@@ -38,7 +38,7 @@ setFilter = (fakeServer, api) ->
   fakeServer.xhr.useFilters = true
 
   fakeServer.xhr.addFilter (method, url) ->
-    matchBasePath url, api.host, api.schemes, api.basePath
+    isApiCall url, api.host, api.schemes, api.basePath
 
 getRef = (ref, api) ->
   paths   = ref.split '/'
@@ -75,35 +75,20 @@ buildDefinition = (definition, api) ->
 
   build
 
+setRespondWith = (fakeServer, api) ->
+  for scheme in api.schemes
+    for path, methods of api.paths
+      for method, methodDefinition of methods
+        ref = methodDefinition?.responses?['200']?.schema?.items?['$ref']
 
-# setRespondWith = (fakeServer, api) ->
-#   for scheme in api.schemes
-#     for methods, path of api.paths
-#       for method, methodWord of method
-#         ref = method?.responses?['200']?.schema?.items?['$ref']
+        if ref
+          build     = buildDefinition ref, api
+          build     = [build] if methodDefinition.responses['200'].schema.type == 'array'
+          buildJSON = JSON.stringify build
+          url       = scheme + '://' + api.host + api.basePath + path
+          response  = [200, { 'Content-Type': 'application/json' }, buildJSON]
 
-#         if ref
-#           model = getRef ref
-#           method.responses['200'].schema.items
-#           "schema" : {
-#               "type" : "array",
-#               "items" : {
-#                 "$ref" : "#/definitions/Product"
-#               }
-#             }
-#           url = scheme + '://' + api.host + api.basePath + path
-#           response = [200, { 'Content-Type': 'application/json' }, ]
-
-#         fakeServer.respondWith methodWord, url, 
-#     fakeServer.respondWith(
-#     'POST',
-#     'https://topcoder-domain.auth0.com/usernamepassword/login',
-#     [
-#       200,
-#       { 'Content-Type': 'application/json' },
-#       '{"boo":"asdsdad"}'
-#     ]
-#   );
+          fakeServer.respondWith method, url, response
 
 window.SwaggerFakeServer = (swaggerUrl) ->
   FS = this
@@ -122,7 +107,8 @@ window.SwaggerFakeServer = (swaggerUrl) ->
 if window.SwaggerFakeServerPrivates
   window.SwaggerFakeServerPrivates =
     getJSON        : getJSON
-    matchBasePath  : matchBasePath
+    isApiCall      : isApiCall
     getRef         : getRef
     buildDefinition: buildDefinition
+    setRespondWith : setRespondWith
 
