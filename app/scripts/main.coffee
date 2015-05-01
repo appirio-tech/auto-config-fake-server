@@ -21,6 +21,90 @@ getJSON = (url, success) ->
   xhr.responseType = 'text'
   xhr.send()
 
+matchBasePath = (url, host, schemes, basePath) ->
+  hostRegex   = /^((http[s]?|ftp):\/)?\/?([^:\/\s]+)(:([0-9])*)?((\/\w+)*\/)([\w\-\.]+[^#?\s]+)(.*)?(#[\w\-]+)?$/
+  urlParts    = url.match hostRegex
+  port        = urlParts[4] || ''
+  isHost      = (urlParts[3] + port) == host
+  isScheme    = schemes.indexOf(urlParts[2]) != -1
+  baseRegex   = new RegExp('^' + basePath)
+  isBasePath  = urlParts[6].match baseRegex
+
+  return true if isHost && isScheme && isBasePath
+
+  false
+
+setFilter = (fakeServer, api) ->
+  fakeServer.xhr.useFilters = true
+
+  fakeServer.xhr.addFilter (method, url) ->
+    matchBasePath url, api.host, api.schemes, api.basePath
+
+getRef = (ref, api) ->
+  paths   = ref.split '/'
+  current = null
+
+  for path in paths
+    if path == '#'
+      current = api
+    else if current[path]
+      current = current[path]
+    else
+      return false
+
+  current
+
+buildDefinition = (definition, api) ->
+  if typeof definition == 'string'
+    definition = getRef definition, api
+
+  build = {}
+
+  for key, property of definition?.properties
+    if property.sample
+      build[key] = property.sample
+    else if property.type == 'integer' || property.type == 'number'
+      build[key] = 123
+    else if property.type == 'string'
+      build[key] = 'abc'
+    else if property.type == 'boolean'
+      build[key] = true
+    else if property.items?['$ref']
+      build[key] = buildDefinition property.items?['$ref'], api
+      build[key] = [build[key]] if property.type == 'array'
+
+  build
+
+
+# setRespondWith = (fakeServer, api) ->
+#   for scheme in api.schemes
+#     for methods, path of api.paths
+#       for method, methodWord of method
+#         ref = method?.responses?['200']?.schema?.items?['$ref']
+
+#         if ref
+#           model = getRef ref
+#           method.responses['200'].schema.items
+#           "schema" : {
+#               "type" : "array",
+#               "items" : {
+#                 "$ref" : "#/definitions/Product"
+#               }
+#             }
+#           url = scheme + '://' + api.host + api.basePath + path
+#           response = [200, { 'Content-Type': 'application/json' }, ]
+
+#         fakeServer.respondWith methodWord, url, 
+#     fakeServer.respondWith(
+#     'POST',
+#     'https://topcoder-domain.auth0.com/usernamepassword/login',
+#     [
+#       200,
+#       { 'Content-Type': 'application/json' },
+#       '{"boo":"asdsdad"}'
+#     ]
+#   );
+
 window.SwaggerFakeServer = (swaggerUrl) ->
   FS = this
 
@@ -28,6 +112,17 @@ window.SwaggerFakeServer = (swaggerUrl) ->
     FS.api = json
     FS.fakeServer = sinon.fakeServer.create()
 
+    setFilter FS.fakeServer
+
   getJSON swaggerUrl, onSuccess
 
   FS
+
+# For testing purposes
+if window.SwaggerFakeServerPrivates
+  window.SwaggerFakeServerPrivates =
+    getJSON        : getJSON
+    matchBasePath  : matchBasePath
+    getRef         : getRef
+    buildDefinition: buildDefinition
+

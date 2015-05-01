@@ -1,49 +1,30 @@
 'use strict'
 
-context = describe
-sfs     = null
-spy     = null
+sfs        = null
+fakeServer = null
 
 describe 'window.SwaggerFakeServer.init', ->
   beforeEach ->
-    stashIt window, 'console'
     stashIt sinon.fakeServer, 'create'
 
+    fakeServer =
+      xhr:
+        useFilters: false
+        addFilter: sinon.spy()
+
     sinon.fakeServer.create = ->
-      {}
+      fakeServer
 
-    console.error = ->
-      # prevent error in logs
-
-    spy = sinon.spy console, 'error'
+    sfs = new SwaggerFakeServer '/swagger.json'
 
   afterEach ->
-    spy.restore()
-
-    unstashIt window, 'console'
     unstashIt sinon.fakeServer, 'create'
 
-  context '200 response', ->
-    beforeEach ->
-      sfs = new SwaggerFakeServer '/swagger.json'
+  it 'should populate the api', ->
+    expect(sfs.api.basePath).to.be.ok
 
-    it 'should not log any errors', ->
-      spy.called.should.notOk
+  it 'should use filters', ->
+    expect(fakeServer.xhr.useFilters).to.be.ok
 
-    it 'should populate the api', ->
-      sfs.api.basePath.ok
-
-  context '404 response', ->
-    beforeEach ->
-      sfs = new SwaggerFakeServer '/swagger-404.json'
-
-    it 'should log an error to console', ->
-      spy.called.should.ok
-
-  context 'invalid json', ->
-    beforeEach ->
-      sfs = new SwaggerFakeServer '/swagger-error.json'
-
-    it 'should log an error to console', ->
-      spy.called.should.ok
-
+  it 'should add a filter', ->
+    expect(fakeServer.xhr.addFilter.called).to.be.ok
