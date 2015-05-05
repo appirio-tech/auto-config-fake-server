@@ -6,6 +6,7 @@
   </head>
   <body>
     <h1>Swagger Fake Server</h1>
+    <ul id="calls"></ul>
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
     <script src="bower_components/sinon/index.js"></script>
@@ -43,18 +44,21 @@
           'https://api.uber.com/v1/products',
           'https://api.uber.com/v1/dne',
           'https://api.lyft.com/v2/products',
+          'https://api.lyft.com/v1/dne',
           'http://echo.jsontest.com/key/value/one/two'
         ];
 
         for (var i = 0; i < urls.length; i += 1) {
+          var li = document.createElement('li');
+          li.id = 'response-' + i;
+          document.getElementById('calls').appendChild(li);
+
           url = urls[i];
 
-          console.log('-> Requesting ' + url);
-
           ajax(url, function (text) {
-            console.log('Successful response from ' + url + ': ' + text);
+            li.innerHTML = 'Successful response from ' + url + ': ' + text;
           }, function (text) {
-            console.log('Unsuccessful response from ' + url + ': ' + text);
+            li.innerHTML = 'Unsuccessful response from ' + url + ': ' + text
           });
         }
       };

@@ -2,7 +2,6 @@
   "name": "swagger-fake-server",
   "devDependencies": {
     "apache-server-configs": "^2.7.1",
-    "chromedriver": "^2.15.0",
     "grunt": "^0.4.5",
     "grunt-concurrent": "^0.5.0",
     "grunt-contrib-clean": "^0.6.0",
@@ -12,7 +11,6 @@
     "grunt-contrib-watch": "^0.6.1",
     "grunt-karma": "^0.8.3",
     "grunt-newer": "^0.7.0",
-    "grunt-pioneer": "^0.1.0",
     "karma": "^0.12.17",
     "karma-chai": "^0.1.0",
     "karma-coffee-preprocessor": "^0.2.1",
@@ -20,7 +18,6 @@
     "karma-phantomjs-launcher": "^0.1.4",
     "karma-sinon": "^1.0.4",
     "load-grunt-tasks": "^0.4.0",
-    "pioneer": "^0.11.3",
     "time-grunt": "^0.4.0"
   },
   "engines": {
