@@ -5,16 +5,8 @@
   "authors": [
     "Alex Tran <fakeemail@gmail.com>"
   ],
-  "dependencies": {
-    "sinon": "http://sinonjs.org/releases/sinon-1.14.0.js"
-  },
-  "exportsOverride": {
-    "sinon": {
-      "js": "index.js"
-    }
-  },
   "description": "Create a Sinon fake server with a Swagger JSON file.",
-  "main": "dist/scripts/swagger-fake-server.js",
+  "main": "scripts/swagger-fake-server.js",
   "moduleType": [
     "globals"
   ],

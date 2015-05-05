@@ -144,9 +144,26 @@ module.exports = function (grunt) {
           cwd: '<%= yeoman.app %>',
           dest: '<%= yeoman.dist %>',
           src: [
-            'images/**/*',
-            'fonts/**/*',
-            'locales/**/*'
+            'index.html',
+            'lyft.swagger.json',
+            'uber.swagger.json',
+            'bower.json'
+          ]
+        }, {
+          expand: true,
+          dot: true,
+          cwd: '.tmp',
+          dest: '<%= yeoman.dist %>',
+          src: [
+            'scripts/**/*'
+          ]
+        }, {
+          expand: true,
+          dot: true,
+          cwd: 'bower_components',
+          dest: '<%= yeoman.dist %>/bower_components',
+          src: [
+            '**/*'
           ]
         }]
       }

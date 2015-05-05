@@ -7,16 +7,8 @@
   <body>
     <h1>Swagger Fake Server</h1>
     <ul id="calls"></ul>
-    <!-- build:js(.) scripts/vendor.js -->
-    <!-- bower:js -->
     <script src="bower_components/sinon/index.js"></script>
-    <!-- endbower -->
-    <!-- endbuild -->
-
-    <!-- build:js({app,.tmp}) scripts/main.js -->
-    <script src="scripts/main.js"></script>
-    <!-- endbuild -->
-
+    <script src="scripts/swagger-fake-server.js"></script>
     <script type="text/javascript">
 
       var ajax = function(url, successful, unsuccessful) {
