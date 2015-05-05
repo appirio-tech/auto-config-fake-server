@@ -7,7 +7,7 @@ api =
       Stats: {}
 
 ref    = null
-getRef = window.SwaggerFakeServerPrivates.getRef
+getRef = SwaggerFakeServerPrivates.getRef
 
 describe 'get Ref', ->
   context 'ref existing 2 level deep', ->

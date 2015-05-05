@@ -41,7 +41,8 @@
           'https://api.uber.com/v1/estimates/price',
           'https://api.uber.com/v1/estimates/time',
           'https://api.uber.com/v1/products',
-          'https://api.uber.com/v1/batman',
+          'https://api.uber.com/v1/dne',
+          'https://api.lyft.com/v2/products',
           'http://echo.jsontest.com/key/value/one/two'
         ];
 
@@ -59,15 +60,11 @@
       };
 
       var uber_swag, lyft_swag;
-
-      uber_swag = new SwaggerFakeServer('uber.swagger.json', {
-        callback: function () {
-          lyft_swag = new SwaggerFakeServer('lyft.swagger.json', {
-            callback: testAjax
-          });
-        }
+      SwaggerFakeServer.init()
+      SwaggerFakeServer.fakeServer.respondImmediately = true
+      SwaggerFakeServer.consume('uber.swagger.json', function () {
+        SwaggerFakeServer.consume('lyft.swagger.json', testAjax);
       });
-
     </script>
   </body>
 </html>

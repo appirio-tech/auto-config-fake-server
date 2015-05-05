@@ -2,7 +2,7 @@
 
 spy      = null
 errorSpy = null
-getJSON  = window.SwaggerFakeServerPrivates.getJSON
+getJSON  = SwaggerFakeServerPrivates.getJSON
 
 describe 'get JSON', ->
   beforeEach ->

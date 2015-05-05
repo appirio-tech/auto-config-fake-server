@@ -2,7 +2,7 @@
 
 match = null
 url   = null
-isApiCall = window.SwaggerFakeServerPrivates.isApiCall
+isApiCall = SwaggerFakeServerPrivates.isApiCall
 
 describe 'isApiCall', ->
   describe 'http://localhost:8080/api/v1/debug.html', ->

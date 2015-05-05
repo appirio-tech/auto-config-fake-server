@@ -32,7 +32,7 @@ api =
             '$ref': '#/definitions/Activity'
 
 build           = null
-buildDefinition = window.SwaggerFakeServerPrivates.buildDefinition
+buildDefinition = SwaggerFakeServerPrivates.buildDefinition
 
 describe 'build definitions', ->
   context 'Activities', ->

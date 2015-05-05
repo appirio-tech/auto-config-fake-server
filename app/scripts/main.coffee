@@ -1,6 +1,7 @@
 'use strict'
 
-apis = []
+window.SwaggerFakeServer = {}
+apis                     = []
 
 getJSON = (url, success) ->
   xhr = new XMLHttpRequest()
@@ -37,14 +38,6 @@ isApiCall = (url, host, schemes, basePath) ->
   return true if isHost && isScheme && isBasePath
 
   false
-
-urlFilter = (method, url) ->
-  isNotFiltered = true
-
-  for api in apis
-    return false if isApiCall url, api.host, api.schemes, api.basePath
-
-  true
 
 getRef = (ref, api) ->
   paths   = ref.split '/'
@@ -95,32 +88,29 @@ setRespondWith = (fakeServer, api) ->
           response  = [200, { 'Content-Type': 'application/json' }, buildJSON]
           fakeServer.respondWith method, url, response
 
-configureFakeServer = (fakeServer, options) ->
-  fakeServer.respondImmediately = true if options?.respondImmediately
-  fakeServer.autoRespond        = true if options?.autoRespond
-  fakeServer.autoRespondAfter   = options?.autoRespondAfter if options?.autoRespondAfter
-
+window.SwaggerFakeServer.init = ->
+  fakeServer = sinon.fakeServer.create()
   fakeServer.xhr.useFilters = true
-  fakeServer.xhr.addFilter urlFilter
 
-window.SwaggerFakeServer = (swaggerUrl, options) ->
-  SFS = {}
+  filter = (method, url) ->
+    for api in apis
+      return false if isApiCall url, api.host, api.schemes, api.basePath
 
+    true
+
+  fakeServer.xhr.addFilter filter
+
+  window.SwaggerFakeServer.fakeServer = fakeServer
+
+window.SwaggerFakeServer.consume = (swaggerUrl, callback) ->
   onSuccess = (json) ->
-    SFS.api = json
-    SFS.fakeServer = sinon.fakeServer.create()
+    apis.push json
 
-    apis.push SFS.api
+    setRespondWith SwaggerFakeServer.fakeServer, json
 
-    configureFakeServer SFS.fakeServer, options
-
-    setRespondWith SFS.fakeServer, SFS.api
-
-    options?.callback?()
+    callback?()
 
   getJSON swaggerUrl, onSuccess
-
-  SFS
 
 # For testing purposes
 if window.SwaggerFakeServerPrivates
@@ -131,4 +121,3 @@ if window.SwaggerFakeServerPrivates
     buildDefinition    : buildDefinition
     setRespondWith     : setRespondWith
     apis               : apis
-    configureFakeServer: configureFakeServer

@@ -1,33 +1,29 @@
 'use strict'
 
-sfs        = null
-fakeServer = null
-options    = null
+fakeServer =
+  xhr:
+    useFilters: false
+    addFilter: sinon.spy()
 
-describe 'window.SwaggerFakeServer.init', ->
+createStub = null
+
+describe 'SwaggerFakeServer.init', ->
   beforeEach ->
-    stashIt sinon.fakeServer, 'create'
+    createStub = sinon.stub sinon.fakeServer, 'create'
+    createStub.returns fakeServer
 
-    fakeServer =
-      respondWith: sinon.spy()
-      xhr:
-        useFilters: false
-        addFilter: sinon.spy()
-
-    sinon.fakeServer.create = ->
-      fakeServer
-
-    options = callback : sinon.spy()
-
-    sfs = new SwaggerFakeServer '/swagger.json', options
+    SwaggerFakeServer.init()
 
   afterEach ->
-    unstashIt sinon.fakeServer, 'create'
+    createStub.restore()
 
-  it 'should populate the api', ->
-    expect(sfs.api.basePath).to.be.ok
+  it 'should call create', ->
+    expect(createStub.called).to.be.ok
 
-  it 'should execute callback', ->
-    expect(options.callback.called).to.be.ok
+  it 'should use filters', ->
+    expect(fakeServer.xhr.useFilters).to.be.ok
+
+  it 'should add a filter', ->
+    expect(fakeServer.xhr.addFilter.called).to.be.ok
 
 

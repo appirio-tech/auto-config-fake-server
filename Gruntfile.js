@@ -175,6 +175,17 @@ module.exports = function (grunt) {
         configFile: 'test/karma.conf.coffee',
         singleRun: false
       }
+    },
+
+    pioneer: {
+      options: {
+        features: 'integration-tests/features',
+        steps   : 'integration-tests/steps',
+        widgets : 'integration-tests/widgets',
+        format  : 'pretty',
+        driver  : 'chrome',
+        coffee  : true
+      }
     }
   });
 
