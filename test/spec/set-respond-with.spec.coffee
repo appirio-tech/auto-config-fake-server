@@ -3,8 +3,16 @@
 api =
   host    : 'api.uber.com'
   basePath: '/v1'
-  schemes : ['https']
+  schemes : ['https', 'http']
   paths:
+    '/player':
+      get:
+        responses:
+          '200':
+            schema:
+              type: 'object',
+              items:
+                '$ref' : '#/definitions/Player'
     '/players':
       get:
         responses:
@@ -30,7 +38,8 @@ api =
 
 setRespondWith = window.SwaggerFakeServerPrivates.setRespondWith
 fakeServer     = null
-url            = 'https://api.uber.com/v1/players'
+httpUrl        = 'http://api.uber.com/v1/players'
+httpsUrl       = 'https://api.uber.com/v1/players'
 response       = [ 200, { 'Content-Type': 'application/json' }, '[{"name":"Batman"}]' ]
 postResponse   = [ 200, { 'Content-Type': 'application/json' }, '{"name":"Batman"}' ]
 
@@ -42,33 +51,25 @@ describe 'set respond with', ->
 
     setRespondWith fakeServer, api
 
-  it 'should call respondWith twice', ->
-    expect(fakeServer.respondWith.calledTwice).to.be.ok
+  it 'should call respondWith 6 times', ->
+    expect(fakeServer.respondWith.callCount).to.be.equal 6
 
-  it 'should match get arguments', ->
-    calledWith = fakeServer.respondWith.calledWith 'get', url, response
-
-    expect(calledWith).to.be.ok
-
-  it 'should match post arguments', ->
-    calledWith = fakeServer.respondWith.calledWith 'post', url, postResponse
+  it 'should match http get arguments', ->
+    calledWith = fakeServer.respondWith.calledWith 'get', httpUrl, response
 
     expect(calledWith).to.be.ok
 
-    # it 'should set limit to 123', ->
-    #   expect(build.limit).to.equal 123
+  it 'should match https get arguments', ->
+    calledWith = fakeServer.respondWith.calledWith 'get', httpsUrl, response
 
-    # it 'should set count to 444', ->
-    #   expect(build.count).to.equal 444
+    expect(calledWith).to.be.ok
 
-    # it 'should set history to an array', ->
-    #   expect(build.history.length).to.equal 1
+  it 'should match http post arguments', ->
+    calledWith = fakeServer.respondWith.calledWith 'post', httpUrl, postResponse
 
-    # it 'should set history first activty name to "abc"', ->
-    #   expect(build.history[0].name).to.equal 'abc'
+    expect(calledWith).to.be.ok
 
-    # it 'should set history first activty isActive to true', ->
-    #   expect(build.history[0].isActive).to.equal true
+  it 'should match https post arguments', ->
+    calledWith = fakeServer.respondWith.calledWith 'post', httpsUrl, postResponse
 
-    # it 'should set player', ->
-    #   expect(build.history[0].player.name).to.equal 'Batman'
+    expect(calledWith).to.be.ok

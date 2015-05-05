@@ -1,5 +1,7 @@
 'use strict'
 
+apis = []
+
 getJSON = (url, success) ->
   xhr = new XMLHttpRequest()
 
@@ -22,23 +24,27 @@ getJSON = (url, success) ->
   xhr.send()
 
 isApiCall = (url, host, schemes, basePath) ->
-  hostRegex   = /^((http[s]?|ftp):\/)?\/?([^:\/\s]+)(:([0-9])*)?((\/\w+)*\/)([\w\-\.]+[^#?\s]+)(.*)?(#[\w\-]+)?$/
+  hostRegex   = /^((http[s]?):\/)?\/?([^:\/\s]+)(:([0-9])*)?((\/\w+)*\/)([\w\-\.]+[^#?\s]+)(.*)?(#[\w\-]+)?$/
   urlParts    = url.match hostRegex
-  port        = urlParts[4] || ''
-  isHost      = (urlParts[3] + port) == host
-  isScheme    = schemes.indexOf(urlParts[2]) != -1
-  baseRegex   = new RegExp('^' + basePath)
-  isBasePath  = urlParts[6].match baseRegex
+
+  if urlParts
+    port        = urlParts[4] || ''
+    isHost      = (urlParts[3] + port) == host
+    isScheme    = schemes.indexOf(urlParts[2]) != -1
+    baseRegex   = new RegExp('^' + basePath)
+    isBasePath  = urlParts[6].match baseRegex
 
   return true if isHost && isScheme && isBasePath
 
   false
 
-setFilter = (fakeServer, api) ->
-  fakeServer.xhr.useFilters = true
+urlFilter = (method, url) ->
+  isNotFiltered = true
 
-  fakeServer.xhr.addFilter (method, url) ->
-    isApiCall url, api.host, api.schemes, api.basePath
+  for api in apis
+    return false if isApiCall url, api.host, api.schemes, api.basePath
+
+  true
 
 getRef = (ref, api) ->
   paths   = ref.split '/'
@@ -87,28 +93,42 @@ setRespondWith = (fakeServer, api) ->
           buildJSON = JSON.stringify build
           url       = scheme + '://' + api.host + api.basePath + path
           response  = [200, { 'Content-Type': 'application/json' }, buildJSON]
-
           fakeServer.respondWith method, url, response
 
-window.SwaggerFakeServer = (swaggerUrl) ->
-  FS = this
+configureFakeServer = (fakeServer, options) ->
+  fakeServer.respondImmediately = true if options?.respondImmediately
+  fakeServer.autoRespond        = true if options?.autoRespond
+  fakeServer.autoRespondAfter   = options?.autoRespondAfter if options?.autoRespondAfter
+
+  fakeServer.xhr.useFilters = true
+  fakeServer.xhr.addFilter urlFilter
+
+window.SwaggerFakeServer = (swaggerUrl, options) ->
+  SFS = {}
 
   onSuccess = (json) ->
-    FS.api = json
-    FS.fakeServer = sinon.fakeServer.create()
+    SFS.api = json
+    SFS.fakeServer = sinon.fakeServer.create()
 
-    setFilter FS.fakeServer
+    apis.push SFS.api
+
+    configureFakeServer SFS.fakeServer, options
+
+    setRespondWith SFS.fakeServer, SFS.api
+
+    options?.callback?()
 
   getJSON swaggerUrl, onSuccess
 
-  FS
+  SFS
 
 # For testing purposes
 if window.SwaggerFakeServerPrivates
   window.SwaggerFakeServerPrivates =
-    getJSON        : getJSON
-    isApiCall      : isApiCall
-    getRef         : getRef
-    buildDefinition: buildDefinition
-    setRespondWith : setRespondWith
-
+    getJSON            : getJSON
+    isApiCall          : isApiCall
+    getRef             : getRef
+    buildDefinition    : buildDefinition
+    setRespondWith     : setRespondWith
+    apis               : apis
+    configureFakeServer: configureFakeServer
