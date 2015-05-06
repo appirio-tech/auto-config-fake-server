@@ -33,7 +33,7 @@
   };
 
   isApiCall = function(url, host, schemes, basePath) {
-    var baseRegex, hostRegex, isBasePath, isHost, isScheme, port, urlParts;
+    var baseRegex, hostRegex, isBasePath, isHost, isScheme, path, port, urlParts;
     hostRegex = /^((http[s]?):\/)?\/?([^:\/\s]+)(:([0-9])*)?((\/\w+)*\/)([\w\-\.]+[^#?\s]+)(.*)?(#[\w\-]+)?$/;
     urlParts = url.match(hostRegex);
     if (urlParts) {
@@ -41,7 +41,8 @@
       isHost = (urlParts[3] + port) === host;
       isScheme = schemes.indexOf(urlParts[2]) !== -1;
       baseRegex = new RegExp('^' + basePath);
-      isBasePath = urlParts[6].match(baseRegex);
+      path = urlParts[6] + urlParts[8];
+      isBasePath = path.match(baseRegex);
     }
     if (isHost && isScheme && isBasePath) {
       return true;
