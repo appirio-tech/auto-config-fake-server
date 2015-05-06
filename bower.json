@@ -27,6 +27,7 @@
   "license": "MIT",
   "ignore": [
     "app",
+    "**/.*",
     "./*",
     "test"
   ]
