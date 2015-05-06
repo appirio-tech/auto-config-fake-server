@@ -2,9 +2,6 @@
   "name": "swagger-fake-server",
   "version": "0.0.1",
   "homepage": "https://github.com/appirio-tech/swagger-fake-server",
-  "authors": [
-    "Alex Tran <fakeemail@gmail.com>"
-  ],
   "dependencies": {
     "sinon": "http://sinonjs.org/releases/sinon-1.14.0.js"
   },
