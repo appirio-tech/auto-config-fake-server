@@ -48,3 +48,14 @@ describe 'isApiCall', ->
       it 'should match', ->
         expect(match).to.be.ok
 
+  describe 'https://api.topcoder-dev.com/v3/events?abc=123&filter=id%253D123', ->
+    beforeEach ->
+      url = 'https://api.topcoder-dev.com/v3/events?abc=123&filter=id%253D123'
+
+    context 'match host, schemes, basePath', ->
+      beforeEach ->
+        match = isApiCall url, 'api.topcoder-dev.com', ['https'], '/v3/events'
+
+      it 'should match', ->
+        expect(match).to.be.ok
+

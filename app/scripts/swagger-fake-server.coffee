@@ -33,7 +33,8 @@ isApiCall = (url, host, schemes, basePath) ->
     isHost      = (urlParts[3] + port) == host
     isScheme    = schemes.indexOf(urlParts[2]) != -1
     baseRegex   = new RegExp('^' + basePath)
-    isBasePath  = urlParts[6].match baseRegex
+    path        = urlParts[6] + urlParts[8]
+    isBasePath  = path.match baseRegex
 
   return true if isHost && isScheme && isBasePath
 

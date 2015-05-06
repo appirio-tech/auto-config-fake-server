@@ -35,14 +35,12 @@ api =
           type: 'string'
           sample: 'Batman'
 
-
 setRespondWith = SwaggerFakeServerPrivates.setRespondWith
 fakeServer     = null
 httpUrl        = 'http://api.uber.com/v1/players'
 httpsUrl       = 'https://api.uber.com/v1/players'
 response       = [ 200, { 'Content-Type': 'application/json' }, '[{"name":"Batman"}]' ]
 postResponse   = [ 200, { 'Content-Type': 'application/json' }, '{"name":"Batman"}' ]
-
 
 describe 'set respond with', ->
   beforeEach ->
