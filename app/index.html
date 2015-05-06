@@ -31,13 +31,15 @@
 
       var testAjax = function () {
         var urls = [
-          'https://api.uber.com/v1/estimates/price',
-          'https://api.uber.com/v1/estimates/time',
-          'https://api.uber.com/v1/products',
-          'https://api.uber.com/v1/dne',
-          'https://api.lyft.com/v2/products',
-          'https://api.lyft.com/v2/dne',
-          'http://echo.jsontest.com/key/value/one/two'
+          { url: 'https://api.uber.com/v1/estimates/price', expect: 'success' },
+          { url: 'https://api.uber.com/v1/estimates/time', expect: 'success' },
+          { url: 'https://api.uber.com/v1/estimates/time/dne', expect: 'fail' },
+          { url: 'https://api.uber.com/v1/estimates/time?abc=123', expect: 'success' },
+          { url: 'https://api.uber.com/v1/products?abc=123', expect: 'success' },
+          { url: 'https://api.uber.com/v1/dne', expect: 'fail' },
+          { url: 'https://api.lyft.com/v2/products', expect: 'success' },
+          { url: 'https://api.lyft.com/v2/dne', expect: 'fail' },
+          { url: 'http://echo.jsontest.com/key/value/one/two', expect: 'success' },
         ];
 
         for (var i = 0; i < urls.length; i += 1) {
@@ -47,10 +49,20 @@
 
           url = urls[i];
 
-          ajax(url, function (text) {
-            li.innerHTML = 'Successful response from ' + url + ': ' + text;
+          ajax(url.url, function (text) {
+            if (url.expect == 'success') {
+              li.innerHTML = 'Passed - ' + url.url;
+            }
+            else {
+              li.innerHTML = 'Failed - ' + url.url;
+            }
           }, function (text) {
-            li.innerHTML = 'Unsuccessful response from ' + url + ': ' + text
+            if (url.expect == 'fail') {
+              li.innerHTML = 'Passed - ' + url.url;
+            }
+            else {
+              li.innerHTML = 'Failed - ' + url.url;
+            }
           });
         }
       };

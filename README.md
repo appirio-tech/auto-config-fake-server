@@ -31,6 +31,7 @@ SwaggerFakeServer.consume('uber.swagger.json', function () {
 ## Future features
 * Take in an JSON object instead of path
 * Validate parameters
+* Regex path
 
 
 ## License

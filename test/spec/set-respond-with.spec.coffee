@@ -37,8 +37,8 @@ api =
 
 setRespondWith = SwaggerFakeServerPrivates.setRespondWith
 fakeServer     = null
-httpUrl        = 'http://api.uber.com/v1/players'
-httpsUrl       = 'https://api.uber.com/v1/players'
+httpUrlRegex   = new RegExp 'http://api.uber.com/v1/players'
+httpsUrlRegex   = new RegExp 'https://api.uber.com/v1/players'
 response       = [ 200, { 'Content-Type': 'application/json' }, '[{"name":"Batman"}]' ]
 postResponse   = [ 200, { 'Content-Type': 'application/json' }, '{"name":"Batman"}' ]
 
@@ -53,21 +53,21 @@ describe 'set respond with', ->
     expect(fakeServer.respondWith.callCount).to.be.equal 6
 
   it 'should match http get arguments', ->
-    calledWith = fakeServer.respondWith.calledWith 'get', httpUrl, response
+    calledWith = fakeServer.respondWith.calledWith 'get', httpUrlRegex, response
 
     expect(calledWith).to.be.ok
 
   it 'should match https get arguments', ->
-    calledWith = fakeServer.respondWith.calledWith 'get', httpsUrl, response
+    calledWith = fakeServer.respondWith.calledWith 'get', httpsUrlRegex, response
 
     expect(calledWith).to.be.ok
 
   it 'should match http post arguments', ->
-    calledWith = fakeServer.respondWith.calledWith 'post', httpUrl, postResponse
+    calledWith = fakeServer.respondWith.calledWith 'post', httpUrlRegex, postResponse
 
     expect(calledWith).to.be.ok
 
   it 'should match https post arguments', ->
-    calledWith = fakeServer.respondWith.calledWith 'post', httpsUrl, postResponse
+    calledWith = fakeServer.respondWith.calledWith 'post', httpsUrlRegex, postResponse
 
     expect(calledWith).to.be.ok

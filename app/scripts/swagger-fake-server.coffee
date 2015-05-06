@@ -86,8 +86,10 @@ setRespondWith = (fakeServer, api) ->
           build     = [build] if methodDefinition.responses['200'].schema.type == 'array'
           buildJSON = JSON.stringify build
           url       = scheme + '://' + api.host + api.basePath + path
+          urlRegex  = new RegExp(url + '(\\?(.)*)?$')
           response  = [200, { 'Content-Type': 'application/json' }, buildJSON]
-          fakeServer.respondWith method, url, response
+
+          fakeServer.respondWith method, urlRegex, response
 
 window.SwaggerFakeServer.init = ->
   fakeServer = sinon.fakeServer.create()
