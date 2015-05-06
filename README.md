@@ -10,12 +10,13 @@ bower install swagger-fake-server --save-dev
 Then add a `<script>` to your `index.html`:
 
 ```html
+<script src="/bower_components/sinon/index.js"></script>
 <script src="/bower_components/swagger-fake-server/dist/swagger-fake-server.js"></script>
 ```
 
 ## Usage
 ```js
-SwaggerFakeServer.init()
+SwaggerFakeServer.init();
 SwaggerFakeServer.fakeServer.respondImmediately = true; // docs are at http://sinonjs.org/docs
 SwaggerFakeServer.consume('uber.swagger.json', function () {
   console.log('Uber API should be mocked');
@@ -24,6 +25,13 @@ SwaggerFakeServer.consume('uber.swagger.json', function () {
   });
 });
 ```
+
+## Doc
+
+## Future features
+* Take in an JSON object instead of path
+* Validate parameters
+
 
 ## License
 
