@@ -16,7 +16,7 @@ module.exports = (config) ->
     files: [
       'test/swagger.coffee'
       'test/helper.coffee'
-      'app/scripts/main.coffee'
+      'app/scripts/**/*.coffee'
       'test/spec/**/*.coffee'
     ]
 
