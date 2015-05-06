@@ -95,7 +95,7 @@
   };
 
   setRespondWith = function(fakeServer, api) {
-    var build, buildJSON, method, methodDefinition, methods, path, ref, response, scheme, url, _i, _len, _ref, _results;
+    var build, buildJSON, method, methodDefinition, methods, path, ref, response, scheme, url, urlRegex, _i, _len, _ref, _results;
     _ref = api.schemes;
     _results = [];
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -119,12 +119,13 @@
                 }
                 buildJSON = JSON.stringify(build);
                 url = scheme + '://' + api.host + api.basePath + path;
+                urlRegex = new RegExp(url + '(\\?(.)*)?$');
                 response = [
                   200, {
                     'Content-Type': 'application/json'
                   }, buildJSON
                 ];
-                _results2.push(fakeServer.respondWith(method, url, response));
+                _results2.push(fakeServer.respondWith(method, urlRegex, response));
               } else {
                 _results2.push(void 0);
               }
