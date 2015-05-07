@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  var apis, buildDefinition, buildProperty, getJSON, getRef, getSample, isApiCall, setRespondWith;
+  var apis, buildDefinition, buildProperty, getEnum, getJSON, getRef, isApiCall, setRespondWith;
 
   window.SwaggerFakeServer = {};
 
@@ -85,7 +85,9 @@
     var build, _ref, _ref1;
     build = null;
     if (property.sample) {
-      build = getSample(property.sample);
+      build = property.sample;
+    } else if (property["enum"]) {
+      build = getEnum(property["enum"]);
     } else if (property.type === 'integer' || property.type === 'number') {
       build = 123;
     } else if (property.type === 'string') {
@@ -101,14 +103,11 @@
     return build;
   };
 
-  getSample = function(sample) {
+  getEnum = function(items) {
     var rand, randFloored;
-    if (sample.constructor === Array) {
-      rand = Math.random() * sample.length;
-      randFloored = Math.floor(rand);
-      return sample[randFloored];
-    }
-    return sample;
+    rand = Math.random() * items.length;
+    randFloored = Math.floor(rand);
+    return items[randFloored];
   };
 
   setRespondWith = function(fakeServer, api) {
@@ -189,7 +188,7 @@
       buildDefinition: buildDefinition,
       setRespondWith: setRespondWith,
       apis: apis,
-      getSample: getSample
+      getEnum: getEnum
     };
   }
 
