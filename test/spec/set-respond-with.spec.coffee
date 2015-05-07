@@ -37,8 +37,8 @@ api =
 
 setRespondWith = SwaggerFakeServerPrivates.setRespondWith
 fakeServer     = null
-httpUrlRegex   = new RegExp 'http://api.uber.com/v1/players'
-httpsUrlRegex   = new RegExp 'https://api.uber.com/v1/players'
+httpUrlRegex   = new RegExp('http://api.uber.com/v1/players' + '(\\?(.)*)?$')
+httpsUrlRegex  = new RegExp('https://api.uber.com/v1/players' + '(\\?(.)*)?$')
 response       = [ 200, { 'Content-Type': 'application/json' }, '[{"name":"Batman"}]' ]
 postResponse   = [ 200, { 'Content-Type': 'application/json' }, '{"name":"Batman"}' ]
 

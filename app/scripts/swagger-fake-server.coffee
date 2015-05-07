@@ -61,17 +61,24 @@ buildDefinition = (definition, api) ->
   build = {}
 
   for key, property of definition?.properties
-    if property.sample
-      build[key] = property.sample
-    else if property.type == 'integer' || property.type == 'number'
-      build[key] = 123
-    else if property.type == 'string'
-      build[key] = 'abc'
-    else if property.type == 'boolean'
-      build[key] = true
-    else if property.items?['$ref']
-      build[key] = buildDefinition property.items?['$ref'], api
-      build[key] = [build[key]] if property.type == 'array'
+    build[key] = buildProperty property, api
+
+  build
+
+buildProperty = (property, api) ->
+  build = null
+
+  if property.sample
+    build = property.sample
+  else if property.type == 'integer' || property.type == 'number'
+    build = 123
+  else if property.type == 'string'
+    build = 'abc'
+  else if property.type == 'boolean'
+    build = true
+  else if property.items?['$ref']
+    build = buildDefinition property.items?['$ref'], api
+    build = [build] if property.type == 'array'
 
   build
 
@@ -79,11 +86,10 @@ setRespondWith = (fakeServer, api) ->
   for scheme in api.schemes
     for path, methods of api.paths
       for method, methodDefinition of methods
-        ref = methodDefinition?.responses?['200']?.schema?.items?['$ref']
+        schema = methodDefinition?.responses?['200']?.schema
 
-        if ref
-          build     = buildDefinition ref, api
-          build     = [build] if methodDefinition.responses['200'].schema.type == 'array'
+        if schema
+          build     = buildProperty schema, api
           buildJSON = JSON.stringify build
           url       = scheme + '://' + api.host + api.basePath + path
           urlRegex  = new RegExp(url + '(\\?(.)*)?$')
