@@ -69,7 +69,7 @@ buildProperty = (property, api) ->
   build = null
 
   if property.sample
-    build = property.sample
+    build = getSample property.sample
   else if property.type == 'integer' || property.type == 'number'
     build = 123
   else if property.type == 'string'
@@ -81,6 +81,15 @@ buildProperty = (property, api) ->
     build = [build] if property.type == 'array'
 
   build
+
+getSample = (sample) ->
+  if sample.constructor == Array
+    rand        = Math.random() * sample.length
+    randFloored = Math.floor rand
+
+    return sample[randFloored]
+
+  sample
 
 setRespondWith = (fakeServer, api) ->
   for scheme in api.schemes
@@ -124,9 +133,10 @@ window.SwaggerFakeServer.consume = (swaggerUrl, callback) ->
 # For testing purposes
 if window.SwaggerFakeServerPrivates
   window.SwaggerFakeServerPrivates =
-    getJSON            : getJSON
-    isApiCall          : isApiCall
-    getRef             : getRef
-    buildDefinition    : buildDefinition
-    setRespondWith     : setRespondWith
-    apis               : apis
+    getJSON        : getJSON
+    isApiCall      : isApiCall
+    getRef         : getRef
+    buildDefinition: buildDefinition
+    setRespondWith : setRespondWith
+    apis           : apis
+    getSample      : getSample
