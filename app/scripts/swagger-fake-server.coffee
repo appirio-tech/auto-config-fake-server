@@ -69,7 +69,9 @@ buildProperty = (property, api) ->
   build = null
 
   if property.sample
-    build = getSample property.sample
+    build = property.sample
+  else if property.enum
+    build = getEnum property.enum
   else if property.type == 'integer' || property.type == 'number'
     build = 123
   else if property.type == 'string'
@@ -82,14 +84,11 @@ buildProperty = (property, api) ->
 
   build
 
-getSample = (sample) ->
-  if sample.constructor == Array
-    rand        = Math.random() * sample.length
-    randFloored = Math.floor rand
+getEnum = (items) ->
+  rand        = Math.random() * items.length
+  randFloored = Math.floor rand
 
-    return sample[randFloored]
-
-  sample
+  items[randFloored]
 
 setRespondWith = (fakeServer, api) ->
   for scheme in api.schemes
@@ -139,4 +138,4 @@ if window.SwaggerFakeServerPrivates
     buildDefinition: buildDefinition
     setRespondWith : setRespondWith
     apis           : apis
-    getSample      : getSample
+    getEnum        : getEnum
