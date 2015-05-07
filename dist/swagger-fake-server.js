@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  var apis, buildDefinition, getJSON, getRef, isApiCall, setRespondWith;
+  var apis, buildDefinition, buildProperty, getJSON, getRef, isApiCall, setRespondWith;
 
   window.SwaggerFakeServer = {};
 
@@ -68,7 +68,7 @@
   };
 
   buildDefinition = function(definition, api) {
-    var build, key, property, _ref, _ref1, _ref2;
+    var build, key, property, _ref;
     if (typeof definition === 'string') {
       definition = getRef(definition, api);
     }
@@ -76,26 +76,33 @@
     _ref = definition != null ? definition.properties : void 0;
     for (key in _ref) {
       property = _ref[key];
-      if (property.sample) {
-        build[key] = property.sample;
-      } else if (property.type === 'integer' || property.type === 'number') {
-        build[key] = 123;
-      } else if (property.type === 'string') {
-        build[key] = 'abc';
-      } else if (property.type === 'boolean') {
-        build[key] = true;
-      } else if ((_ref1 = property.items) != null ? _ref1['$ref'] : void 0) {
-        build[key] = buildDefinition((_ref2 = property.items) != null ? _ref2['$ref'] : void 0, api);
-        if (property.type === 'array') {
-          build[key] = [build[key]];
-        }
+      build[key] = buildProperty(property, api);
+    }
+    return build;
+  };
+
+  buildProperty = function(property, api) {
+    var build, _ref, _ref1;
+    build = null;
+    if (property.sample) {
+      build = property.sample;
+    } else if (property.type === 'integer' || property.type === 'number') {
+      build = 123;
+    } else if (property.type === 'string') {
+      build = 'abc';
+    } else if (property.type === 'boolean') {
+      build = true;
+    } else if ((_ref = property.items) != null ? _ref['$ref'] : void 0) {
+      build = buildDefinition((_ref1 = property.items) != null ? _ref1['$ref'] : void 0, api);
+      if (property.type === 'array') {
+        build = [build];
       }
     }
     return build;
   };
 
   setRespondWith = function(fakeServer, api) {
-    var build, buildJSON, method, methodDefinition, methods, path, ref, response, scheme, url, urlRegex, _i, _len, _ref, _results;
+    var build, buildJSON, method, methodDefinition, methods, path, response, schema, scheme, url, urlRegex, _i, _len, _ref, _results;
     _ref = api.schemes;
     _results = [];
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -107,16 +114,13 @@
         for (path in _ref1) {
           methods = _ref1[path];
           _results1.push((function() {
-            var _ref2, _ref3, _ref4, _ref5, _results2;
+            var _ref2, _ref3, _results2;
             _results2 = [];
             for (method in methods) {
               methodDefinition = methods[method];
-              ref = methodDefinition != null ? (_ref2 = methodDefinition.responses) != null ? (_ref3 = _ref2['200']) != null ? (_ref4 = _ref3.schema) != null ? (_ref5 = _ref4.items) != null ? _ref5['$ref'] : void 0 : void 0 : void 0 : void 0 : void 0;
-              if (ref) {
-                build = buildDefinition(ref, api);
-                if (methodDefinition.responses['200'].schema.type === 'array') {
-                  build = [build];
-                }
+              schema = methodDefinition != null ? (_ref2 = methodDefinition.responses) != null ? (_ref3 = _ref2['200']) != null ? _ref3.schema : void 0 : void 0 : void 0;
+              if (schema) {
+                build = buildProperty(schema, api);
                 buildJSON = JSON.stringify(build);
                 url = scheme + '://' + api.host + api.basePath + path;
                 urlRegex = new RegExp(url + '(\\?(.)*)?$');
