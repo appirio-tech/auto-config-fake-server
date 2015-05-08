@@ -3,6 +3,21 @@
 window.SwaggerFakeServer = {}
 apis                     = []
 
+clone = (obj) ->
+  isObject = typeof obj == 'object'
+  isNull = obj == null
+
+  return obj if isNull || !isObject
+
+  temp = obj.constructor()
+
+  for key, value of obj
+    hasOwnProperty = Object.prototype.hasOwnProperty.call obj, key
+
+    temp[key] = clone obj[key] if hasOwnProperty
+
+  temp
+
 getJSON = (url, success) ->
   xhr = new XMLHttpRequest()
 
@@ -54,7 +69,7 @@ getRef = (ref, api) ->
 
   current
 
-buildDefinition = (definition, api, isArray = nil) ->
+buildDefinition = (definition, api, isArray = null) ->
   if typeof definition == 'string'
     definition = getRef definition, api
 
@@ -62,6 +77,27 @@ buildDefinition = (definition, api, isArray = nil) ->
 
   for key, property of definition?.properties
     build[key] = buildProperty property, api
+
+  build = enumCombinations build if isArray
+
+  build
+
+buildProperty = (property, api) ->
+  build = null
+
+  if property.sample
+    build = property.sample
+  else if property.enum
+    build = getEnum property.enum
+  else if property.type == 'integer' || property.type == 'number'
+    build = 123
+  else if property.type == 'string'
+    build = 'abc'
+  else if property.type == 'boolean'
+    build = true
+  else if property.items?['$ref']
+    isArray = property.type == 'array'
+    build   = buildDefinition property.items?['$ref'], api, isArray
 
   build
 
@@ -74,34 +110,14 @@ enumCombinations = (build, properties) ->
 
       for combination in combinations
         for item in property.enum
-          cloned = combination.clone
+          cloned      = clone combination
           cloned[key] = item
+
           newCombinations.push cloned
 
       combinations = newCombinations
 
-
-buildProperty = (property, api, sample = nil) ->
-  build = null
-
-  if sample
-    build = sample
-  else if property.sample
-    build = property.sample
-  else if property.enum
-    build = getEnum property.enum
-  else if property.type == 'integer' || property.type == 'number'
-    build = 123
-  else if property.type == 'string'
-    build = 'abc'
-  else if property.type == 'boolean'
-    build = true
-  else if property.items?['$ref']
-    build = buildDefinition property.items?['$ref'], api
-    build = [build] if property.type == 'array'
-
-  build
-
+  combinations
 
 getEnum = (items) ->
   rand        = Math.random() * items.length
@@ -151,10 +167,12 @@ window.SwaggerFakeServer.consume = (swaggerUrl, callback) ->
 # For testing purposes
 if window.SwaggerFakeServerPrivates
   window.SwaggerFakeServerPrivates =
-    getJSON        : getJSON
-    isApiCall      : isApiCall
-    getRef         : getRef
-    buildDefinition: buildDefinition
-    setRespondWith : setRespondWith
-    apis           : apis
-    getEnum        : getEnum
+    getJSON         : getJSON
+    isApiCall       : isApiCall
+    getRef          : getRef
+    buildDefinition : buildDefinition
+    setRespondWith  : setRespondWith
+    apis            : apis
+    getEnum         : getEnum
+    enumCombinations: enumCombinations
+    clone           : clone
