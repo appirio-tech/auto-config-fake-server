@@ -126,7 +126,9 @@ getEnum = (items) ->
   items[randFloored]
 
 setRespondWith = (fakeServer, api) ->
-  for scheme in api.schemes
+  schemes = api.schemes || []
+
+  for scheme in schemes
     for path, methods of api.paths
       for method, methodDefinition of methods
         schema = methodDefinition?.responses?['200']?.schema
@@ -154,7 +156,14 @@ window.SwaggerFakeServer.init = ->
 
   window.SwaggerFakeServer.fakeServer = fakeServer
 
-window.SwaggerFakeServer.consume = (swaggerUrl, callback) ->
+window.SwaggerFakeServer.restore = ->
+  apis = []
+
+  SwaggerFakeServer.fakeServer?.restore();
+
+window.SwaggerFakeServer.consume = (schema, callback) ->
+  isString = typeof schema == 'string'
+
   onSuccess = (json) ->
     apis.push json
 
@@ -162,7 +171,10 @@ window.SwaggerFakeServer.consume = (swaggerUrl, callback) ->
 
     callback?()
 
-  getJSON swaggerUrl, onSuccess
+  if isString
+    getJSON schema, onSuccess
+  else
+    onSuccess schema
 
 # For testing purposes
 if window.SwaggerFakeServerPrivates

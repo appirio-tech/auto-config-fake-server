@@ -2,6 +2,7 @@
 
 fakeServer =
   respondWith: sinon.spy()
+  restore    : sinon.spy()
   xhr:
     useFilters : false
     addFilter  : sinon.spy()
@@ -16,13 +17,30 @@ describe 'SwaggerFakeServer.consume', ->
     createStub.returns fakeServer
 
     SwaggerFakeServer.init()
-    SwaggerFakeServer.consume '/swagger.json', callback
 
   afterEach ->
-    createStub.restore()
+    createStub.restore();
+    SwaggerFakeServer.restore()
 
-  it 'should call callback', ->
-    expect(callback.called).to.be.ok
+  context 'when schema is a string', ->
+    beforeEach ->
+      SwaggerFakeServer.consume '/swagger.json', callback
 
-  it 'should have an api base path of `/v1`', ->
-    expect(apis[0].basePath).to.be.equal '/v1'
+    afterEach ->
+      createStub.restore()
+
+    it 'should call callback', ->
+      expect(callback.called).to.be.ok
+
+    it 'should have an api base path of `/v1`', ->
+      expect(apis[0].basePath).to.be.equal '/v1'
+
+  context 'when schema is an object', ->
+    beforeEach ->
+      schema =
+        basePath: '/v1'
+
+      SwaggerFakeServer.consume schema, callback
+
+    it 'should have an api base path of `/v1`', ->
+      expect(apis[0].basePath).to.be.equal '/v1'
