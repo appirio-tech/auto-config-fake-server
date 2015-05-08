@@ -157,23 +157,23 @@
   };
 
   setRespondWith = function(fakeServer, api) {
-    var build, buildJSON, method, methodDefinition, methods, path, response, schema, scheme, url, urlRegex, _i, _len, _ref, _results;
-    _ref = api.schemes;
+    var build, buildJSON, method, methodDefinition, methods, path, response, schema, scheme, schemes, url, urlRegex, _i, _len, _results;
+    schemes = api.schemes || [];
     _results = [];
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      scheme = _ref[_i];
+    for (_i = 0, _len = schemes.length; _i < _len; _i++) {
+      scheme = schemes[_i];
       _results.push((function() {
-        var _ref1, _results1;
-        _ref1 = api.paths;
+        var _ref, _results1;
+        _ref = api.paths;
         _results1 = [];
-        for (path in _ref1) {
-          methods = _ref1[path];
+        for (path in _ref) {
+          methods = _ref[path];
           _results1.push((function() {
-            var _ref2, _ref3, _results2;
+            var _ref1, _ref2, _results2;
             _results2 = [];
             for (method in methods) {
               methodDefinition = methods[method];
-              schema = methodDefinition != null ? (_ref2 = methodDefinition.responses) != null ? (_ref3 = _ref2['200']) != null ? _ref3.schema : void 0 : void 0 : void 0;
+              schema = methodDefinition != null ? (_ref1 = methodDefinition.responses) != null ? (_ref2 = _ref1['200']) != null ? _ref2.schema : void 0 : void 0 : void 0;
               if (schema) {
                 build = buildProperty(schema, api);
                 buildJSON = JSON.stringify(build);
@@ -216,14 +216,25 @@
     return window.SwaggerFakeServer.fakeServer = fakeServer;
   };
 
-  window.SwaggerFakeServer.consume = function(swaggerUrl, callback) {
-    var onSuccess;
+  window.SwaggerFakeServer.restore = function() {
+    var _ref;
+    apis = [];
+    return (_ref = SwaggerFakeServer.fakeServer) != null ? _ref.restore() : void 0;
+  };
+
+  window.SwaggerFakeServer.consume = function(schema, callback) {
+    var isString, onSuccess;
+    isString = typeof schema === 'string';
     onSuccess = function(json) {
       apis.push(json);
       setRespondWith(SwaggerFakeServer.fakeServer, json);
       return typeof callback === "function" ? callback() : void 0;
     };
-    return getJSON(swaggerUrl, onSuccess);
+    if (isString) {
+      return getJSON(schema, onSuccess);
+    } else {
+      return onSuccess(schema);
+    }
   };
 
   if (window.SwaggerFakeServerPrivates) {
