@@ -1,10 +1,28 @@
 (function() {
   'use strict';
-  var apis, buildDefinition, buildProperty, getEnum, getJSON, getRef, isApiCall, setRespondWith;
+  var apis, buildDefinition, buildProperty, clone, enumCombinations, getEnum, getJSON, getRef, isApiCall, setRespondWith;
 
   window.SwaggerFakeServer = {};
 
   apis = [];
+
+  clone = function(obj) {
+    var hasOwnProperty, isNull, isObject, key, temp, value;
+    isObject = typeof obj === 'object';
+    isNull = obj === null;
+    if (isNull || !isObject) {
+      return obj;
+    }
+    temp = obj.constructor();
+    for (key in obj) {
+      value = obj[key];
+      hasOwnProperty = Object.prototype.hasOwnProperty.call(obj, key);
+      if (hasOwnProperty) {
+        temp[key] = clone(obj[key]);
+      }
+    }
+    return temp;
+  };
 
   getJSON = function(url, success) {
     var xhr;
@@ -67,8 +85,11 @@
     return current;
   };
 
-  buildDefinition = function(definition, api) {
+  buildDefinition = function(definition, api, isArray) {
     var build, key, property, _ref;
+    if (isArray == null) {
+      isArray = null;
+    }
     if (typeof definition === 'string') {
       definition = getRef(definition, api);
     }
@@ -78,11 +99,14 @@
       property = _ref[key];
       build[key] = buildProperty(property, api);
     }
+    if (isArray) {
+      build = enumCombinations(build);
+    }
     return build;
   };
 
   buildProperty = function(property, api) {
-    var build, _ref, _ref1;
+    var build, isArray, _ref, _ref1;
     build = null;
     if (property.sample) {
       build = property.sample;
@@ -95,12 +119,33 @@
     } else if (property.type === 'boolean') {
       build = true;
     } else if ((_ref = property.items) != null ? _ref['$ref'] : void 0) {
-      build = buildDefinition((_ref1 = property.items) != null ? _ref1['$ref'] : void 0, api);
-      if (property.type === 'array') {
-        build = [build];
-      }
+      isArray = property.type === 'array';
+      build = buildDefinition((_ref1 = property.items) != null ? _ref1['$ref'] : void 0, api, isArray);
     }
     return build;
+  };
+
+  enumCombinations = function(build, properties) {
+    var cloned, combination, combinations, item, key, newCombinations, property, _i, _j, _len, _len1, _ref;
+    combinations = [build];
+    for (key in properties) {
+      property = properties[key];
+      if (property["enum"]) {
+        newCombinations = [];
+        for (_i = 0, _len = combinations.length; _i < _len; _i++) {
+          combination = combinations[_i];
+          _ref = property["enum"];
+          for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
+            item = _ref[_j];
+            cloned = clone(combination);
+            cloned[key] = item;
+            newCombinations.push(cloned);
+          }
+        }
+        combinations = newCombinations;
+      }
+    }
+    return combinations;
   };
 
   getEnum = function(items) {
@@ -188,7 +233,9 @@
       buildDefinition: buildDefinition,
       setRespondWith: setRespondWith,
       apis: apis,
-      getEnum: getEnum
+      getEnum: getEnum,
+      enumCombinations: enumCombinations,
+      clone: clone
     };
   }
 
