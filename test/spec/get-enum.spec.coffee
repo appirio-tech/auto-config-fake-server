@@ -9,7 +9,7 @@ items = [
   'c'
 ]
 
-describe 'SwaggerFakeServer.geteNUM', ->
+describe 'SwaggerFakeServer.getEnum', ->
   beforeEach ->
     item = getEnum items
 

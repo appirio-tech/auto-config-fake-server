@@ -54,7 +54,7 @@ getRef = (ref, api) ->
 
   current
 
-buildDefinition = (definition, api) ->
+buildDefinition = (definition, api, isArray = nil) ->
   if typeof definition == 'string'
     definition = getRef definition, api
 
@@ -65,10 +65,28 @@ buildDefinition = (definition, api) ->
 
   build
 
-buildProperty = (property, api) ->
+enumCombinations = (build, properties) ->
+  combinations = [build]
+
+  for key, property of properties
+    if property.enum
+      newCombinations = []
+
+      for combination in combinations
+        for item in property.enum
+          cloned = combination.clone
+          cloned[key] = item
+          newCombinations.push cloned
+
+      combinations = newCombinations
+
+
+buildProperty = (property, api, sample = nil) ->
   build = null
 
-  if property.sample
+  if sample
+    build = sample
+  else if property.sample
     build = property.sample
   else if property.enum
     build = getEnum property.enum
@@ -83,6 +101,7 @@ buildProperty = (property, api) ->
     build = [build] if property.type == 'array'
 
   build
+
 
 getEnum = (items) ->
   rand        = Math.random() * items.length
