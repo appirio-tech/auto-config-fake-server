@@ -70,15 +70,15 @@ getRef = (ref, api) ->
   current
 
 buildDefinition = (definition, api, isArray = null) ->
-  if typeof definition == 'string'
-    definition = getRef definition, api
+  build      = {}
+  isString   = typeof definition == 'string'
+  definition = getRef definition, api if isString
+  properties = definition?.properties
 
-  build = {}
-
-  for key, property of definition?.properties
+  for key, property of properties
     build[key] = buildProperty property, api
 
-  build = enumCombinations build if isArray
+  build = enumCombinations build, properties  if isArray
 
   build
 
