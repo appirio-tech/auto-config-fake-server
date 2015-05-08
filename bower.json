@@ -11,7 +11,7 @@
     }
   },
   "description": "Create a Sinon fake server with a Swagger JSON file.",
-  "main": "dist/scripts/swagger-fake-server.js",
+  "main": "dist/swagger-fake-server.js",
   "moduleType": [
     "globals"
   ],
