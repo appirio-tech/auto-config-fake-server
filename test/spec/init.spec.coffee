@@ -10,7 +10,6 @@ createStub = null
 
 describe 'SwaggerFakeServer.init', ->
   beforeEach ->
-    debugger
     createStub = sinon.stub sinon.fakeServer, 'create'
     createStub.returns fakeServer
 
