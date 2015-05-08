@@ -86,21 +86,22 @@
   };
 
   buildDefinition = function(definition, api, isArray) {
-    var build, key, property, _ref;
+    var build, isString, key, properties, property;
     if (isArray == null) {
       isArray = null;
     }
-    if (typeof definition === 'string') {
+    build = {};
+    isString = typeof definition === 'string';
+    if (isString) {
       definition = getRef(definition, api);
     }
-    build = {};
-    _ref = definition != null ? definition.properties : void 0;
-    for (key in _ref) {
-      property = _ref[key];
+    properties = definition != null ? definition.properties : void 0;
+    for (key in properties) {
+      property = properties[key];
       build[key] = buildProperty(property, api);
     }
     if (isArray) {
-      build = enumCombinations(build);
+      build = enumCombinations(build, properties);
     }
     return build;
   };
