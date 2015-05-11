@@ -176,6 +176,13 @@ window.SwaggerFakeServer.consume = (schema, callback) ->
   else
     onSuccess schema
 
+window.SwaggerFakeServer.setHttpBackend = (httpBackend) ->
+  responses = window.SwaggerFakeServer?.fakeServer?.responses
+
+  if responses
+    for response in responses
+      httpBackend.when response.method, response.url, response.response[2]
+
 # For testing purposes
 if window.SwaggerFakeServerPrivates
   window.SwaggerFakeServerPrivates =
