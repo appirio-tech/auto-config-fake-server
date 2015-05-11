@@ -237,6 +237,19 @@
     }
   };
 
+  window.SwaggerFakeServer.setHttpBackend = function(httpBackend) {
+    var response, responses, _i, _len, _ref, _ref1, _results;
+    responses = (_ref = window.SwaggerFakeServer) != null ? (_ref1 = _ref.fakeServer) != null ? _ref1.responses : void 0 : void 0;
+    if (responses) {
+      _results = [];
+      for (_i = 0, _len = responses.length; _i < _len; _i++) {
+        response = responses[_i];
+        _results.push(httpBackend.when(response.method, response.url, response.response[2]));
+      }
+      return _results;
+    }
+  };
+
   if (window.SwaggerFakeServerPrivates) {
     window.SwaggerFakeServerPrivates = {
       getJSON: getJSON,
