@@ -26,10 +26,19 @@ SwaggerFakeServer.consume('uber.swagger.json', function () {
 });
 ```
 
-## Doc
+## SwaggerFakeServer
+A singleton style object in the window scope.
+
+#### `.init()`
+This method will create a fakeServer instance that can be referenced with SwaggerFakeServer.fakeServer. Although fakeServer is active, no http request will be stopped.
+
+#### `.consume(swaggerPath[, onSuccess])`
+The `swaggerPath` argument can either be an object based on a swagger schema or a path to a swagger schema json file. The `onSuccess` argument can be a method that is called (asyncronously if a json file) when the swagger schema has been processed and corresponding http requests are mocked.  You may call this method multiple times for different swagger schemas.
+
+#### `.restore()`
+This method will restore the fakeServer instance and unmocked all http requests.
 
 ## Future features
-* Take in an JSON object instead of path
 * Validate parameters
 * Regex path
 
