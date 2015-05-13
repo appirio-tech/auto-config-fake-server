@@ -38,7 +38,7 @@ The `swaggerPath` argument can either be an object based on a swagger schema or 
 #### `.restore()`
 This method will restore the fakeServer instance and unmocked all http requests.
 
-## Future features
+## Future Ideas
 * Validate parameters
 * Regex path
 
