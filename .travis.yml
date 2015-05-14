@@ -1,0 +1,11 @@
+language: node_js
+node_js:
+  - "0.10"
+before_install:
+  - npm install -g grunt
+  - npm install -g bower
+script:
+  - grunt build
+sudo: false
+after_success:
+  - grunt coveralls
