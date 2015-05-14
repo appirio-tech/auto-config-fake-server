@@ -2,13 +2,13 @@
 <html class="no-js">
   <head>
     <meta charset="utf-8">
-    <title>swagger fake server</title>
+    <title>Auto Config Fake Server</title>
   </head>
   <body>
-    <h1>Swagger Fake Server</h1>
+    <h1>Auto Config Fake Server</h1>
     <ul id="calls"></ul>
     <script src="bower_components/sinon/index.js"></script>
-    <script src="scripts/swagger-fake-server.js"></script>
+    <script src="scripts/auto-config-fake-server.js"></script>
     <script type="text/javascript">
 
       var ajax = function(url, successful, unsuccessful) {
@@ -67,11 +67,12 @@
         }
       };
 
-      var uber_swag, lyft_swag;
-      SwaggerFakeServer.init()
-      SwaggerFakeServer.fakeServer.respondImmediately = true
-      SwaggerFakeServer.consume('uber.swagger.json', function () {
-        SwaggerFakeServer.consume('lyft.swagger.json', testAjax);
+      AutoConfigFakeServer.init()
+
+      AutoConfigFakeServer.fakeServer.respondImmediately = true
+
+      AutoConfigFakeServer.consume('uber.swagger.json', function () {
+        AutoConfigFakeServer.consume('lyft.swagger.json', testAjax);
       });
     </script>
   </body>

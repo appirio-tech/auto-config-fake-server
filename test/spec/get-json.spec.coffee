@@ -2,7 +2,7 @@
 
 spy      = null
 errorSpy = null
-getJSON  = SwaggerFakeServerPrivates.getJSON
+getJSON  = AutoConfigFakeServerPrivates.getJSON
 
 describe 'get JSON', ->
   beforeEach ->

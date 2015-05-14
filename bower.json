@@ -1,7 +1,7 @@
 {
-  "name": "swagger-fake-server",
-  "version": "0.0.1",
-  "homepage": "https://github.com/appirio-tech/swagger-fake-server",
+  "name": "auto-config-fake-server",
+  "version": "1.0.0",
+  "homepage": "https://github.com/appirio-tech/auto-config-fake-server",
   "dependencies": {
     "sinon": "http://sinonjs.org/releases/sinon-1.14.0.js"
   },
@@ -11,7 +11,7 @@
     }
   },
   "description": "Create a Sinon fake server with a Swagger JSON file.",
-  "main": "dist/swagger-fake-server.js",
+  "main": "dist/auto-config-fake-server.js",
   "moduleType": [
     "globals"
   ],

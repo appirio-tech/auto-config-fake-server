@@ -1,6 +1,6 @@
 'use strict'
 
-enumCombinations = SwaggerFakeServerPrivates.enumCombinations
+enumCombinations = AutoConfigFakeServerPrivates.enumCombinations
 
 build =
   a: 'a'
@@ -19,7 +19,7 @@ properties =
 
 combinations = null
 
-describe 'SwaggerFakeServer.enumCombinations', ->
+describe 'AutoConfigFakeServer.enumCombinations', ->
   beforeEach ->
     combinations = enumCombinations build, properties
 

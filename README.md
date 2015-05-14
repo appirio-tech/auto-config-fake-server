@@ -1,36 +1,36 @@
-# swagger-fake-server
+# auto-config-fake-server
 Create a Sinon fake server with a Swagger JSON file.  Requests that match the API scheme, host, and base path will be stubbed while others will be ignored. 
 
 ## Install
 
 ```shell
-bower install swagger-fake-server --save-dev
+bower install auto-config-fake-server --save-dev
 ```
 
 Then add a `<script>` to your `index.html`:
 
 ```html
 <script src="/bower_components/sinon/index.js"></script>
-<script src="/bower_components/swagger-fake-server/dist/swagger-fake-server.js"></script>
+<script src="/bower_components/auto-config-fake-server/dist/auto-config-fake-server.js"></script>
 ```
 
 ## Usage
 ```js
-SwaggerFakeServer.init();
-SwaggerFakeServer.fakeServer.respondImmediately = true; // docs are at http://sinonjs.org/docs
-SwaggerFakeServer.consume('uber.swagger.json', function () {
+AutoConfigFakeServer.init();
+AutoConfigFakeServer.fakeServer.respondImmediately = true; // docs are at http://sinonjs.org/docs
+AutoConfigFakeServer.consume('uber.swagger.json', function () {
   console.log('Uber API should be mocked');
-  SwaggerFakeServer.consume('lyft.swagger.json', function() {
+  AutoConfigFakeServer.consume('lyft.swagger.json', function() {
     console.log('Lyft API should be mocked');
   });
 });
 ```
 
-## SwaggerFakeServer
+## AutoConfigFakeServer
 A singleton style object in the window scope.
 
 #### `.init()`
-This method will create a fakeServer instance that can be referenced with SwaggerFakeServer.fakeServer. Although fakeServer is active, no http request will be stopped.
+This method will create a fakeServer instance that can be referenced with AutoConfigFakeServer.fakeServer. Although fakeServer is active, no http request will be stopped.
 
 #### `.consume(swaggerPath[, onSuccess])`
 The `swaggerPath` argument can either be an object based on a swagger schema or a path to a swagger schema json file. The `onSuccess` argument can be a method that is called (asyncronously if a json file) when the swagger schema has been processed and corresponding http requests are mocked.  You may call this method multiple times for different swagger schemas.

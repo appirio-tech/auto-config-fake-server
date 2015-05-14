@@ -143,7 +143,7 @@ module.exports = function (grunt) {
           dot: true,
           cwd: '.tmp/scripts',
           dest: '<%= yeoman.dist %>',
-          src: ['swagger-fake-server.js']
+          src: ['auto-config-fake-server.js']
         }]
       }
     },

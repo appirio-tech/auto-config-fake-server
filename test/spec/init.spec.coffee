@@ -8,15 +8,15 @@ fakeServer =
 
 createStub = null
 
-describe 'SwaggerFakeServer.init', ->
+describe 'AutoConfigFakeServer.init', ->
   beforeEach ->
     createStub = sinon.stub sinon.fakeServer, 'create'
     createStub.returns fakeServer
 
-    SwaggerFakeServer.init()
+    AutoConfigFakeServer.init()
 
   afterEach ->
-    SwaggerFakeServer.restore()
+    AutoConfigFakeServer.restore()
     createStub.restore()
 
   it 'should call create', ->

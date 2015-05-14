@@ -2,7 +2,7 @@
   'use strict';
   var apis, buildDefinition, buildProperty, clone, enumCombinations, getEnum, getJSON, getRef, isApiCall, setRespondWith;
 
-  window.SwaggerFakeServer = {};
+  window.AutoConfigFakeServer = {};
 
   apis = [];
 
@@ -198,7 +198,7 @@
     return _results;
   };
 
-  window.SwaggerFakeServer.init = function() {
+  window.AutoConfigFakeServer.init = function() {
     var fakeServer, filter;
     fakeServer = sinon.fakeServer.create();
     fakeServer.xhr.useFilters = true;
@@ -213,21 +213,21 @@
       return true;
     };
     fakeServer.xhr.addFilter(filter);
-    return window.SwaggerFakeServer.fakeServer = fakeServer;
+    return window.AutoConfigFakeServer.fakeServer = fakeServer;
   };
 
-  window.SwaggerFakeServer.restore = function() {
+  window.AutoConfigFakeServer.restore = function() {
     var _ref;
     apis = [];
-    return (_ref = SwaggerFakeServer.fakeServer) != null ? _ref.restore() : void 0;
+    return (_ref = AutoConfigFakeServer.fakeServer) != null ? _ref.restore() : void 0;
   };
 
-  window.SwaggerFakeServer.consume = function(schema, callback) {
+  window.AutoConfigFakeServer.consume = function(schema, callback) {
     var isString, onSuccess;
     isString = typeof schema === 'string';
     onSuccess = function(json) {
       apis.push(json);
-      setRespondWith(SwaggerFakeServer.fakeServer, json);
+      setRespondWith(AutoConfigFakeServer.fakeServer, json);
       return typeof callback === "function" ? callback() : void 0;
     };
     if (isString) {
@@ -237,8 +237,8 @@
     }
   };
 
-  if (window.SwaggerFakeServerPrivates) {
-    window.SwaggerFakeServerPrivates = {
+  if (window.AutoConfigFakeServerPrivates) {
+    window.AutoConfigFakeServerPrivates = {
       getJSON: getJSON,
       isApiCall: isApiCall,
       getRef: getRef,

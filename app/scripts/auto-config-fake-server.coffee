@@ -1,6 +1,6 @@
 'use strict'
 
-window.SwaggerFakeServer = {}
+window.AutoConfigFakeServer = {}
 apis                     = []
 
 clone = (obj) ->
@@ -142,7 +142,7 @@ setRespondWith = (fakeServer, api) ->
 
           fakeServer.respondWith method, urlRegex, response
 
-window.SwaggerFakeServer.init = ->
+window.AutoConfigFakeServer.init = ->
   fakeServer = sinon.fakeServer.create()
   fakeServer.xhr.useFilters = true
 
@@ -154,20 +154,20 @@ window.SwaggerFakeServer.init = ->
 
   fakeServer.xhr.addFilter filter
 
-  window.SwaggerFakeServer.fakeServer = fakeServer
+  window.AutoConfigFakeServer.fakeServer = fakeServer
 
-window.SwaggerFakeServer.restore = ->
+window.AutoConfigFakeServer.restore = ->
   apis = []
 
-  SwaggerFakeServer.fakeServer?.restore();
+  AutoConfigFakeServer.fakeServer?.restore();
 
-window.SwaggerFakeServer.consume = (schema, callback) ->
+window.AutoConfigFakeServer.consume = (schema, callback) ->
   isString = typeof schema == 'string'
 
   onSuccess = (json) ->
     apis.push json
 
-    setRespondWith SwaggerFakeServer.fakeServer, json
+    setRespondWith AutoConfigFakeServer.fakeServer, json
 
     callback?()
 
@@ -177,8 +177,8 @@ window.SwaggerFakeServer.consume = (schema, callback) ->
     onSuccess schema
 
 # For testing purposes
-if window.SwaggerFakeServerPrivates
-  window.SwaggerFakeServerPrivates =
+if window.AutoConfigFakeServerPrivates
+  window.AutoConfigFakeServerPrivates =
     getJSON         : getJSON
     isApiCall       : isApiCall
     getRef          : getRef

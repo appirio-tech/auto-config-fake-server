@@ -26,6 +26,6 @@ window.unstashIt = (obj, key) ->
 
   delete stash[key]
 
-window.SwaggerFakeServerPrivates = {} # Allow the app to make its privates public
+window.AutoConfigFakeServerPrivates = {} # Allow the app to make its privates public
 
 context = describe # easier to read tests

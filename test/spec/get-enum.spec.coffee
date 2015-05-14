@@ -1,7 +1,7 @@
 'use strict'
 
 
-getEnum = SwaggerFakeServerPrivates.getEnum
+getEnum = AutoConfigFakeServerPrivates.getEnum
 item = null
 items = [
   'a'
@@ -9,7 +9,7 @@ items = [
   'c'
 ]
 
-describe 'SwaggerFakeServer.getEnum', ->
+describe 'AutoConfigFakeServer.getEnum', ->
   beforeEach ->
     item = getEnum items
 

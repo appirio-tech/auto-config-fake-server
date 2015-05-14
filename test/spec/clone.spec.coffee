@@ -1,6 +1,6 @@
 'use strict'
 
-clone = SwaggerFakeServerPrivates.clone
+clone = AutoConfigFakeServerPrivates.clone
 clonedItem = null
 
 item =
@@ -10,7 +10,7 @@ item =
     x: 3
     y: ['a', 'b']
 
-describe 'SwaggerFakeServer.clone', ->
+describe 'AutoConfigFakeServer.clone', ->
   beforeEach ->
     clonedItem = clone item
 

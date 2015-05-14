@@ -7,7 +7,7 @@ api =
       Stats: {}
 
 ref    = null
-getRef = SwaggerFakeServerPrivates.getRef
+getRef = AutoConfigFakeServerPrivates.getRef
 
 describe 'get Ref', ->
   context 'ref existing 2 level deep', ->

@@ -9,22 +9,22 @@ fakeServer =
 
 callback   = sinon.spy()
 createStub = null
-apis       = SwaggerFakeServerPrivates.apis
+apis       = AutoConfigFakeServerPrivates.apis
 
-describe 'SwaggerFakeServer.consume', ->
+describe 'AutoConfigFakeServer.consume', ->
   beforeEach ->
     createStub = sinon.stub sinon.fakeServer, 'create'
     createStub.returns fakeServer
 
-    SwaggerFakeServer.init()
+    AutoConfigFakeServer.init()
 
   afterEach ->
     createStub.restore();
-    SwaggerFakeServer.restore()
+    AutoConfigFakeServer.restore()
 
   context 'when schema is a string', ->
     beforeEach ->
-      SwaggerFakeServer.consume '/swagger.json', callback
+      AutoConfigFakeServer.consume '/swagger.json', callback
 
     afterEach ->
       createStub.restore()
@@ -40,7 +40,7 @@ describe 'SwaggerFakeServer.consume', ->
       schema =
         basePath: '/v1'
 
-      SwaggerFakeServer.consume schema, callback
+      AutoConfigFakeServer.consume schema, callback
 
     it 'should have an api base path of `/v1`', ->
       expect(apis[0].basePath).to.be.equal '/v1'
