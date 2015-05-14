@@ -135,6 +135,16 @@ module.exports = function (grunt) {
       }
     },
 
+    coveralls: {
+      options: {
+        debug: true,
+        coverageDir: 'coverage',
+        dryRun: true,
+        force: true,
+        recursive: true
+      }
+    },
+
     // Copies remaining files to places other tasks can use
     copy: {
       dist: {

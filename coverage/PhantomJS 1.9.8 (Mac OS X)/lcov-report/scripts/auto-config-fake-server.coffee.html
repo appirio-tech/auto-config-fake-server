@@ -1,0 +1,807 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for scripts/auto-config-fake-server.coffee</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../prettify.css">
+    <link rel="stylesheet" href="../base.css">
+    <style type='text/css'>
+        div.coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class="header high">
+    <h1>Code coverage report for <span class="entity">scripts/auto-config-fake-server.coffee</span></h1>
+    <h2>
+        Statements: <span class="metric">93.06% <small>(161 / 173)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class="metric">77.46% <small>(55 / 71)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">94.44% <small>(17 / 18)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">93.06% <small>(161 / 173)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </h2>
+    <div class="path"><a href="../index.html">All files</a> &#187; <a href="index.html">scripts/</a> &#187; auto-config-fake-server.coffee</div>
+</div>
+<div class="body">
+<pre><table class="coverage">
+<tr><td class="line-count">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255</td><td class="line-coverage"><span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">376</span>
+<span class="cline-any cline-yes">376</span>
+<span class="cline-any cline-yes">376</span>
+<span class="cline-any cline-yes">376</span>
+<span class="cline-any cline-yes">277</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">99</span>
+<span class="cline-any cline-yes">99</span>
+<span class="cline-any cline-yes">287</span>
+<span class="cline-any cline-yes">287</span>
+<span class="cline-any cline-yes">287</span>
+<span class="cline-any cline-yes">287</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">99</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">8</span>
+<span class="cline-any cline-yes">8</span>
+<span class="cline-any cline-yes">8</span>
+<span class="cline-any cline-yes">4844</span>
+<span class="cline-any cline-yes">4844</span>
+<span class="cline-any cline-yes">8</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8</span>
+<span class="cline-any cline-yes">8</span>
+<span class="cline-any cline-yes">8</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">60</span>
+<span class="cline-any cline-yes">60</span>
+<span class="cline-any cline-yes">60</span>
+<span class="cline-any cline-yes">60</span>
+<span class="cline-any cline-yes">180</span>
+<span class="cline-any cline-yes">180</span>
+<span class="cline-any cline-yes">60</span>
+<span class="cline-any cline-yes">120</span>
+<span class="cline-any cline-yes">120</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">60</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">57</span>
+<span class="cline-any cline-yes">57</span>
+<span class="cline-any cline-yes">7</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">57</span>
+<span class="cline-any cline-yes">57</span>
+<span class="cline-any cline-yes">57</span>
+<span class="cline-any cline-yes">57</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">57</span>
+<span class="cline-any cline-yes">57</span>
+<span class="cline-any cline-yes">120</span>
+<span class="cline-any cline-yes">120</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">57</span>
+<span class="cline-any cline-yes">23</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">57</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">160</span>
+<span class="cline-any cline-yes">160</span>
+<span class="cline-any cline-yes">160</span>
+<span class="cline-any cline-yes">44</span>
+<span class="cline-any cline-yes">116</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">116</span>
+<span class="cline-any cline-yes">20</span>
+<span class="cline-any cline-yes">96</span>
+<span class="cline-any cline-yes">35</span>
+<span class="cline-any cline-yes">61</span>
+<span class="cline-any cline-yes">7</span>
+<span class="cline-any cline-yes">54</span>
+<span class="cline-any cline-yes">50</span>
+<span class="cline-any cline-yes">50</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">160</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">30</span>
+<span class="cline-any cline-yes">30</span>
+<span class="cline-any cline-yes">30</span>
+<span class="cline-any cline-yes">86</span>
+<span class="cline-any cline-yes">86</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-yes">28</span>
+<span class="cline-any cline-yes">28</span>
+<span class="cline-any cline-yes">28</span>
+<span class="cline-any cline-yes">84</span>
+<span class="cline-any cline-yes">84</span>
+<span class="cline-any cline-yes">84</span>
+<span class="cline-any cline-yes">84</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">30</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">8</span>
+<span class="cline-any cline-yes">8</span>
+<span class="cline-any cline-yes">8</span>
+<span class="cline-any cline-yes">8</span>
+<span class="cline-any cline-yes">12</span>
+<span class="cline-any cline-yes">12</span>
+<span class="cline-any cline-yes">12</span>
+<span class="cline-any cline-yes">12</span>
+<span class="cline-any cline-yes">12</span>
+<span class="cline-any cline-yes">12</span>
+<span class="cline-any cline-yes">30</span>
+<span class="cline-any cline-yes">30</span>
+<span class="cline-any cline-yes">30</span>
+<span class="cline-any cline-yes">30</span>
+<span class="cline-any cline-yes">30</span>
+<span class="cline-any cline-yes">40</span>
+<span class="cline-any cline-yes">40</span>
+<span class="cline-any cline-yes">40</span>
+<span class="cline-any cline-yes">40</span>
+<span class="cline-any cline-yes">40</span>
+<span class="cline-any cline-yes">40</span>
+<span class="cline-any cline-yes">40</span>
+<span class="cline-any cline-yes">40</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">40</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">30</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">(function() {
+  'use strict';
+  var apis, buildDefinition, buildProperty, clone, enumCombinations, getEnum, getJSON, getRef, isApiCall, setRespondWith;
+&nbsp;
+  window.AutoConfigFakeServer = {};
+&nbsp;
+  apis = [];
+&nbsp;
+  clone = function(obj) {
+    var hasOwnProperty, isNull, isObject, key, temp, value;
+    isObject = typeof obj === 'object';
+    isNull = obj === null;
+    if (isNull || !isObject) {
+      return obj;
+    }
+    temp = obj.constructor();
+    for (key in obj) {
+      value = obj[key];
+      hasOwnProperty = Object.prototype.hasOwnProperty.call(obj, key);
+      <span class="missing-if-branch" title="else path not taken" >E</span>if (hasOwnProperty) {
+        temp[key] = clone(obj[key]);
+      }
+    }
+    return temp;
+  };
+&nbsp;
+  getJSON = function(url, success) {
+    var xhr;
+    xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+      var error, json;
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+          try {
+            json = JSON.parse(xhr.responseText);
+          } catch (_error) {
+<span class="cstat-no" title="statement not covered" >            error = _error;</span>
+<span class="cstat-no" title="statement not covered" >            console.error('Invalid JSON');</span>
+<span class="cstat-no" title="statement not covered" >            console.error(error);</span>
+          }
+          return success(json);
+        } else {
+          console.error('Couldnt get ' + url);
+          return console.error(xhr.statusText);
+        }
+      }
+    };
+    xhr.open('GET', url, true);
+    xhr.responseType = 'text';
+    return xhr.send();
+  };
+&nbsp;
+  isApiCall = function(url, host, schemes, basePath) {
+    var baseRegex, hostRegex, isBasePath, isHost, isScheme, path, port, urlParts;
+    hostRegex = /^((http[s]?):\/)?\/?([^:\/\s]+)(:([0-9])*)?((\/\w+)*\/)([\w\-\.]+[^#?\s]+)(.*)?(#[\w\-]+)?$/;
+    urlParts = url.match(hostRegex);
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (urlParts) {
+      port = urlParts[4] || '';
+      isHost = (urlParts[3] + port) === host;
+      isScheme = schemes.indexOf(urlParts[2]) !== -1;
+      baseRegex = new RegExp('^' + basePath);
+      path = urlParts[6] + urlParts[8];
+      isBasePath = path.match(baseRegex);
+    }
+    if (isHost &amp;&amp; isScheme &amp;&amp; isBasePath) {
+      return true;
+    }
+    return false;
+  };
+&nbsp;
+  getRef = function(ref, api) {
+    var current, path, paths, _i, _len;
+    paths = ref.split('/');
+    current = null;
+    for (_i = 0, _len = paths.length; _i &lt; _len; _i++) {
+      path = paths[_i];
+      if (path === '#') {
+        current = api;
+      } else <span class="missing-if-branch" title="else path not taken" >E</span>if (current[path]) {
+        current = current[path];
+      } else {
+<span class="cstat-no" title="statement not covered" >        return false;</span>
+      }
+    }
+    return current;
+  };
+&nbsp;
+  buildDefinition = function(definition, api, isArray) {
+    var build, isString, key, properties, property;
+    if (isArray == null) {
+      isArray = null;
+    }
+    build = {};
+    isString = typeof definition === 'string';
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (isString) {
+      definition = getRef(definition, api);
+    }
+    properties = definition != null ? definition.properties : <span class="branch-1 cbranch-no" title="branch not covered" >void 0;</span>
+    for (key in properties) {
+      property = properties[key];
+      build[key] = buildProperty(property, api);
+    }
+    if (isArray) {
+      build = enumCombinations(build, properties);
+    }
+    return build;
+  };
+&nbsp;
+  buildProperty = function(property, api) {
+    var build, isArray, _ref, _ref1;
+    build = null;
+    if (property.sample) {
+      build = property.sample;
+    } else <span class="missing-if-branch" title="if path not taken" >I</span>if (property["enum"]) {
+<span class="cstat-no" title="statement not covered" >      build = getEnum(property["enum"]);</span>
+    } else if (property.type === 'integer' || property.type === 'number') {
+      build = 123;
+    } else if (property.type === 'string') {
+      build = 'abc';
+    } else if (property.type === 'boolean') {
+      build = true;
+    } else if ((_ref = property.items) != null ? _ref['$ref'] : void 0) {
+      isArray = property.type === 'array';
+      build = buildDefinition((_ref1 = property.items) != null ? _ref1['$ref'] : <span class="branch-1 cbranch-no" title="branch not covered" >void 0,</span> api, isArray);
+    }
+    return build;
+  };
+&nbsp;
+  enumCombinations = function(build, properties) {
+    var cloned, combination, combinations, item, key, newCombinations, property, _i, _j, _len, _len1, _ref;
+    combinations = [build];
+    for (key in properties) {
+      property = properties[key];
+      if (property["enum"]) {
+        newCombinations = [];
+        for (_i = 0, _len = combinations.length; _i &lt; _len; _i++) {
+          combination = combinations[_i];
+          _ref = property["enum"];
+          for (_j = 0, _len1 = _ref.length; _j &lt; _len1; _j++) {
+            item = _ref[_j];
+            cloned = clone(combination);
+            cloned[key] = item;
+            newCombinations.push(cloned);
+          }
+        }
+        combinations = newCombinations;
+      }
+    }
+    return combinations;
+  };
+&nbsp;
+  getEnum = function(items) {
+    var rand, randFloored;
+    rand = Math.random() * items.length;
+    randFloored = Math.floor(rand);
+    return items[randFloored];
+  };
+&nbsp;
+  setRespondWith = function(fakeServer, api) {
+    var build, buildJSON, method, methodDefinition, methods, path, response, schema, scheme, schemes, url, urlRegex, _i, _len, _results;
+    schemes = api.schemes || [];
+    _results = [];
+    for (_i = 0, _len = schemes.length; _i &lt; _len; _i++) {
+      scheme = schemes[_i];
+      _results.push((function() {
+        var _ref, _results1;
+        _ref = api.paths;
+        _results1 = [];
+        for (path in _ref) {
+          methods = _ref[path];
+          _results1.push((function() {
+            var _ref1, _ref2, _results2;
+            _results2 = [];
+            for (method in methods) {
+              methodDefinition = methods[method];
+              schema = methodDefinition != null ? (_ref1 = methodDefinition.responses) != null ? (_ref2 = _ref1['200']) != null ? _ref2.schema : <span class="branch-1 cbranch-no" title="branch not covered" >void 0 </span>: <span class="branch-1 cbranch-no" title="branch not covered" >void 0 </span>: <span class="branch-1 cbranch-no" title="branch not covered" >void 0;</span>
+              <span class="missing-if-branch" title="else path not taken" >E</span>if (schema) {
+                build = buildProperty(schema, api);
+                buildJSON = JSON.stringify(build);
+                url = scheme + '://' + api.host + api.basePath + path;
+                urlRegex = new RegExp(url + '(\\?(.)*)?$');
+                response = [
+                  200, {
+                    'Content-Type': 'application/json'
+                  }, buildJSON
+                ];
+                _results2.push(fakeServer.respondWith(method, urlRegex, response));
+              } else {
+<span class="cstat-no" title="statement not covered" >                _results2.push(void 0);</span>
+              }
+            }
+            return _results2;
+          })());
+        }
+        return _results1;
+      })());
+    }
+    return _results;
+  };
+&nbsp;
+  window.AutoConfigFakeServer.init = function() {
+    var fakeServer, filter;
+    fakeServer = sinon.fakeServer.create();
+    fakeServer.xhr.useFilters = true;
+    filter = <span class="fstat-no" title="function not covered" >function(method, url) {</span>
+<span class="cstat-no" title="statement not covered" >      var api, _i, _len;</span>
+<span class="cstat-no" title="statement not covered" >      for (_i = 0, _len = apis.length; _i &lt; _len; _i++) {</span>
+<span class="cstat-no" title="statement not covered" >        api = apis[_i];</span>
+<span class="cstat-no" title="statement not covered" >        if (isApiCall(url, api.host, api.schemes, api.basePath)) {</span>
+<span class="cstat-no" title="statement not covered" >          return false;</span>
+        }
+      }
+<span class="cstat-no" title="statement not covered" >      return true;</span>
+    };
+    fakeServer.xhr.addFilter(filter);
+    return window.AutoConfigFakeServer.fakeServer = fakeServer;
+  };
+&nbsp;
+  window.AutoConfigFakeServer.restore = function() {
+    var _ref;
+    apis = [];
+    return (_ref = AutoConfigFakeServer.fakeServer) != null ? _ref.restore() : <span class="branch-1 cbranch-no" title="branch not covered" >void 0;</span>
+  };
+&nbsp;
+  window.AutoConfigFakeServer.consume = function(schema, callback) {
+    var isString, onSuccess;
+    isString = typeof schema === 'string';
+    onSuccess = function(json) {
+      apis.push(json);
+      setRespondWith(AutoConfigFakeServer.fakeServer, json);
+      return typeof callback === "function" ? callback() : <span class="branch-1 cbranch-no" title="branch not covered" >void 0;</span>
+    };
+    if (isString) {
+      return getJSON(schema, onSuccess);
+    } else {
+      return onSuccess(schema);
+    }
+  };
+&nbsp;
+  <span class="missing-if-branch" title="else path not taken" >E</span>if (window.AutoConfigFakeServerPrivates) {
+    window.AutoConfigFakeServerPrivates = {
+      getJSON: getJSON,
+      isApiCall: isApiCall,
+      getRef: getRef,
+      buildDefinition: buildDefinition,
+      setRespondWith: setRespondWith,
+      apis: apis,
+      getEnum: getEnum,
+      enumCombinations: enumCombinations,
+      clone: clone
+    };
+  }
+&nbsp;
+}).call(this);
+&nbsp;</pre></td></tr>
+</table></pre>
+
+</div>
+<div class="footer">
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu May 14 2015 16:24:42 GMT-0700 (PDT)</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

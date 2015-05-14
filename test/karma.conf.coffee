@@ -51,7 +51,15 @@ module.exports = (config) ->
 
     colors: true
 
-    preprocessors: '**/*.coffee': ['coffee']
+    reporters: ['coverage']
+
+    preprocessors:
+      '**/*.coffee': ['coffee']
+      'app/scripts/**/*.coffee': 'coverage'
+
+    coverageReporter:
+      type: "lcov"
+      dir: "coverage/"
 
     coffeePreprocessor:
       options:
