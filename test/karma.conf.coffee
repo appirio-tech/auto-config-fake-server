@@ -54,8 +54,8 @@ module.exports = (config) ->
     reporters: ['coverage']
 
     preprocessors:
-      '**/*.coffee': ['coffee']
       'app/scripts/**/*.coffee': 'coverage'
+      'test/**/*.coffee': ['coffee']
 
     coverageReporter:
       type: "lcov"
