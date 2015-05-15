@@ -1,4 +1,6 @@
 # auto-config-fake-server
+[![Build Status](https://travis-ci.org/appirio-tech/auto-config-fake-server.svg?branch=master)](https://travis-ci.org/appirio-tech/auto-config-fake-server)
+
 Create a Sinon fake server with a Swagger JSON file.  Requests that match the API scheme, host, and base path will be stubbed while others will be ignored. 
 
 ## Install
