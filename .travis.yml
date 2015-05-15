@@ -5,6 +5,9 @@ before_install:
   - npm install -g grunt
   - npm install -g bower
 script:
+  - npm install
+  - bower install
+  - grunt test
   - grunt build
 sudo: false
 after_success:
