@@ -14,18 +14,15 @@ Then add a `<script>` to your `index.html`:
 ```html
 <script src="/bower_components/sinon/index.js"></script>
 <script src="/bower_components/auto-config-fake-server/dist/auto-config-fake-server.js"></script>
+<!-- gulp task generated fixtures -->
+<script src="/scripts/json-fixtures.js"></script>
 ```
 
 ## Usage
 ```js
 AutoConfigFakeServer.init();
 AutoConfigFakeServer.fakeServer.respondImmediately = true; // docs are at http://sinonjs.org/docs
-AutoConfigFakeServer.consume('uber.swagger.json', function () {
-  console.log('Uber API should be mocked');
-  AutoConfigFakeServer.consume('lyft.swagger.json', function() {
-    console.log('Lyft API should be mocked');
-  });
-});
+AutoConfigFakeServer.consume(swaggerJSONObject); // schema should be mocked now
 ```
 
 ## AutoConfigFakeServer
