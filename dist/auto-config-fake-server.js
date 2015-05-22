@@ -24,32 +24,6 @@
     return temp;
   };
 
-  getJSON = function(url, success) {
-    var xhr;
-    xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function() {
-      var error, json;
-      if (xhr.readyState === 4) {
-        if (xhr.status === 200) {
-          try {
-            json = JSON.parse(xhr.responseText);
-          } catch (_error) {
-            error = _error;
-            console.error('Invalid JSON');
-            console.error(error);
-          }
-          return success(json);
-        } else {
-          console.error('Couldnt get ' + url);
-          return console.error(xhr.statusText);
-        }
-      }
-    };
-    xhr.open('GET', url, true);
-    xhr.responseType = 'text';
-    return xhr.send();
-  };
-
   isApiCall = function(url, host, schemes, basePath) {
     var baseRegex, hostRegex, isBasePath, isHost, isScheme, path, port, urlParts;
     hostRegex = /^((http[s]?):\/)?\/?([^:\/\s]+)(:([0-9])*)?((\/\w+)*\/)([\w\-\.]+[^#?\s]+)(.*)?(#[\w\-]+)?$/;

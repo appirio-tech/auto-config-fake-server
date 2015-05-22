@@ -9,6 +9,7 @@
     <ul id="calls"></ul>
     <script src="bower_components/sinon/index.js"></script>
     <script src="scripts/auto-config-fake-server.js"></script>
+    <script src="scripts/json-fixtures.js"></script>
     <script type="text/javascript">
 
       var ajax = function(url, successful, unsuccessful) {
@@ -29,51 +30,46 @@
         return xhr.send();
       };
 
-      var testAjax = function () {
-        var urls = [
-          { url: 'https://api.uber.com/v1/estimates/price', expect: 'success' },
-          { url: 'https://api.uber.com/v1/estimates/time', expect: 'success' },
-          { url: 'https://api.uber.com/v1/estimates/time/dne', expect: 'fail' },
-          { url: 'https://api.uber.com/v1/estimates/time?abc=123', expect: 'success' },
-          { url: 'https://api.uber.com/v1/products?abc=123', expect: 'success' },
-          { url: 'https://api.uber.com/v1/dne', expect: 'fail' },
-          { url: 'https://api.lyft.com/v2/products', expect: 'success' },
-          { url: 'https://api.lyft.com/v2/history/123/bob/abcjas-123', expect: 'success' },
-          { url: 'https://api.lyft.com/v2/dne', expect: 'fail' }
-        ];
-
-        for (var i = 0; i < urls.length; i += 1) {
-          var li = document.createElement('li');
-          li.id = 'response-' + i;
-          document.getElementById('calls').appendChild(li);
-
-          url = urls[i];
-
-          ajax(url.url, function (text) {
-            if (url.expect == 'success') {
-              li.innerHTML = 'Passed - ' + url.url;
-            }
-            else {
-              li.innerHTML = 'Failed - ' + url.url;
-            }
-          }, function (text) {
-            if (url.expect == 'fail') {
-              li.innerHTML = 'Passed - ' + url.url;
-            }
-            else {
-              li.innerHTML = 'Failed - ' + url.url;
-            }
-          });
-        }
-      };
-
       AutoConfigFakeServer.init()
-
       AutoConfigFakeServer.fakeServer.respondImmediately = true
+      AutoConfigFakeServer.consume(window.FIXTURES['app/lyft.swagger.json']);
+      AutoConfigFakeServer.consume(window.FIXTURES['app/uber.swagger.json']);
 
-      AutoConfigFakeServer.consume('uber.swagger.json', function () {
-        AutoConfigFakeServer.consume('lyft.swagger.json', testAjax);
-      });
+      var urls = [
+        { url: 'https://api.uber.com/v1/estimates/price', expect: 'success' },
+        { url: 'https://api.uber.com/v1/estimates/time', expect: 'success' },
+        { url: 'https://api.uber.com/v1/estimates/time/dne', expect: 'fail' },
+        { url: 'https://api.uber.com/v1/estimates/time?abc=123', expect: 'success' },
+        { url: 'https://api.uber.com/v1/products?abc=123', expect: 'success' },
+        { url: 'https://api.uber.com/v1/dne', expect: 'fail' },
+        { url: 'https://api.lyft.com/v2/products', expect: 'success' },
+        { url: 'https://api.lyft.com/v2/history/123/bob/abcjas-123', expect: 'success' },
+        { url: 'https://api.lyft.com/v2/dne', expect: 'fail' }
+      ];
+
+      for (var i = 0; i < urls.length; i += 1) {
+        var li = document.createElement('li');
+        li.id = 'response-' + i;
+        document.getElementById('calls').appendChild(li);
+
+        url = urls[i];
+
+        ajax(url.url, function (text) {
+          if (url.expect == 'success') {
+            li.innerHTML = 'Passed - ' + url.url;
+          }
+          else {
+            li.innerHTML = 'Failed - ' + url.url;
+          }
+        }, function (text) {
+          if (url.expect == 'fail') {
+            li.innerHTML = 'Passed - ' + url.url;
+          }
+          else {
+            li.innerHTML = 'Failed - ' + url.url;
+          }
+        });
+      }
     </script>
   </body>
 </html>

@@ -15,6 +15,7 @@ karmaConfig =
   files: [
     'tests/swagger.coffee'
     'tests/helper.coffee'
+    'app/json-fixtures.js'
     'app/**/*.coffee'
     'tests/specs/**/*.coffee'
   ]

@@ -1,21 +1,5 @@
 'use strict'
 
-fakeServer = sinon.fakeServer.create()
-
-fakeServer.respondImmediately = true
-
-response = [ 200, { 'Content-Type': 'application/json' }, Swagger ]
-
-fakeServer.respondWith 'GET', '/swagger.json', response
-
-response = [ 404, { 'Content-Type': 'application/json' }, '123' ]
-
-fakeServer.respondWith 'GET', '/swagger-404.json', response
-
-response = [ 200, { 'Content-Type': 'application/json' }, 'batman ate a bumble bee' ]
-
-fakeServer.respondWith 'GET', '/swagger-error.json', response
-
 stash = {}
 
 window.stashIt = (obj, key) ->

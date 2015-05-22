@@ -18,27 +18,6 @@ clone = (obj) ->
 
   temp
 
-getJSON = (url, success) ->
-  xhr = new XMLHttpRequest()
-
-  xhr.onreadystatechange = ->
-    if xhr.readyState == 4
-      if xhr.status == 200
-        try
-          json = JSON.parse xhr.responseText
-        catch error
-          console.error 'Invalid JSON'
-          console.error error
-
-        success json
-      else
-        console.error 'Couldnt get ' + url
-        console.error xhr.statusText
-
-  xhr.open 'GET', url, true
-  xhr.responseType = 'text'
-  xhr.send()
-
 isApiCall = (url, host, schemes, basePath) ->
   hostRegex   = /^((http[s]?):\/)?\/?([^:\/\s]+)(:([0-9])*)?((\/\w+)*\/)([\w\-\.]+[^#?\s]+)(.*)?(#[\w\-]+)?$/
   urlParts    = url.match hostRegex
@@ -162,25 +141,15 @@ window.AutoConfigFakeServer.restore = ->
 
   AutoConfigFakeServer.fakeServer?.restore();
 
-window.AutoConfigFakeServer.consume = (schema, callback) ->
-  isString = typeof schema == 'string'
+window.AutoConfigFakeServer.consume = (schema) ->
+  apis.push schema
 
-  onSuccess = (json) ->
-    apis.push json
+  setRespondWith AutoConfigFakeServer.fakeServer, schema
 
-    setRespondWith AutoConfigFakeServer.fakeServer, json
-
-    callback?()
-
-  if isString
-    getJSON schema, onSuccess
-  else
-    onSuccess schema
 
 # For testing purposes
 if window.AutoConfigFakeServerPrivates
   window.AutoConfigFakeServerPrivates =
-    getJSON         : getJSON
     isApiCall       : isApiCall
     getRef          : getRef
     buildDefinition : buildDefinition
