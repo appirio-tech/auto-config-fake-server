@@ -134,7 +134,7 @@ window.FIXTURES = {
                                 }
                         }
                 },
-                "/history": {
+                "/history/{history_id}/bob/{bob-id}": {
                         "get": {
                                 "tags": [
                                         "User"

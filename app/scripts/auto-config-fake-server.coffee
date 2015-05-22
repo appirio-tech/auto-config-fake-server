@@ -142,10 +142,12 @@ window.AutoConfigFakeServer.restore = ->
   AutoConfigFakeServer.fakeServer?.restore();
 
 window.AutoConfigFakeServer.consume = (schema) ->
-  apis.push schema
+  if schema
+    apis.push schema
 
-  setRespondWith AutoConfigFakeServer.fakeServer, schema
-
+    setRespondWith AutoConfigFakeServer.fakeServer, schema
+  else
+    console.error 'schema is undefined'
 
 # For testing purposes
 if window.AutoConfigFakeServerPrivates

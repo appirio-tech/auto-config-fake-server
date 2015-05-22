@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  var apis, buildDefinition, buildProperty, clone, enumCombinations, getEnum, getJSON, getRef, isApiCall, setRespondWith;
+  var apis, buildDefinition, buildProperty, clone, enumCombinations, getEnum, getRef, isApiCall, setRespondWith;
 
   window.AutoConfigFakeServer = {};
 
@@ -22,32 +22,6 @@
       }
     }
     return temp;
-  };
-
-  getJSON = function(url, success) {
-    var xhr;
-    xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function() {
-      var error, json;
-      if (xhr.readyState === 4) {
-        if (xhr.status === 200) {
-          try {
-            json = JSON.parse(xhr.responseText);
-          } catch (_error) {
-            error = _error;
-            console.error('Invalid JSON');
-            console.error(error);
-          }
-          return success(json);
-        } else {
-          console.error('Couldnt get ' + url);
-          return console.error(xhr.statusText);
-        }
-      }
-    };
-    xhr.open('GET', url, true);
-    xhr.responseType = 'text';
-    return xhr.send();
   };
 
   isApiCall = function(url, host, schemes, basePath) {
@@ -157,7 +131,7 @@
   };
 
   setRespondWith = function(fakeServer, api) {
-    var build, buildJSON, i, len, method, methodDefinition, methods, path, response, results, schema, scheme, schemes, url, urlRegex;
+    var build, buildJSON, i, len, method, methodDefinition, methods, path, regexPath, response, results, schema, scheme, schemes, url, urlRegex;
     schemes = api.schemes || [];
     results = [];
     for (i = 0, len = schemes.length; i < len; i++) {
@@ -177,7 +151,8 @@
               if (schema) {
                 build = buildProperty(schema, api);
                 buildJSON = JSON.stringify(build);
-                url = scheme + '://' + api.host + api.basePath + path;
+                regexPath = path.replace(/\{([a-zA-Z0-9_\\-]+)\}/g, '([a-zA-Z0-9_\\-]+)');
+                url = scheme + '://' + api.host + api.basePath + regexPath;
                 urlRegex = new RegExp(url + '(\\?(.)*)?$');
                 response = [
                   200, {
@@ -222,24 +197,17 @@
     return (ref1 = AutoConfigFakeServer.fakeServer) != null ? ref1.restore() : void 0;
   };
 
-  window.AutoConfigFakeServer.consume = function(schema, callback) {
-    var isString, onSuccess;
-    isString = typeof schema === 'string';
-    onSuccess = function(json) {
-      apis.push(json);
-      setRespondWith(AutoConfigFakeServer.fakeServer, json);
-      return typeof callback === "function" ? callback() : void 0;
-    };
-    if (isString) {
-      return getJSON(schema, onSuccess);
+  window.AutoConfigFakeServer.consume = function(schema) {
+    if (schema) {
+      apis.push(schema);
+      return setRespondWith(AutoConfigFakeServer.fakeServer, schema);
     } else {
-      return onSuccess(schema);
+      return console.error('schema is undefined');
     }
   };
 
   if (window.AutoConfigFakeServerPrivates) {
     window.AutoConfigFakeServerPrivates = {
-      getJSON: getJSON,
       isApiCall: isApiCall,
       getRef: getRef,
       buildDefinition: buildDefinition,
