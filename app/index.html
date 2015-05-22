@@ -38,8 +38,8 @@
           { url: 'https://api.uber.com/v1/products?abc=123', expect: 'success' },
           { url: 'https://api.uber.com/v1/dne', expect: 'fail' },
           { url: 'https://api.lyft.com/v2/products', expect: 'success' },
-          { url: 'https://api.lyft.com/v2/dne', expect: 'fail' },
-          { url: 'http://enable-cors.org/', expect: 'success' },
+          { url: 'https://api.lyft.com/v2/history/123/bob/abcjas-123', expect: 'success' },
+          { url: 'https://api.lyft.com/v2/dne', expect: 'fail' }
         ];
 
         for (var i = 0; i < urls.length; i += 1) {

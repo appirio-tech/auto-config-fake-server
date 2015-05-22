@@ -136,7 +136,8 @@ setRespondWith = (fakeServer, api) ->
         if schema
           build     = buildProperty schema, api
           buildJSON = JSON.stringify build
-          url       = scheme + '://' + api.host + api.basePath + path
+          regexPath = path.replace /\{([a-zA-Z0-9_\\-]+)\}/g, '([a-zA-Z0-9_\\-]+)'
+          url       = scheme + '://' + api.host + api.basePath + regexPath
           urlRegex  = new RegExp(url + '(\\?(.)*)?$')
           response  = [200, { 'Content-Type': 'application/json' }, buildJSON]
 
