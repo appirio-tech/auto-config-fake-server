@@ -7,18 +7,10 @@ module.exports = (config) ->
 
   config.set
     # base path, that will be used to resolve files and exclude
-    basePath: '../'
+    basePath: './'
 
     # testing framework to use (jasmine/mocha/qunit/...)
     frameworks: ['mocha', 'chai', 'sinon']
-
-    # list of files / patterns to load in the browser
-    files: [
-      'test/swagger.coffee'
-      'test/helper.coffee'
-      'app/scripts/**/*.coffee'
-      'test/spec/**/*.coffee'
-    ]
 
     # list of files / patterns to exclude
     exclude: []
@@ -51,15 +43,7 @@ module.exports = (config) ->
 
     colors: true
 
-    reporters: ['coverage']
-
-    preprocessors:
-      '**/*.coffee': ['coffee']
-      'app/scripts/**/*.coffee': 'coverage'
-
-    coverageReporter:
-      type: "lcov"
-      dir: "coverage/"
+    reporters: ['progress', 'coverage']
 
     coffeePreprocessor:
       options:
