@@ -31,8 +31,8 @@ A singleton style object in the window scope.
 #### `.init()`
 This method will create a fakeServer instance that can be referenced with AutoConfigFakeServer.fakeServer. Although fakeServer is active, no http request will be stopped.
 
-#### `.consume(swaggerPath[, onSuccess])`
-The `swaggerPath` argument can either be an object based on a swagger schema or a path to a swagger schema json file. The `onSuccess` argument can be a method that is called (asyncronously if a json file) when the swagger schema has been processed and corresponding http requests are mocked.  You may call this method multiple times for different swagger schemas.
+#### `.consume(swaggerJSONObject)`
+The swaggerJSONObject should be an object generated from a swagger schema. You may call this method multiple times for different swagger schemas.  If you have a json file, you may want to use a gulp/grunt task to turn it into a fixture (https://www.npmjs.com/package/gulp-fixtures2js).
 
 #### `.restore()`
 This method will restore the fakeServer instance and unmocked all http requests.
