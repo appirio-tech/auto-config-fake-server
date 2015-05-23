@@ -197,10 +197,19 @@
     return (ref1 = AutoConfigFakeServer.fakeServer) != null ? ref1.restore() : void 0;
   };
 
-  window.AutoConfigFakeServer.consume = function(schema) {
-    if (schema) {
-      apis.push(schema);
-      return setRespondWith(AutoConfigFakeServer.fakeServer, schema);
+  window.AutoConfigFakeServer.consume = function(schemas) {
+    var i, len, results, schema;
+    if (schemas) {
+      if (schemas.constructor !== Array) {
+        schemas = [schemas];
+      }
+      results = [];
+      for (i = 0, len = schemas.length; i < len; i++) {
+        schema = schemas[i];
+        apis.push(schema);
+        results.push(setRespondWith(AutoConfigFakeServer.fakeServer, schema));
+      }
+      return results;
     } else {
       return console.error('schema is undefined');
     }

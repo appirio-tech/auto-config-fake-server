@@ -141,11 +141,15 @@ window.AutoConfigFakeServer.restore = ->
 
   AutoConfigFakeServer.fakeServer?.restore();
 
-window.AutoConfigFakeServer.consume = (schema) ->
-  if schema
-    apis.push schema
+window.AutoConfigFakeServer.consume = (schemas) ->
+  if schemas
+    unless schemas.constructor == Array
+      schemas = [schemas]
 
-    setRespondWith AutoConfigFakeServer.fakeServer, schema
+    for schema in schemas
+      apis.push schema
+
+      setRespondWith AutoConfigFakeServer.fakeServer, schema
   else
     console.error 'schema is undefined'
 

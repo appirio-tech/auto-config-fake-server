@@ -32,7 +32,7 @@ A singleton style object in the window scope.
 This method will create a fakeServer instance that can be referenced with AutoConfigFakeServer.fakeServer. Although fakeServer is active, no http request will be stopped.
 
 #### `.consume(swaggerJSONObject)`
-The swaggerJSONObject should be an object generated from a swagger schema. You may call this method multiple times for different swagger schemas.  If you have a json file, you may want to use a gulp/grunt task to turn it into a fixture (https://www.npmjs.com/package/gulp-fixtures2js).
+The swaggerJSONObject should be an object generated from a swagger schema.  It can also be an array of swaggerJSONObject.  You may call this method multiple times for different swagger schemas.  If you have a json file, you may want to use a gulp/grunt task to turn it into a fixture (https://www.npmjs.com/package/gulp-fixtures2js).
 
 #### `.restore()`
 This method will restore the fakeServer instance and unmocked all http requests.
