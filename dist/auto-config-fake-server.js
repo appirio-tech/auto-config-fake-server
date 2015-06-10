@@ -120,6 +120,10 @@
         combinations = newCombinations;
       }
     }
+    while (combinations.length < 6) {
+      cloned = clone(build);
+      combinations.push(cloned);
+    }
     return combinations;
   };
 

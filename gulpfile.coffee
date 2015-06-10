@@ -23,9 +23,16 @@ configs.karma =
     'tests/specs/**/*.coffee'
   ]
 
+configs.buildFiles =
+  copy: ['.tmp/scripts/auto-config-fake-server.js']
+
 configs.fixtureFiles = [
   'app/**/*.json'
 ]
+
+configs.coverageReporter =
+  type: 'lcov'
+  dir: 'coverage'
 
 ##
 ## Normally, you wouldnt need to edit below this line ##
