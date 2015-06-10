@@ -1,10 +1,13 @@
-gulp          = require 'gulp'
-$             = require('gulp-load-plugins')()
-$.browserSync = require 'browser-sync'
-$.karma       = require('karma').server
+configs =
+  coffeeFiles   : 'app/**/*.coffee'
+  jadeFiles     : 'app/**/*.jade'
+  scssFiles     : 'app/**/*.scss'
+  specFiles     : 'tests/specs/**/*.coffee'
+  tempFolder    : '.tmp'
+  appFolder     : 'app'
+  distFolder    : 'dist'
 
-karmaConfig =
-  configFile  : __dirname + '/karma.conf.coffee'
+configs.karma =
   coverage    : 'app/**/*.coffee'
   # Dont include coverage files
   coffeeFiles : [
@@ -15,28 +18,34 @@ karmaConfig =
   files: [
     'tests/swagger.coffee'
     'tests/helper.coffee'
-    'app/json-fixtures.js'
+    'bower_components/sinon/index.js'
     'app/**/*.coffee'
     'tests/specs/**/*.coffee'
   ]
 
-fixtureFiles = [
+configs.fixtureFiles = [
   'app/**/*.json'
 ]
 
-configs =
-  coffeeFiles   : 'app/**/*.coffee'
-  jadeFiles     : 'app/**/*.jade'
-  scssFiles     : 'app/**/*.scss'
-  specFiles     : 'tests/specs/**/*.coffee'
-  tempFolder    : '.tmp'
-  appFolder     : 'app'
-  distFolder    : 'dist'
-  karma         : karmaConfig
-  fixtureFiles  : fixtureFiles
-  coverageReporter:
-    type: 'lcov'
-    dir: 'coverage'
+##
+## Normally, you wouldnt need to edit below this line ##
+##
+
+gulpTaskPath             = './node_modules/appirio-gulp-tasks'
+configs.karma.configFile = __dirname + '/' + gulpTaskPath + '/karma.conf.coffee'
+configs.karma.basePath   = __dirname
+pluginsPath              = gulpTaskPath + '/node_modules/gulp-load-plugins'
+browserSyncPath          = gulpTaskPath + '/node_modules/browser-sync'
+karmaPath                = gulpTaskPath + '/node_modules/karma'
+
+gulpLoadPluginsOptions =
+  config: __dirname + '/' + gulpTaskPath + '/package.json'
+
+gulp          = require 'gulp'
+plugins       = require pluginsPath
+$             = plugins gulpLoadPluginsOptions
+$.browserSync = require browserSyncPath
+$.karma       = require(karmaPath).server
 
 tasks = [
   'coffee'
@@ -49,10 +58,11 @@ tasks = [
   'ng-constant'
   'coveralls'
   'fixtures'
+  'template-cache'
 ]
 
 for task in tasks
-  module = require('./node_modules/appirio-gulp-tasks/tasks/' + task)
+  module = require(gulpTaskPath + '/tasks/' + task)
   module gulp, $, configs
 
 gulp.task 'default', ['clean'], ->
