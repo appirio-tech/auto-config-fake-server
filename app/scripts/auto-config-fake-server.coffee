@@ -96,6 +96,11 @@ enumCombinations = (build, properties) ->
 
       combinations = newCombinations
 
+  # So we have at least 6 items in our mock
+  while combinations.length < 6
+    cloned = clone build
+    combinations.push cloned
+
   combinations
 
 getEnum = (items) ->

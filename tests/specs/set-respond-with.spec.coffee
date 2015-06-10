@@ -48,7 +48,7 @@ fakeServer     = null
 httpUrlRegex   = new RegExp('http://api.uber.com/v1/players' + '(\\?(.)*)?$')
 httpsUrlRegex  = new RegExp('https://api.uber.com/v1/players' + '(\\?(.)*)?$')
 inpathUrlRegex = new RegExp('https://api.uber.com/v1/players/' + '([a-zA-Z0-9_\\-]+)' + '/comments' + '(\\?(.)*)?$')
-response       = [ 200, { 'Content-Type': 'application/json' }, '[{"name":"Batman"}]' ]
+response       = [ 200, { 'Content-Type': 'application/json' }, '[{"name":"Batman"},{"name":"Batman"},{"name":"Batman"},{"name":"Batman"},{"name":"Batman"},{"name":"Batman"}]' ]
 postResponse   = [ 200, { 'Content-Type': 'application/json' }, '{"name":"Batman"}' ]
 
 describe 'set respond with', ->

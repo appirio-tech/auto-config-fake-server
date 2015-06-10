@@ -49,7 +49,7 @@ describe 'build definitions', ->
       expect(build.count).to.equal 444
 
     it 'should set history to an array', ->
-      expect(build.history.length).to.equal 1
+      expect(build.history.length).to.equal 6
 
     it 'should set history first activty name to "abc"', ->
       expect(build.history[0].name).to.equal 'abc'
