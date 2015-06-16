@@ -12,8 +12,9 @@
     <script src="scripts/json-fixtures.js"></script>
     <script type="text/javascript">
 
-      var ajax = function(url, successful, unsuccessful) {
+      var ajax = function(url, successful, unsuccessful, method) {
         var xhr;
+        method = method || 'GET'
         xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function() {
           var error, json;
@@ -25,7 +26,7 @@
             }
           }
         };
-        xhr.open('GET', url, true);
+        xhr.open(method, url, true);
         xhr.responseType = 'text';
         return xhr.send();
       };
@@ -44,7 +45,8 @@
         { url: 'https://api.uber.com/v1/dne', expect: 'fail' },
         { url: 'https://api.lyft.com/v2/products', expect: 'success' },
         { url: 'https://api.lyft.com/v2/history/123/bob/abcjas-123', expect: 'success' },
-        { url: 'https://api.lyft.com/v2/dne', expect: 'fail' }
+        { url: 'https://api.lyft.com/v2/dne', expect: 'fail' },
+        { url: 'https://api.uber.com/v1/estimates/price', expect: 'success', method: 'PUT' }
       ];
 
       for (var i = 0; i < urls.length; i += 1) {
@@ -68,7 +70,7 @@
           else {
             li.innerHTML = 'Failed - ' + url.url;
           }
-        });
+        }, url.method);
       }
     </script>
   </body>

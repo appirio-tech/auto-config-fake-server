@@ -28,6 +28,11 @@ api =
               type: 'object',
               items:
                 '$ref' : '#/definitions/Player'
+    '/players/{id}':
+      put:
+        responses:
+          '204':
+            schema: null
     '/players/{id}/comments':
       get:
         responses:
@@ -45,6 +50,7 @@ api =
 
 setRespondWith = AutoConfigFakeServerPrivates.setRespondWith
 fakeServer     = null
+httpPutRegex   = new RegExp('http://api.uber.com/v1/players/' + '([a-zA-Z0-9_\\-]+)' + '(\\?(.)*)?$')
 httpUrlRegex   = new RegExp('http://api.uber.com/v1/players' + '(\\?(.)*)?$')
 httpsUrlRegex  = new RegExp('https://api.uber.com/v1/players' + '(\\?(.)*)?$')
 inpathUrlRegex = new RegExp('https://api.uber.com/v1/players/' + '([a-zA-Z0-9_\\-]+)' + '/comments' + '(\\?(.)*)?$')
@@ -59,7 +65,7 @@ describe 'set respond with', ->
     setRespondWith fakeServer, api
 
   it 'should call respondWith 6 times', ->
-    expect(fakeServer.respondWith.callCount).to.be.equal 8
+    expect(fakeServer.respondWith.callCount).to.be.equal 10
 
   it 'should match http get arguments', ->
     calledWith = fakeServer.respondWith.calledWith 'get', httpUrlRegex, response
@@ -78,5 +84,10 @@ describe 'set respond with', ->
 
   it 'should match in path arguments', ->
     calledWith = fakeServer.respondWith.calledWith 'get', inpathUrlRegex, response
+
+    expect(calledWith).to.be.ok
+
+  it 'should match http put 204 arguments', ->
+    calledWith = fakeServer.respondWith.calledWith 'put', httpPutRegex, ''
 
     expect(calledWith).to.be.ok

@@ -11,6 +11,13 @@
   "produces" : [ "application/json" ],
   "paths" : {
     "/estimates/price" : {
+      "put" : {
+        "responses": {
+          "204": {
+            "schema": null
+          }
+        }
+      },
       "get" : {
         "tags" : [ "Estimates" ],
         "summary" : "Price Estimates",

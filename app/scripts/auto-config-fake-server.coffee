@@ -117,17 +117,21 @@ setRespondWith = (fakeServer, api) ->
   for scheme in schemes
     for path, methods of api.paths
       for method, methodDefinition of methods
-        schema = methodDefinition?.responses?['200']?.schema
+        regexPath = path.replace /\{([a-zA-Z0-9_\\-]+)\}/g, '([a-zA-Z0-9_\\-]+)'
+        url       = scheme + '://' + api.host + api.basePath + regexPath
+        urlRegex  = new RegExp(url + '(\\?(.)*)?$')
 
-        if schema
+        if  methodDefinition?.responses?['200']
+          schema    = methodDefinition?.responses?['200']?.schema
           build     = buildProperty schema, api
           buildJSON = JSON.stringify build
-          regexPath = path.replace /\{([a-zA-Z0-9_\\-]+)\}/g, '([a-zA-Z0-9_\\-]+)'
-          url       = scheme + '://' + api.host + api.basePath + regexPath
-          urlRegex  = new RegExp(url + '(\\?(.)*)?$')
           response  = [200, { 'Content-Type': 'application/json' }, buildJSON]
 
           fakeServer.respondWith method, urlRegex, response
+
+        if methodDefinition?.responses?['204']
+          fakeServer.respondWith method, urlRegex, ''
+
 
 window.AutoConfigFakeServer.init = ->
   fakeServer = sinon.fakeServer.create()
