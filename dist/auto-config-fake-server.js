@@ -93,6 +93,8 @@
       build = 'abc';
     } else if (property.type === 'boolean') {
       build = true;
+    } else if (property.type === 'null') {
+      build = null;
     } else if ((ref1 = property.items) != null ? ref1['$ref'] : void 0) {
       isArray = property.type === 'array';
       build = buildDefinition((ref2 = property.items) != null ? ref2['$ref'] : void 0, api, isArray);

@@ -74,6 +74,8 @@ buildProperty = (property, api) ->
     build = 'abc'
   else if property.type == 'boolean'
     build = true
+  else if property.type == 'null'
+    build = null
   else if property.items?['$ref']
     isArray = property.type == 'array'
     build   = buildDefinition property.items?['$ref'], api, isArray
