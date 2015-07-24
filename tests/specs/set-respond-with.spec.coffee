@@ -48,7 +48,7 @@ api =
           type: 'string'
           sample: 'Batman'
 
-setRespondWith = AutoConfigFakeServerPrivates.setRespondWith
+setRespondWith = AutoConfigFakeServerPrivates.setSwaggerResponse
 fakeServer     = null
 httpPutRegex   = new RegExp('http://api.uber.com/v1/players/' + '([a-zA-Z0-9_\\-]+)' + '(\\?(.)*)?$')
 httpUrlRegex   = new RegExp('http://api.uber.com/v1/players' + '(\\?(.)*)?$')

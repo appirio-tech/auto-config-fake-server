@@ -1,7 +1,7 @@
 'use strict'
 
 window.AutoConfigFakeServer = {}
-apis                     = []
+matchFunctions              = []
 
 clone = (obj) ->
   isObject = typeof obj == 'object'
@@ -111,15 +111,17 @@ getEnum = (items) ->
 
   items[randFloored]
 
-setRespondWith = (fakeServer, api) ->
+makeUrlRegex = (url) ->
+  url = url.replace /\{([a-zA-Z0-9_\\-]+)\}/g, '[a-zA-Z0-9_\\-]+'
+  return new RegExp(url + '(\\?.*)?$')
+
+setSwaggerResponse = (fakeServer, api) ->
   schemes = api.schemes || []
 
   for scheme in schemes
     for path, methods of api.paths
       for method, methodDefinition of methods
-        regexPath = path.replace /\{([a-zA-Z0-9_\\-]+)\}/g, '([a-zA-Z0-9_\\-]+)'
-        url       = scheme + '://' + api.host + api.basePath + regexPath
-        urlRegex  = new RegExp(url + '(\\?(.)*)?$')
+        urlRegex  = makeUrlRegex scheme + '://' + api.host + api.basePath + path
 
         if  methodDefinition?.responses?['200']
           schema    = methodDefinition?.responses?['200']?.schema
@@ -132,23 +134,75 @@ setRespondWith = (fakeServer, api) ->
         if methodDefinition?.responses?['204']
           fakeServer.respondWith method, urlRegex, ''
 
+setApiaryResponse = (fakeServer, action, host, uriTemplate) ->
+  if action.attributes.uriTemplate
+    uriTemplate = action.attributes.uriTemplate
+
+  # TODO: Do something with params
+  [path, params] = uriTemplate.split '?'
+
+  uriRegex        = makeUrlRegex host + path
+  actionResponse  = action.examples[0].responses[0]
+  responseHeaders = {}
+
+  for header in actionResponse.headers
+    responseHeaders[header.name] = header.value
+
+  response = [200, responseHeaders, actionResponse.body]
+
+  fakeServer.respondWith action.method, uriRegex, response
+
+processSwaggerSchema = (fakeServer, schema) ->
+  matchFunctions.push (method, url) ->
+    return isApiCall url, schema.host, schema.schemes, schema.basePath 
+
+  setSwaggerResponse(fakeServer, schema)
+
+getApiaryMetadata = (schema, name) ->
+  for prop in schema.ast.metadata
+    if prop.name == name
+      return prop.value
+
+  null
+
+processApiarySchema = (fakeServer, schema) ->
+  host = getApiaryMetadata schema, 'HOST'
+
+  schema.ast.resourceGroups.forEach (resourceGroup) ->
+    resourceGroup.resources.forEach (resource) ->
+
+      uriTemplate = resource.uriTemplate
+      matchFunctions.push (method, url) ->
+        pattern = new RegExp(host + uriTemplate)
+        return url.match pattern
+
+      resource.actions.forEach (action) ->
+        setApiaryResponse fakeServer, action, host, uriTemplate
+
+processSchema = (fakeServer, schema) ->
+  if schema.swagger
+    processSwaggerSchema fakeServer, schema
+
+  if schema.ast
+    processApiarySchema fakeServer, schema
 
 window.AutoConfigFakeServer.init = ->
   fakeServer = sinon.fakeServer.create()
   fakeServer.xhr.useFilters = true
 
-  filter = (method, url) ->
-    for api in apis
-      return false if isApiCall url, api.host, api.schemes, api.basePath
+  fakeServer.xhr.addFilter (method, url) ->
+    passThrough = true
 
-    true
+    for matchFunction in matchFunctions
+      if matchFunction method, url
+        passThrough = false
 
-  fakeServer.xhr.addFilter filter
+    return passThrough
 
   window.AutoConfigFakeServer.fakeServer = fakeServer
 
 window.AutoConfigFakeServer.restore = ->
-  apis = []
+  matchFunctions = []
 
   AutoConfigFakeServer.fakeServer?.restore();
 
@@ -158,20 +212,22 @@ window.AutoConfigFakeServer.consume = (schemas) ->
       schemas = [schemas]
 
     for schema in schemas
-      apis.push schema
+      processSchema AutoConfigFakeServer.fakeServer, schema
 
-      setRespondWith AutoConfigFakeServer.fakeServer, schema
   else
     console.error 'schema is undefined'
 
 # For testing purposes
 if window.AutoConfigFakeServerPrivates
   window.AutoConfigFakeServerPrivates =
-    isApiCall       : isApiCall
-    getRef          : getRef
-    buildDefinition : buildDefinition
-    setRespondWith  : setRespondWith
-    apis            : apis
-    getEnum         : getEnum
-    enumCombinations: enumCombinations
-    clone           : clone
+    matchFunctions      : matchFunctions
+    clone               : clone
+    isApiCall           : isApiCall
+    getRef              : getRef
+    buildDefinition     : buildDefinition
+    buildProperty       : buildProperty
+    enumCombinations    : enumCombinations
+    getEnum             : getEnum
+    setSwaggerResponse  : setSwaggerResponse
+    processSwaggerSchema: processSwaggerSchema
+    processSchema       : processSchema
