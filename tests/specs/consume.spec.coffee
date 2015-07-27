@@ -10,6 +10,7 @@ fakeServer =
 callback       = sinon.spy()
 createStub     = null
 matchFunctions = AutoConfigFakeServerPrivates.matchFunctions
+errStub        = sinon.stub console, 'error'
 
 describe 'AutoConfigFakeServer.consume', ->
   beforeEach ->
@@ -26,11 +27,7 @@ describe 'AutoConfigFakeServer.consume', ->
     err = null
 
     beforeEach ->
-      err = sinon.spy console, 'error'
       AutoConfigFakeServer.consume()
 
     it 'should error to the console', ->
-      expect(err.called).to.be.true
-
-    beforeEach ->
-      err.restore()
+      expect(errStub.called).to.be.true

@@ -48,7 +48,7 @@ api =
           type: 'string'
           sample: 'Batman'
 
-setRespondWith = AutoConfigFakeServerPrivates.setSwaggerResponse
+setSwaggerResponse = AutoConfigFakeServerPrivates.setSwaggerResponse
 fakeServer     = null
 httpPutRegex   = new RegExp('http://api.uber.com/v1/players/' + '([a-zA-Z0-9_\\-]+)' + '(\\?(.)*)?$')
 httpUrlRegex   = new RegExp('http://api.uber.com/v1/players' + '(\\?(.)*)?$')
@@ -62,7 +62,7 @@ describe 'set respond with', ->
     fakeServer =
       respondWith: sinon.spy()
 
-    setRespondWith fakeServer, api
+    setSwaggerResponse fakeServer, api
 
   it 'should call respondWith 6 times', ->
     expect(fakeServer.respondWith.callCount).to.be.equal 10

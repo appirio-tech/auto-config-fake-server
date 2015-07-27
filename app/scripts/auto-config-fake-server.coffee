@@ -111,17 +111,15 @@ getEnum = (items) ->
 
   items[randFloored]
 
-makeUrlRegex = (url) ->
-  url = url.replace /\{([a-zA-Z0-9_\\-]+)\}/g, '[a-zA-Z0-9_\\-]+'
-  return new RegExp(url + '(\\?.*)?$')
-
 setSwaggerResponse = (fakeServer, api) ->
   schemes = api.schemes || []
 
   for scheme in schemes
     for path, methods of api.paths
       for method, methodDefinition of methods
-        urlRegex  = makeUrlRegex scheme + '://' + api.host + api.basePath + path
+        regexPath = path.replace /\{([a-zA-Z0-9_\\-]+)\}/g, '([a-zA-Z0-9_\\-]+)'
+        url       = scheme + '://' + api.host + api.basePath + regexPath
+        urlRegex  = new RegExp(url + '(\\?(.)*)?$')
 
         if  methodDefinition?.responses?['200']
           schema    = methodDefinition?.responses?['200']?.schema
@@ -141,7 +139,9 @@ setApiaryResponse = (fakeServer, action, host, uriTemplate) ->
   # TODO: Do something with params
   [path, params] = uriTemplate.split '?'
 
-  uriRegex        = makeUrlRegex host + path
+  uri             = makeUrlRegex host + path
+  uri             = uri.replace /\{([a-zA-Z0-9_\\-]+)\}/g, '([a-zA-Z0-9_\\-]+)'
+  uriRegex        = new RegExp(uri + '(\\?.*)?$')
   actionResponse  = action.examples[0].responses[0]
   responseHeaders = {}
 
