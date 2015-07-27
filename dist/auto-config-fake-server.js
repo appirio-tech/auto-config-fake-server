@@ -1,10 +1,10 @@
 (function() {
   'use strict';
-  var apis, buildDefinition, buildProperty, clone, enumCombinations, getEnum, getRef, isApiCall, setRespondWith;
+  var buildDefinition, buildProperty, clone, enumCombinations, getApiaryMetadata, getEnum, getRef, isApiCall, matchFunctions, processApiarySchema, processSchema, processSwaggerSchema, setApiaryResponse, setSwaggerResponse;
 
   window.AutoConfigFakeServer = {};
 
-  apis = [];
+  matchFunctions = [];
 
   clone = function(obj) {
     var hasOwnProperty, isNull, isObject, key, temp, value;
@@ -136,7 +136,7 @@
     return items[randFloored];
   };
 
-  setRespondWith = function(fakeServer, api) {
+  setSwaggerResponse = function(fakeServer, api) {
     var build, buildJSON, i, len, method, methodDefinition, methods, path, regexPath, response, results, schema, scheme, schemes, url, urlRegex;
     schemes = api.schemes || [];
     results = [];
@@ -182,27 +182,94 @@
     return results;
   };
 
+  setApiaryResponse = function(fakeServer, action, host, uriTemplate) {
+    var actionResponse, header, i, len, params, path, ref1, ref2, response, responseHeaders, uri, uriRegex;
+    if (action.attributes.uriTemplate) {
+      uriTemplate = action.attributes.uriTemplate;
+    }
+    ref1 = uriTemplate.split('?'), path = ref1[0], params = ref1[1];
+    uri = makeUrlRegex(host + path);
+    uri = uri.replace(/\{([a-zA-Z0-9_\\-]+)\}/g, '([a-zA-Z0-9_\\-]+)');
+    uriRegex = new RegExp(uri + '(\\?.*)?$');
+    actionResponse = action.examples[0].responses[0];
+    responseHeaders = {};
+    ref2 = actionResponse.headers;
+    for (i = 0, len = ref2.length; i < len; i++) {
+      header = ref2[i];
+      responseHeaders[header.name] = header.value;
+    }
+    response = [200, responseHeaders, actionResponse.body];
+    return fakeServer.respondWith(action.method, uriRegex, response);
+  };
+
+  processSwaggerSchema = function(fakeServer, schema) {
+    matchFunctions.push(function(method, url) {
+      return isApiCall(url, schema.host, schema.schemes, schema.basePath);
+    });
+    return setSwaggerResponse(fakeServer, schema);
+  };
+
+  getApiaryMetadata = function(schema, name) {
+    var i, len, prop, ref1;
+    ref1 = schema.ast.metadata;
+    for (i = 0, len = ref1.length; i < len; i++) {
+      prop = ref1[i];
+      if (prop.name === name) {
+        return prop.value;
+      }
+    }
+    return null;
+  };
+
+  processApiarySchema = function(fakeServer, schema) {
+    var host;
+    host = getApiaryMetadata(schema, 'HOST');
+    return schema.ast.resourceGroups.forEach(function(resourceGroup) {
+      return resourceGroup.resources.forEach(function(resource) {
+        var uriTemplate;
+        uriTemplate = resource.uriTemplate;
+        matchFunctions.push(function(method, url) {
+          var pattern;
+          pattern = new RegExp(host + uriTemplate);
+          return url.match(pattern);
+        });
+        return resource.actions.forEach(function(action) {
+          return setApiaryResponse(fakeServer, action, host, uriTemplate);
+        });
+      });
+    });
+  };
+
+  processSchema = function(fakeServer, schema) {
+    if (schema.swagger) {
+      processSwaggerSchema(fakeServer, schema);
+    }
+    if (schema.ast) {
+      return processApiarySchema(fakeServer, schema);
+    }
+  };
+
   window.AutoConfigFakeServer.init = function() {
-    var fakeServer, filter;
+    var fakeServer;
     fakeServer = sinon.fakeServer.create();
     fakeServer.xhr.useFilters = true;
-    filter = function(method, url) {
-      var api, i, len;
-      for (i = 0, len = apis.length; i < len; i++) {
-        api = apis[i];
-        if (isApiCall(url, api.host, api.schemes, api.basePath)) {
-          return false;
+    fakeServer.xhr.addFilter(function(method, url) {
+      var i, len, matchFunction, passThrough;
+      passThrough = true;
+      for (i = 0, len = matchFunctions.length; i < len; i++) {
+        matchFunction = matchFunctions[i];
+        if (matchFunction(method, url)) {
+          passThrough = false;
         }
       }
-      return true;
-    };
-    fakeServer.xhr.addFilter(filter);
+      return passThrough;
+    });
     return window.AutoConfigFakeServer.fakeServer = fakeServer;
   };
 
   window.AutoConfigFakeServer.restore = function() {
     var ref1;
-    apis = [];
+    matchFunctions = [];
     return (ref1 = AutoConfigFakeServer.fakeServer) != null ? ref1.restore() : void 0;
   };
 
@@ -215,8 +282,7 @@
       results = [];
       for (i = 0, len = schemas.length; i < len; i++) {
         schema = schemas[i];
-        apis.push(schema);
-        results.push(setRespondWith(AutoConfigFakeServer.fakeServer, schema));
+        results.push(processSchema(AutoConfigFakeServer.fakeServer, schema));
       }
       return results;
     } else {
@@ -226,14 +292,17 @@
 
   if (window.AutoConfigFakeServerPrivates) {
     window.AutoConfigFakeServerPrivates = {
+      matchFunctions: matchFunctions,
+      clone: clone,
       isApiCall: isApiCall,
       getRef: getRef,
       buildDefinition: buildDefinition,
-      setRespondWith: setRespondWith,
-      apis: apis,
-      getEnum: getEnum,
+      buildProperty: buildProperty,
       enumCombinations: enumCombinations,
-      clone: clone
+      getEnum: getEnum,
+      setSwaggerResponse: setSwaggerResponse,
+      processSwaggerSchema: processSwaggerSchema,
+      processSchema: processSchema
     };
   }
 
