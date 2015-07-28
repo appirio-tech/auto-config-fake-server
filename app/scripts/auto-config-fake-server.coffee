@@ -3,6 +3,10 @@
 window.AutoConfigFakeServer = {}
 matchFunctions              = []
 
+#########################
+# Swagger schema parsing
+#########################
+
 clone = (obj) ->
   isObject = typeof obj == 'object'
   isNull = obj == null
@@ -132,6 +136,28 @@ setSwaggerResponse = (fakeServer, api) ->
         if methodDefinition?.responses?['204']
           fakeServer.respondWith method, urlRegex, ''
 
+processSwaggerSchema = (fakeServer, schema) ->
+  matchFunctions.push (method, url) ->
+    isApiCall url, schema.host, schema.schemes, schema.basePath 
+
+  setSwaggerResponse(fakeServer, schema)
+
+#########################
+# Apiary schema parsing
+#########################
+
+setUriMatcher = (path) ->
+  matchFunctions.push (method, url) ->
+    pattern = new RegExp(path)
+    url.match pattern
+
+getApiaryMetadata = (schema, name) ->
+  for prop in schema.ast.metadata
+    if prop.name == name
+      return prop.value
+
+  null
+
 setApiaryResponse = (fakeServer, action, host, uriTemplate) ->
   if action.attributes.uriTemplate
     uriTemplate = action.attributes.uriTemplate
@@ -139,9 +165,10 @@ setApiaryResponse = (fakeServer, action, host, uriTemplate) ->
   # TODO: Do something with params
   [path, params] = uriTemplate.split '?'
 
-  uri             = makeUrlRegex host + path
+  uri             = host + path
   uri             = uri.replace /\{([a-zA-Z0-9_\\-]+)\}/g, '([a-zA-Z0-9_\\-]+)'
   uriRegex        = new RegExp(uri + '(\\?.*)?$')
+
   actionResponse  = action.examples[0].responses[0]
   responseHeaders = {}
 
@@ -152,19 +179,6 @@ setApiaryResponse = (fakeServer, action, host, uriTemplate) ->
 
   fakeServer.respondWith action.method, uriRegex, response
 
-processSwaggerSchema = (fakeServer, schema) ->
-  matchFunctions.push (method, url) ->
-    return isApiCall url, schema.host, schema.schemes, schema.basePath 
-
-  setSwaggerResponse(fakeServer, schema)
-
-getApiaryMetadata = (schema, name) ->
-  for prop in schema.ast.metadata
-    if prop.name == name
-      return prop.value
-
-  null
-
 processApiarySchema = (fakeServer, schema) ->
   host = getApiaryMetadata schema, 'HOST'
 
@@ -172,12 +186,16 @@ processApiarySchema = (fakeServer, schema) ->
     resourceGroup.resources.forEach (resource) ->
 
       uriTemplate = resource.uriTemplate
-      matchFunctions.push (method, url) ->
-        pattern = new RegExp(host + uriTemplate)
-        return url.match pattern
+      uri         = host + uriTemplate
+
+      setUriMatcher uri
 
       resource.actions.forEach (action) ->
         setApiaryResponse fakeServer, action, host, uriTemplate
+
+#########################
+# Fakeserver setup
+#########################
 
 processSchema = (fakeServer, schema) ->
   if schema.swagger
@@ -186,8 +204,8 @@ processSchema = (fakeServer, schema) ->
   if schema.ast
     processApiarySchema fakeServer, schema
 
-window.AutoConfigFakeServer.init = ->
-  fakeServer = sinon.fakeServer.create()
+# In order to support different types of filtering by different types of schemas we are pushing functions to an array of filter functions. This primary filter checks each filter in the array to determine whether we should mock the endpoint or let it pass through.
+addPrimaryFilter = (fakeServer, matchFunctions) ->
   fakeServer.xhr.useFilters = true
 
   fakeServer.xhr.addFilter (method, url) ->
@@ -197,7 +215,11 @@ window.AutoConfigFakeServer.init = ->
       if matchFunction method, url
         passThrough = false
 
-    return passThrough
+    passThrough
+
+window.AutoConfigFakeServer.init = ->
+  fakeServer = sinon.fakeServer.create()
+  addPrimaryFilter fakeServer, matchFunctions
 
   window.AutoConfigFakeServer.fakeServer = fakeServer
 
@@ -217,7 +239,10 @@ window.AutoConfigFakeServer.consume = (schemas) ->
   else
     console.error 'schema is undefined'
 
-# For testing purposes
+#########################
+# Expose private methods for testing
+#########################
+
 if window.AutoConfigFakeServerPrivates
   window.AutoConfigFakeServerPrivates =
     matchFunctions      : matchFunctions
@@ -230,4 +255,9 @@ if window.AutoConfigFakeServerPrivates
     getEnum             : getEnum
     setSwaggerResponse  : setSwaggerResponse
     processSwaggerSchema: processSwaggerSchema
+    setUriMatcher       : setUriMatcher
+    getApiaryMetadata   : getApiaryMetadata
+    setApiaryResponse   : setApiaryResponse
+    processApiarySchema : processApiarySchema
     processSchema       : processSchema
+    addPrimaryFilter    : addPrimaryFilter

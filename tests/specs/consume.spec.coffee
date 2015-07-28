@@ -8,26 +8,24 @@ fakeServer =
     addFilter  : sinon.spy()
 
 callback       = sinon.spy()
+errStub        = null
 createStub     = null
 matchFunctions = AutoConfigFakeServerPrivates.matchFunctions
-errStub        = sinon.stub console, 'error'
 
 describe 'AutoConfigFakeServer.consume', ->
   beforeEach ->
+    errStub        = sinon.stub console, 'error'
     createStub = sinon.stub sinon.fakeServer, 'create'
     createStub.returns fakeServer
 
     AutoConfigFakeServer.init()
 
   afterEach ->
-    createStub.restore();
+    errStub.restore()
+    createStub.restore()
     AutoConfigFakeServer.restore()
 
-  context 'when no schemas are passed', ->
-    err = null
+  it 'should error to the console when no schemas are passed', ->
+    AutoConfigFakeServer.consume()
+    expect(errStub.called).to.be.true
 
-    beforeEach ->
-      AutoConfigFakeServer.consume()
-
-    it 'should error to the console', ->
-      expect(errStub.called).to.be.true

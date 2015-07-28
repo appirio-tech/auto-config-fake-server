@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  var buildDefinition, buildProperty, clone, enumCombinations, getApiaryMetadata, getEnum, getRef, isApiCall, matchFunctions, processApiarySchema, processSchema, processSwaggerSchema, setApiaryResponse, setSwaggerResponse;
+  var addPrimaryFilter, buildDefinition, buildProperty, clone, enumCombinations, getApiaryMetadata, getEnum, getRef, isApiCall, matchFunctions, processApiarySchema, processSchema, processSwaggerSchema, setApiaryResponse, setSwaggerResponse, setUriMatcher;
 
   window.AutoConfigFakeServer = {};
 
@@ -182,31 +182,19 @@
     return results;
   };
 
-  setApiaryResponse = function(fakeServer, action, host, uriTemplate) {
-    var actionResponse, header, i, len, params, path, ref1, ref2, response, responseHeaders, uri, uriRegex;
-    if (action.attributes.uriTemplate) {
-      uriTemplate = action.attributes.uriTemplate;
-    }
-    ref1 = uriTemplate.split('?'), path = ref1[0], params = ref1[1];
-    uri = makeUrlRegex(host + path);
-    uri = uri.replace(/\{([a-zA-Z0-9_\\-]+)\}/g, '([a-zA-Z0-9_\\-]+)');
-    uriRegex = new RegExp(uri + '(\\?.*)?$');
-    actionResponse = action.examples[0].responses[0];
-    responseHeaders = {};
-    ref2 = actionResponse.headers;
-    for (i = 0, len = ref2.length; i < len; i++) {
-      header = ref2[i];
-      responseHeaders[header.name] = header.value;
-    }
-    response = [200, responseHeaders, actionResponse.body];
-    return fakeServer.respondWith(action.method, uriRegex, response);
-  };
-
   processSwaggerSchema = function(fakeServer, schema) {
     matchFunctions.push(function(method, url) {
       return isApiCall(url, schema.host, schema.schemes, schema.basePath);
     });
     return setSwaggerResponse(fakeServer, schema);
+  };
+
+  setUriMatcher = function(path) {
+    return matchFunctions.push(function(method, url) {
+      var pattern;
+      pattern = new RegExp(path);
+      return url.match(pattern);
+    });
   };
 
   getApiaryMetadata = function(schema, name) {
@@ -221,18 +209,35 @@
     return null;
   };
 
+  setApiaryResponse = function(fakeServer, action, host, uriTemplate) {
+    var actionResponse, header, i, len, params, path, ref1, ref2, response, responseHeaders, uri, uriRegex;
+    if (action.attributes.uriTemplate) {
+      uriTemplate = action.attributes.uriTemplate;
+    }
+    ref1 = uriTemplate.split('?'), path = ref1[0], params = ref1[1];
+    uri = host + path;
+    uri = uri.replace(/\{([a-zA-Z0-9_\\-]+)\}/g, '([a-zA-Z0-9_\\-]+)');
+    uriRegex = new RegExp(uri + '(\\?.*)?$');
+    actionResponse = action.examples[0].responses[0];
+    responseHeaders = {};
+    ref2 = actionResponse.headers;
+    for (i = 0, len = ref2.length; i < len; i++) {
+      header = ref2[i];
+      responseHeaders[header.name] = header.value;
+    }
+    response = [200, responseHeaders, actionResponse.body];
+    return fakeServer.respondWith(action.method, uriRegex, response);
+  };
+
   processApiarySchema = function(fakeServer, schema) {
     var host;
     host = getApiaryMetadata(schema, 'HOST');
     return schema.ast.resourceGroups.forEach(function(resourceGroup) {
       return resourceGroup.resources.forEach(function(resource) {
-        var uriTemplate;
+        var uri, uriTemplate;
         uriTemplate = resource.uriTemplate;
-        matchFunctions.push(function(method, url) {
-          var pattern;
-          pattern = new RegExp(host + uriTemplate);
-          return url.match(pattern);
-        });
+        uri = host + uriTemplate;
+        setUriMatcher(uri);
         return resource.actions.forEach(function(action) {
           return setApiaryResponse(fakeServer, action, host, uriTemplate);
         });
@@ -249,11 +254,9 @@
     }
   };
 
-  window.AutoConfigFakeServer.init = function() {
-    var fakeServer;
-    fakeServer = sinon.fakeServer.create();
+  addPrimaryFilter = function(fakeServer, matchFunctions) {
     fakeServer.xhr.useFilters = true;
-    fakeServer.xhr.addFilter(function(method, url) {
+    return fakeServer.xhr.addFilter(function(method, url) {
       var i, len, matchFunction, passThrough;
       passThrough = true;
       for (i = 0, len = matchFunctions.length; i < len; i++) {
@@ -264,6 +267,12 @@
       }
       return passThrough;
     });
+  };
+
+  window.AutoConfigFakeServer.init = function() {
+    var fakeServer;
+    fakeServer = sinon.fakeServer.create();
+    addPrimaryFilter(fakeServer, matchFunctions);
     return window.AutoConfigFakeServer.fakeServer = fakeServer;
   };
 
@@ -302,7 +311,12 @@
       getEnum: getEnum,
       setSwaggerResponse: setSwaggerResponse,
       processSwaggerSchema: processSwaggerSchema,
-      processSchema: processSchema
+      setUriMatcher: setUriMatcher,
+      getApiaryMetadata: getApiaryMetadata,
+      setApiaryResponse: setApiaryResponse,
+      processApiarySchema: processApiarySchema,
+      processSchema: processSchema,
+      addPrimaryFilter: addPrimaryFilter
     };
   }
 
