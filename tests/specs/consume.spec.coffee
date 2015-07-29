@@ -7,27 +7,25 @@ fakeServer =
     useFilters : false
     addFilter  : sinon.spy()
 
-callback   = sinon.spy()
-createStub = null
-apis       = AutoConfigFakeServerPrivates.apis
+callback       = sinon.spy()
+errStub        = null
+createStub     = null
+matchFunctions = AutoConfigFakeServerPrivates.matchFunctions
 
 describe 'AutoConfigFakeServer.consume', ->
   beforeEach ->
+    errStub        = sinon.stub console, 'error'
     createStub = sinon.stub sinon.fakeServer, 'create'
     createStub.returns fakeServer
 
     AutoConfigFakeServer.init()
 
   afterEach ->
-    createStub.restore();
+    errStub.restore()
+    createStub.restore()
     AutoConfigFakeServer.restore()
 
-  context 'when schema is an object', ->
-    beforeEach ->
-      schema =
-        basePath: '/v1'
+  it 'should error to the console when no schemas are passed', ->
+    AutoConfigFakeServer.consume()
+    expect(errStub.called).to.be.true
 
-      AutoConfigFakeServer.consume schema, callback
-
-    it 'should have an api base path of `/v1`', ->
-      expect(apis[0].basePath).to.be.equal '/v1'

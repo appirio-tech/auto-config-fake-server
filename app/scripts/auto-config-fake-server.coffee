@@ -1,7 +1,11 @@
 'use strict'
 
 window.AutoConfigFakeServer = {}
-apis                     = []
+matchFunctions              = []
+
+#########################
+# Swagger schema parsing
+#########################
 
 clone = (obj) ->
   isObject = typeof obj == 'object'
@@ -111,7 +115,7 @@ getEnum = (items) ->
 
   items[randFloored]
 
-setRespondWith = (fakeServer, api) ->
+setSwaggerResponse = (fakeServer, api) ->
   schemes = api.schemes || []
 
   for scheme in schemes
@@ -132,23 +136,95 @@ setRespondWith = (fakeServer, api) ->
         if methodDefinition?.responses?['204']
           fakeServer.respondWith method, urlRegex, ''
 
+processSwaggerSchema = (fakeServer, schema) ->
+  matchFunctions.push (method, url) ->
+    isApiCall url, schema.host, schema.schemes, schema.basePath 
+
+  setSwaggerResponse(fakeServer, schema)
+
+#########################
+# Apiary schema parsing
+#########################
+
+setUriMatcher = (path) ->
+  matchFunctions.push (method, url) ->
+    pattern = new RegExp(path)
+    url.match pattern
+
+getApiaryMetadata = (schema, name) ->
+  for prop in schema.ast.metadata
+    if prop.name == name
+      return prop.value
+
+  null
+
+setApiaryResponse = (fakeServer, action, host, uriTemplate) ->
+  if action.attributes.uriTemplate
+    uriTemplate = action.attributes.uriTemplate
+
+  # TODO: Do something with params
+  [path, params] = uriTemplate.split '?'
+
+  uri             = host + path
+  uri             = uri.replace /\{([a-zA-Z0-9_\\-]+)\}/g, '([a-zA-Z0-9_\\-]+)'
+  uriRegex        = new RegExp(uri + '(\\?.*)?$')
+
+  actionResponse  = action.examples[0].responses[0]
+  responseHeaders = {}
+
+  for header in actionResponse.headers
+    responseHeaders[header.name] = header.value
+
+  response = [200, responseHeaders, actionResponse.body]
+
+  fakeServer.respondWith action.method, uriRegex, response
+
+processApiarySchema = (fakeServer, schema) ->
+  host = getApiaryMetadata schema, 'HOST'
+
+  schema.ast.resourceGroups.forEach (resourceGroup) ->
+    resourceGroup.resources.forEach (resource) ->
+
+      uriTemplate = resource.uriTemplate
+      uri         = host + uriTemplate
+
+      setUriMatcher uri
+
+      resource.actions.forEach (action) ->
+        setApiaryResponse fakeServer, action, host, uriTemplate
+
+#########################
+# Fakeserver setup
+#########################
+
+processSchema = (fakeServer, schema) ->
+  if schema.swagger
+    processSwaggerSchema fakeServer, schema
+
+  if schema.ast
+    processApiarySchema fakeServer, schema
+
+# In order to support different types of filtering by different types of schemas we are pushing functions to an array of filter functions. This primary filter checks each filter in the array to determine whether we should mock the endpoint or let it pass through.
+addPrimaryFilter = (fakeServer, matchFunctions) ->
+  fakeServer.xhr.useFilters = true
+
+  fakeServer.xhr.addFilter (method, url) ->
+    passThrough = true
+
+    for matchFunction in matchFunctions
+      if matchFunction method, url
+        passThrough = false
+
+    passThrough
 
 window.AutoConfigFakeServer.init = ->
   fakeServer = sinon.fakeServer.create()
-  fakeServer.xhr.useFilters = true
-
-  filter = (method, url) ->
-    for api in apis
-      return false if isApiCall url, api.host, api.schemes, api.basePath
-
-    true
-
-  fakeServer.xhr.addFilter filter
+  addPrimaryFilter fakeServer, matchFunctions
 
   window.AutoConfigFakeServer.fakeServer = fakeServer
 
 window.AutoConfigFakeServer.restore = ->
-  apis = []
+  matchFunctions = []
 
   AutoConfigFakeServer.fakeServer?.restore();
 
@@ -158,20 +234,30 @@ window.AutoConfigFakeServer.consume = (schemas) ->
       schemas = [schemas]
 
     for schema in schemas
-      apis.push schema
+      processSchema AutoConfigFakeServer.fakeServer, schema
 
-      setRespondWith AutoConfigFakeServer.fakeServer, schema
   else
     console.error 'schema is undefined'
 
-# For testing purposes
+#########################
+# Expose private methods for testing
+#########################
+
 if window.AutoConfigFakeServerPrivates
   window.AutoConfigFakeServerPrivates =
-    isApiCall       : isApiCall
-    getRef          : getRef
-    buildDefinition : buildDefinition
-    setRespondWith  : setRespondWith
-    apis            : apis
-    getEnum         : getEnum
-    enumCombinations: enumCombinations
-    clone           : clone
+    matchFunctions      : matchFunctions
+    clone               : clone
+    isApiCall           : isApiCall
+    getRef              : getRef
+    buildDefinition     : buildDefinition
+    buildProperty       : buildProperty
+    enumCombinations    : enumCombinations
+    getEnum             : getEnum
+    setSwaggerResponse  : setSwaggerResponse
+    processSwaggerSchema: processSwaggerSchema
+    setUriMatcher       : setUriMatcher
+    getApiaryMetadata   : getApiaryMetadata
+    setApiaryResponse   : setApiaryResponse
+    processApiarySchema : processApiarySchema
+    processSchema       : processSchema
+    addPrimaryFilter    : addPrimaryFilter

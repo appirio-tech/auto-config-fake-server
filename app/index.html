@@ -35,6 +35,7 @@
       AutoConfigFakeServer.fakeServer.respondImmediately = true
       AutoConfigFakeServer.consume(window.FIXTURES['app/lyft.swagger.json']);
       AutoConfigFakeServer.consume(window.FIXTURES['app/uber.swagger.json']);
+      AutoConfigFakeServer.consume(window.FIXTURES['app/work.apiary.json']);
 
       var urls = [
         { url: 'https://api.uber.com/v1/estimates/price', expect: 'success' },
@@ -46,7 +47,22 @@
         { url: 'https://api.lyft.com/v2/products', expect: 'success' },
         { url: 'https://api.lyft.com/v2/history/123/bob/abcjas-123', expect: 'success' },
         { url: 'https://api.lyft.com/v2/dne', expect: 'fail' },
-        { url: 'https://api.uber.com/v1/estimates/price', expect: 'success', method: 'PUT' }
+        { url: 'https://api.uber.com/v1/estimates/price', expect: 'success', method: 'PUT' },
+        { url: 'http://api.topcoder.com/v3/work', expect: 'success', method: 'POST'  },
+        { url: 'http://api.topcoder.com/v3/work/123', expect: 'success', method: 'PUT' },
+        { url: 'http://api.topcoder.com/v3/work/123', expect: 'success', method: 'GET' },
+        { url: 'http://api.topcoder.com/v3/work', expect: 'success' },
+        { url: 'http://api.topcoder.com/v3/work?filter=123', expect: 'success' },
+        { url: 'http://api.topcoder.com/v3/work/123/events', expect: 'success' },
+        { url: 'http://api.topcoder.com/v3/work/123/events', expect: 'success' },
+        { url: 'http://api.topcoder.com/v3/work/123/events/456', expect: 'success' },
+        { url: 'http://api.topcoder.com/v3/work-files', expect: 'success', method: 'POST' },
+        { url: 'http://api.topcoder.com/v3/work-files/123', expect: 'success', method: 'DELETE' },
+        { url: 'http://api.topcoder.com/v3/work-files/uploadurl', expect: 'success', method: 'POST' },
+        { url: 'http://api.topcoder.com/v3/work-files/downloadurl', expect: 'success', method: 'POST' },
+        { url: 'http://api.topcoder.com/v3/work-files/123', expect: 'success' },
+        { url: 'http://api.topcoder.com/v3/work-files?filter=workId%3D12345', expect: 'success' },
+        { url: 'http://api.topcoder.com/v3/work-files?filter=workId%3D123%26assetType%3Dspecs', expect: 'success' },
       ];
 
       for (var i = 0; i < urls.length; i += 1) {
@@ -58,17 +74,17 @@
 
         ajax(url.url, function (text) {
           if (url.expect == 'success') {
-            li.innerHTML = 'Passed - ' + url.url;
+            li.innerHTML = 'Passed - ' + (url.method || 'GET') + ': ' + url.url;
           }
           else {
-            li.innerHTML = 'Failed - ' + url.url;
+            li.innerHTML = 'Failed - ' + (url.method || 'GET') + ': ' + url.url;
           }
         }, function (text) {
           if (url.expect == 'fail') {
-            li.innerHTML = 'Passed - ' + url.url;
+            li.innerHTML = 'Passed - ' + (url.method || 'GET') + ': ' + url.url;
           }
           else {
-            li.innerHTML = 'Failed - ' + url.url;
+            li.innerHTML = 'Failed - ' + (url.method || 'GET') + ': ' + url.url;
           }
         }, url.method);
       }
