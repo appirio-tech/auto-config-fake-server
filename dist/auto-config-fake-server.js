@@ -232,6 +232,7 @@
   processApiarySchema = function(fakeServer, schema) {
     var host;
     host = getApiaryMetadata(schema, 'HOST');
+    host = host.replace(/\/$/, '');
     return schema.ast.resourceGroups.forEach(function(resourceGroup) {
       return resourceGroup.resources.forEach(function(resource) {
         var uri, uriTemplate;

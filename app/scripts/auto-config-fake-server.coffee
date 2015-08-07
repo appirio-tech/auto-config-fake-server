@@ -182,6 +182,9 @@ setApiaryResponse = (fakeServer, action, host, uriTemplate) ->
 processApiarySchema = (fakeServer, schema) ->
   host = getApiaryMetadata schema, 'HOST'
 
+  # Remove trailing slash
+  host = host.replace /\/$/, ''
+
   schema.ast.resourceGroups.forEach (resourceGroup) ->
     resourceGroup.resources.forEach (resource) ->
 
