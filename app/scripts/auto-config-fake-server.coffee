@@ -146,9 +146,8 @@ processSwaggerSchema = (fakeServer, schema) ->
 # Apiary schema parsing
 #########################
 
-setUriMatcher = (path) ->
+setUriMatcher = (pattern) ->
   matchFunctions.push (method, url) ->
-    pattern = new RegExp(path)
     url.match pattern
 
 getApiaryMetadata = (schema, name) ->
@@ -158,26 +157,36 @@ getApiaryMetadata = (schema, name) ->
 
   null
 
-setApiaryResponse = (fakeServer, action, host, uriTemplate) ->
-  if action.attributes.uriTemplate
-    uriTemplate = action.attributes.uriTemplate
-
+formatApiaryUriRegex = (host, uriTemplate) ->
   # TODO: Do something with params
   [path, params] = uriTemplate.split '?'
 
   uri             = host + path
   uri             = uri.replace /\{([a-zA-Z0-9_\\-]+)\}/g, '([a-zA-Z0-9_\\-]+)'
-  uriRegex        = new RegExp(uri + '(\\?.*)?$')
 
-  actionResponse  = action.examples[0].responses[0]
-  responseHeaders = {}
+  new RegExp(uri + '(\\?.*)?$')
 
-  for header in actionResponse.headers
-    responseHeaders[header.name] = header.value
+getApiaryActionMethod = (action) ->
+  action.body
 
-  response = [200, responseHeaders, actionResponse.body]
+getApiaryActionHeaders = (action) ->
+  headers = {}
 
-  fakeServer.respondWith action.method, uriRegex, response
+  for header in action.examples[0].responses[0].headers
+    headers[header.name] = header.value
+
+  headers
+
+getApiaryActionBody = (action) ->
+  action.examples[0].responses[0].body
+
+setApiaryResponse = (fakeServer, action, uriRegex) ->
+  method   = getApiaryActionMethod action
+  headers  = getApiaryActionHeaders action
+  body     = getApiaryActionBody action
+  response = [200, headers, body]
+
+  fakeServer.respondWith method, uriRegex, response
 
 processApiarySchema = (fakeServer, schema) ->
   host = getApiaryMetadata schema, 'HOST'
@@ -187,14 +196,13 @@ processApiarySchema = (fakeServer, schema) ->
 
   schema.ast.resourceGroups.forEach (resourceGroup) ->
     resourceGroup.resources.forEach (resource) ->
-
-      uriTemplate = resource.uriTemplate
-      uri         = host + uriTemplate
-
-      setUriMatcher uri
-
       resource.actions.forEach (action) ->
-        setApiaryResponse fakeServer, action, host, uriTemplate
+        uriTemplate = action.attributes.uriTemplate || resource.uriTemplate
+        uriRegex    = formatApiaryUriRegex host, uriTemplate
+
+        setUriMatcher uriRegex
+
+        setApiaryResponse fakeServer, action, uriRegex
 
 #########################
 # Fakeserver setup

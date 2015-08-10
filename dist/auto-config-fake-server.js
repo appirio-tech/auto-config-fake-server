@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  var addPrimaryFilter, buildDefinition, buildProperty, clone, enumCombinations, getApiaryMetadata, getEnum, getRef, isApiCall, matchFunctions, processApiarySchema, processSchema, processSwaggerSchema, setApiaryResponse, setSwaggerResponse, setUriMatcher;
+  var addPrimaryFilter, buildDefinition, buildProperty, clone, enumCombinations, formatApiaryUriRegex, getApiaryActionBody, getApiaryActionHeaders, getApiaryActionMethod, getApiaryMetadata, getEnum, getRef, isApiCall, matchFunctions, processApiarySchema, processSchema, processSwaggerSchema, setApiaryResponse, setSwaggerResponse, setUriMatcher;
 
   window.AutoConfigFakeServer = {};
 
@@ -189,10 +189,8 @@
     return setSwaggerResponse(fakeServer, schema);
   };
 
-  setUriMatcher = function(path) {
+  setUriMatcher = function(pattern) {
     return matchFunctions.push(function(method, url) {
-      var pattern;
-      pattern = new RegExp(path);
       return url.match(pattern);
     });
   };
@@ -209,24 +207,40 @@
     return null;
   };
 
-  setApiaryResponse = function(fakeServer, action, host, uriTemplate) {
-    var actionResponse, header, i, len, params, path, ref1, ref2, response, responseHeaders, uri, uriRegex;
-    if (action.attributes.uriTemplate) {
-      uriTemplate = action.attributes.uriTemplate;
-    }
+  formatApiaryUriRegex = function(host, uriTemplate) {
+    var params, path, ref1, uri;
     ref1 = uriTemplate.split('?'), path = ref1[0], params = ref1[1];
     uri = host + path;
     uri = uri.replace(/\{([a-zA-Z0-9_\\-]+)\}/g, '([a-zA-Z0-9_\\-]+)');
-    uriRegex = new RegExp(uri + '(\\?.*)?$');
-    actionResponse = action.examples[0].responses[0];
-    responseHeaders = {};
-    ref2 = actionResponse.headers;
-    for (i = 0, len = ref2.length; i < len; i++) {
-      header = ref2[i];
-      responseHeaders[header.name] = header.value;
+    return new RegExp(uri + '(\\?.*)?$');
+  };
+
+  getApiaryActionMethod = function(action) {
+    return action.body;
+  };
+
+  getApiaryActionHeaders = function(action) {
+    var header, headers, i, len, ref1;
+    headers = {};
+    ref1 = action.examples[0].responses[0].headers;
+    for (i = 0, len = ref1.length; i < len; i++) {
+      header = ref1[i];
+      headers[header.name] = header.value;
     }
-    response = [200, responseHeaders, actionResponse.body];
-    return fakeServer.respondWith(action.method, uriRegex, response);
+    return headers;
+  };
+
+  getApiaryActionBody = function(action) {
+    return action.examples[0].responses[0].body;
+  };
+
+  setApiaryResponse = function(fakeServer, action, uriRegex) {
+    var body, headers, method, response;
+    method = getApiaryActionMethod(action);
+    headers = getApiaryActionHeaders(action);
+    body = getApiaryActionBody(action);
+    response = [200, headers, body];
+    return fakeServer.respondWith(method, uriRegex, response);
   };
 
   processApiarySchema = function(fakeServer, schema) {
@@ -235,12 +249,12 @@
     host = host.replace(/\/$/, '');
     return schema.ast.resourceGroups.forEach(function(resourceGroup) {
       return resourceGroup.resources.forEach(function(resource) {
-        var uri, uriTemplate;
-        uriTemplate = resource.uriTemplate;
-        uri = host + uriTemplate;
-        setUriMatcher(uri);
         return resource.actions.forEach(function(action) {
-          return setApiaryResponse(fakeServer, action, host, uriTemplate);
+          var uriRegex, uriTemplate;
+          uriTemplate = action.attributes.uriTemplate || resource.uriTemplate;
+          uriRegex = formatApiaryUriRegex(host, uriTemplate);
+          setUriMatcher(uriRegex);
+          return setApiaryResponse(fakeServer, action, uriRegex);
         });
       });
     });
