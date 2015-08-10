@@ -216,7 +216,7 @@
   };
 
   getApiaryActionMethod = function(action) {
-    return action.body;
+    return action.method;
   };
 
   getApiaryActionHeaders = function(action) {
@@ -239,6 +239,9 @@
     method = getApiaryActionMethod(action);
     headers = getApiaryActionHeaders(action);
     body = getApiaryActionBody(action);
+    console.log(method);
+    console.log(uriRegex);
+    console.log(body);
     response = [200, headers, body];
     return fakeServer.respondWith(method, uriRegex, response);
   };

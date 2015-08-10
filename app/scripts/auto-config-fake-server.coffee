@@ -167,7 +167,7 @@ formatApiaryUriRegex = (host, uriTemplate) ->
   new RegExp(uri + '(\\?.*)?$')
 
 getApiaryActionMethod = (action) ->
-  action.body
+  action.method
 
 getApiaryActionHeaders = (action) ->
   headers = {}
@@ -184,6 +184,10 @@ setApiaryResponse = (fakeServer, action, uriRegex) ->
   method   = getApiaryActionMethod action
   headers  = getApiaryActionHeaders action
   body     = getApiaryActionBody action
+
+  console.log method
+  console.log uriRegex
+  console.log body
   response = [200, headers, body]
 
   fakeServer.respondWith method, uriRegex, response
