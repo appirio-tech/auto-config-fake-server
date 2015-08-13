@@ -9,7 +9,7 @@ matchFunctions              = []
 
 clone = (obj) ->
   isObject = typeof obj == 'object'
-  isNull = obj == null
+  isNull   = obj == null
 
   return obj if isNull || !isObject
 
@@ -61,7 +61,7 @@ buildDefinition = (definition, api, isArray = null) ->
   for key, property of properties
     build[key] = buildProperty property, api
 
-  build = enumCombinations build, properties  if isArray
+  build = enumCombinations build, properties if isArray
 
   build
 
@@ -138,9 +138,9 @@ setSwaggerResponse = (fakeServer, api) ->
 
 processSwaggerSchema = (fakeServer, schema) ->
   matchFunctions.push (method, url) ->
-    isApiCall url, schema.host, schema.schemes, schema.basePath 
+    isApiCall url, schema.host, schema.schemes, schema.basePath
 
-  setSwaggerResponse(fakeServer, schema)
+  setSwaggerResponse fakeServer, schema
 
 #########################
 # Apiary schema parsing
@@ -152,17 +152,15 @@ setUriMatcher = (pattern) ->
 
 getApiaryMetadata = (schema, name) ->
   for prop in schema.ast.metadata
-    if prop.name == name
-      return prop.value
+    return prop.value if prop.name == name
 
   null
 
 formatApiaryUriRegex = (host, uriTemplate) ->
   # TODO: Do something with params
   [path, params] = uriTemplate.split '?'
-
-  uri             = host + path
-  uri             = uri.replace /\{([a-zA-Z0-9_\\-]+)\}/g, '([a-zA-Z0-9_\\-]+)'
+  uri            = host + path
+  uri            = uri.replace /\{([a-zA-Z0-9_\\-]+)\}/g, '([a-zA-Z0-9_\\-]+)'
 
   new RegExp(uri + '(\\?.*)?$')
 
@@ -184,7 +182,6 @@ setApiaryResponse = (fakeServer, action, uriRegex) ->
   method   = getApiaryActionMethod action
   headers  = getApiaryActionHeaders action
   body     = getApiaryActionBody action
-
   response = [200, headers, body]
 
   fakeServer.respondWith method, uriRegex, response
@@ -210,11 +207,9 @@ processApiarySchema = (fakeServer, schema) ->
 #########################
 
 processSchema = (fakeServer, schema) ->
-  if schema.swagger
-    processSwaggerSchema fakeServer, schema
+  processSwaggerSchema fakeServer, schema if schema.swagger
+  processApiarySchema fakeServer, schema if schema.ast
 
-  if schema.ast
-    processApiarySchema fakeServer, schema
 
 # In order to support different types of filtering by different types of schemas we are pushing functions to an array of filter functions. This primary filter checks each filter in the array to determine whether we should mock the endpoint or let it pass through.
 addPrimaryFilter = (fakeServer, matchFunctions) ->
@@ -224,8 +219,7 @@ addPrimaryFilter = (fakeServer, matchFunctions) ->
     passThrough = true
 
     for matchFunction in matchFunctions
-      if matchFunction method, url
-        passThrough = false
+      passThrough = false if matchFunction method, url
 
     passThrough
 
@@ -247,7 +241,6 @@ window.AutoConfigFakeServer.consume = (schemas) ->
 
     for schema in schemas
       processSchema AutoConfigFakeServer.fakeServer, schema
-
   else
     console.error 'schema is undefined'
 
