@@ -185,9 +185,6 @@ setApiaryResponse = (fakeServer, action, uriRegex) ->
   headers  = getApiaryActionHeaders action
   body     = getApiaryActionBody action
 
-  console.log method
-  console.log uriRegex
-  console.log body
   response = [200, headers, body]
 
   fakeServer.respondWith method, uriRegex, response
