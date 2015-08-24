@@ -25,6 +25,7 @@ configs.karma =
 
 configs.buildFiles =
   copy: ['.tmp/scripts/auto-config-fake-server.js']
+  copy: ['.tmp/scripts/mock.js']
 
 configs.fixtureFiles = [
   'app/**/*.json'
