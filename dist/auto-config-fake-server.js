@@ -210,6 +210,7 @@
   formatApiaryUriRegex = function(host, uriTemplate) {
     var params, path, ref1, uri;
     ref1 = uriTemplate.split('?'), path = ref1[0], params = ref1[1];
+    path = path.replace(/\{$/, '');
     uri = host + path;
     uri = uri.replace(/\{([a-zA-Z0-9_\\-]+)\}/g, '([a-zA-Z0-9_\\-]+)');
     return new RegExp(uri + '(\\?.*)?$');
