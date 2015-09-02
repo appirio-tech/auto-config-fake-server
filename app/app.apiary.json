@@ -1,0 +1,928 @@
+{
+  "ast": {
+    "_version": "3.0",
+    "metadata": [
+      {
+        "name": "FORMAT",
+        "value": "1A"
+      },
+      {
+        "name": "HOST",
+        "value": "https://api.topcoder.com/v3/"
+      }
+    ],
+    "name": "ASP Application Service (Draft)",
+    "description": "The application layer service collects data from backend and provides them to frontend. It follows the v3 API spec defined in [here](https://docs.google.com/presentation/d/15pucEI0MHj9y778EyaAWGh4MBH-I73i1-GS0ir7FhxE/edit#slide=id.g29c3ffcc3_053).\n\n",
+    "element": "category",
+    "resourceGroups": [
+      {
+        "name": "Work Steps",
+        "description": "",
+        "resources": [
+          {
+            "element": "resource",
+            "name": "A collection of steps",
+            "description": "",
+            "uriTemplate": "/projects/{work_id}/steps{?stepType}",
+            "model": {},
+            "parameters": [
+              {
+                "name": "work_id",
+                "description": "",
+                "type": "string",
+                "required": true,
+                "default": "",
+                "example": "abc",
+                "values": []
+              },
+              {
+                "name": "stepType",
+                "description": "Type of the  work step, can be designConcepts, completeDesigns or finalFixes",
+                "type": "string",
+                "required": false,
+                "default": "",
+                "example": "designConcepts",
+                "values": []
+              }
+            ],
+            "actions": [
+              {
+                "name": "Get a collection of steps",
+                "description": "Get all the work steps for the given project_id and work type\n\n",
+                "method": "GET",
+                "parameters": [],
+                "attributes": {
+                  "relation": "",
+                  "uriTemplate": ""
+                },
+                "content": [],
+                "examples": [
+                  {
+                    "name": "",
+                    "description": "",
+                    "requests": [],
+                    "responses": [
+                      {
+                        "name": "200",
+                        "description": "",
+                        "headers": [
+                          {
+                            "name": "Content-Type",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": "[\n  {\n    \"id\": \"abc\",\n    \"stepType\": \"designConcepts\",\n    \"startsAt\": \"20150129T1355+00:00\",\n    \"endsAt\": \"20150129T1355+00:00\",\n    \"completed\": null,\n    \"numberOfRanks\": 3,\n    \"rankedSubmissions\": [\n      {\n        \"rank\": 1,\n        \"submissionId\": \"123\"\n      }\n    ],\n    \"customerConfirmedRanks\": null\n  },\n  {\n    \"id\": \"def\",\n    \"stepType\": \"completeDesigns\",\n    \"startsAt\": \"20150129T1355+00:00\",\n    \"endsAt\": \"20150129T1355+00:00\",\n    \"completed\": null,\n    \"numberOfRanks\": 3,\n    \"rankedSubmissions\": [],\n    \"customerConfirmedRanks\": null\n  },\n  {\n    \"id\": \"ghi\",\n    \"stepType\": \"finalFixes\",\n    \"startsAt\": \"20150129T1355+00:00\",\n    \"endsAt\": \"20150129T1355+00:00\",\n    \"completed\": null,\n    \"customerAcceptedFixes\": null\n  }\n]\n",
+                        "schema": "",
+                        "content": [
+                          {
+                            "element": "asset",
+                            "attributes": {
+                              "role": "bodyExample"
+                            },
+                            "content": "[\n  {\n    \"id\": \"abc\",\n    \"stepType\": \"designConcepts\",\n    \"startsAt\": \"20150129T1355+00:00\",\n    \"endsAt\": \"20150129T1355+00:00\",\n    \"completed\": null,\n    \"numberOfRanks\": 3,\n    \"rankedSubmissions\": [\n      {\n        \"rank\": 1,\n        \"submissionId\": \"123\"\n      }\n    ],\n    \"customerConfirmedRanks\": null\n  },\n  {\n    \"id\": \"def\",\n    \"stepType\": \"completeDesigns\",\n    \"startsAt\": \"20150129T1355+00:00\",\n    \"endsAt\": \"20150129T1355+00:00\",\n    \"completed\": null,\n    \"numberOfRanks\": 3,\n    \"rankedSubmissions\": [],\n    \"customerConfirmedRanks\": null\n  },\n  {\n    \"id\": \"ghi\",\n    \"stepType\": \"finalFixes\",\n    \"startsAt\": \"20150129T1355+00:00\",\n    \"endsAt\": \"20150129T1355+00:00\",\n    \"completed\": null,\n    \"customerAcceptedFixes\": null\n  }\n]\n"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "content": []
+          },
+          {
+            "element": "resource",
+            "name": "A step",
+            "description": "The following properties may be PATCHed **one at a time**:\n\n+ rankedSubmissions\n\n+ customerConfirmedRanks\n\n+ customerAcceptedFixes\n\n",
+            "uriTemplate": "/projects/{work_id}/steps/{step_id}",
+            "model": {},
+            "parameters": [
+              {
+                "name": "work_id",
+                "description": "",
+                "type": "string",
+                "required": true,
+                "default": "",
+                "example": "abc",
+                "values": []
+              },
+              {
+                "name": "step_id",
+                "description": "",
+                "type": "string",
+                "required": true,
+                "default": "",
+                "example": "abc",
+                "values": []
+              }
+            ],
+            "actions": [
+              {
+                "name": "Get a step",
+                "description": "",
+                "method": "GET",
+                "parameters": [],
+                "attributes": {
+                  "relation": "",
+                  "uriTemplate": ""
+                },
+                "content": [],
+                "examples": [
+                  {
+                    "name": "",
+                    "description": "",
+                    "requests": [],
+                    "responses": [
+                      {
+                        "name": "200",
+                        "description": "",
+                        "headers": [
+                          {
+                            "name": "Content-Type",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": "{\n  \"id\": \"abc\",\n  \"stepType\": \"designConcepts\",\n  \"startsAt\": \"20150129T1355+00:00\",\n  \"endsAt\": \"20150129T1355+00:00\",\n  \"completed\": null,\n  \"numberOfRanks\": 3,\n  \"rankedSubmissions\": [\n    {\n      \"rank\": 1,\n      \"submissionId\": \"abc\"\n    }\n  ],\n  \"customerConfirmedRanks\": null\n}\n",
+                        "schema": "",
+                        "content": [
+                          {
+                            "element": "asset",
+                            "attributes": {
+                              "role": "bodyExample"
+                            },
+                            "content": "{\n  \"id\": \"abc\",\n  \"stepType\": \"designConcepts\",\n  \"startsAt\": \"20150129T1355+00:00\",\n  \"endsAt\": \"20150129T1355+00:00\",\n  \"completed\": null,\n  \"numberOfRanks\": 3,\n  \"rankedSubmissions\": [\n    {\n      \"rank\": 1,\n      \"submissionId\": \"abc\"\n    }\n  ],\n  \"customerConfirmedRanks\": null\n}\n"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "Update a step",
+                "description": "Update partial information of a work step with PATCH\n\n",
+                "method": "PATCH",
+                "parameters": [],
+                "attributes": {
+                  "relation": "",
+                  "uriTemplate": ""
+                },
+                "content": [],
+                "examples": [
+                  {
+                    "name": "",
+                    "description": "",
+                    "requests": [
+                      {
+                        "name": "",
+                        "description": "",
+                        "headers": [
+                          {
+                            "name": "Content-Type",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": "{\n    \"rankedSubmissions\": [\n        {\n          \"rank\": 1,\n          \"submissionId\": \"abc\"\n        },\n        {\n          \"rank\": 2,\n          \"submissionId\": \"def\"\n        },\n        {\n          \"rank\": 3,\n          \"submissionId\": \"ghi\"\n        }\n    ]\n}\n",
+                        "schema": "",
+                        "content": [
+                          {
+                            "element": "asset",
+                            "attributes": {
+                              "role": "bodyExample"
+                            },
+                            "content": "{\n    \"rankedSubmissions\": [\n        {\n          \"rank\": 1,\n          \"submissionId\": \"abc\"\n        },\n        {\n          \"rank\": 2,\n          \"submissionId\": \"def\"\n        },\n        {\n          \"rank\": 3,\n          \"submissionId\": \"ghi\"\n        }\n    ]\n}\n"
+                          }
+                        ]
+                      }
+                    ],
+                    "responses": [
+                      {
+                        "name": "200",
+                        "description": "",
+                        "headers": [
+                          {
+                            "name": "Content-Type",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": "{\n  \"id\": \"abc\",\n  \"stepType\": \"designConcepts\",\n  \"startsAt\": \"20150129T1355+00:00\",\n  \"endsAt\": \"20150129T1355+00:00\",\n  \"completed\": null,\n  \"numberOfRanks\": 3,\n  \"rankedSubmissions\": [\n    {\n      \"rank\": 1,\n      \"submissionId\": \"abc\"\n    },\n    {\n      \"rank\": 2,\n      \"submissionId\": \"def\"\n    },\n    {\n      \"rank\": 3,\n      \"submissionId\": \"ghi\"\n    }\n  ],\n  \"customerConfirmedRanks\": true\n}\n",
+                        "schema": "",
+                        "content": [
+                          {
+                            "element": "asset",
+                            "attributes": {
+                              "role": "bodyExample"
+                            },
+                            "content": "{\n  \"id\": \"abc\",\n  \"stepType\": \"designConcepts\",\n  \"startsAt\": \"20150129T1355+00:00\",\n  \"endsAt\": \"20150129T1355+00:00\",\n  \"completed\": null,\n  \"numberOfRanks\": 3,\n  \"rankedSubmissions\": [\n    {\n      \"rank\": 1,\n      \"submissionId\": \"abc\"\n    },\n    {\n      \"rank\": 2,\n      \"submissionId\": \"def\"\n    },\n    {\n      \"rank\": 3,\n      \"submissionId\": \"ghi\"\n    }\n  ],\n  \"customerConfirmedRanks\": true\n}\n"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "name": "",
+                    "description": "",
+                    "requests": [
+                      {
+                        "name": "",
+                        "description": "",
+                        "headers": [
+                          {
+                            "name": "Content-Type",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": "{\n    \"customerConfirmedRanks\": true\n}\n",
+                        "schema": "",
+                        "content": [
+                          {
+                            "element": "asset",
+                            "attributes": {
+                              "role": "bodyExample"
+                            },
+                            "content": "{\n    \"customerConfirmedRanks\": true\n}\n"
+                          }
+                        ]
+                      }
+                    ],
+                    "responses": [
+                      {
+                        "name": "200",
+                        "description": "",
+                        "headers": [
+                          {
+                            "name": "Content-Type",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": "{\n  \"id\": \"abc\",\n  \"stepType\": \"designConcepts\",\n  \"startsAt\": \"20150129T1355+00:00\",\n  \"endsAt\": \"20150129T1355+00:00\",\n  \"completed\": null,\n  \"numberOfRanks\": 3,\n  \"rankedSubmissions\": [\n    {\n      \"rank\": 1,\n      \"submissionId\": \"abc\"\n    },\n    {\n      \"rank\": 2,\n      \"submissionId\": \"def\"\n    },\n    {\n      \"rank\": 3,\n      \"submissionId\": \"ghi\"\n    }\n  ],\n  \"customerConfirmedRanks\": true\n}\n",
+                        "schema": "",
+                        "content": [
+                          {
+                            "element": "asset",
+                            "attributes": {
+                              "role": "bodyExample"
+                            },
+                            "content": "{\n  \"id\": \"abc\",\n  \"stepType\": \"designConcepts\",\n  \"startsAt\": \"20150129T1355+00:00\",\n  \"endsAt\": \"20150129T1355+00:00\",\n  \"completed\": null,\n  \"numberOfRanks\": 3,\n  \"rankedSubmissions\": [\n    {\n      \"rank\": 1,\n      \"submissionId\": \"abc\"\n    },\n    {\n      \"rank\": 2,\n      \"submissionId\": \"def\"\n    },\n    {\n      \"rank\": 3,\n      \"submissionId\": \"ghi\"\n    }\n  ],\n  \"customerConfirmedRanks\": true\n}\n"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "name": "",
+                    "description": "",
+                    "requests": [
+                      {
+                        "name": "",
+                        "description": "",
+                        "headers": [
+                          {
+                            "name": "Content-Type",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": "{\n    \"customerAcceptedFixes\": true\n}\n",
+                        "schema": "",
+                        "content": [
+                          {
+                            "element": "asset",
+                            "attributes": {
+                              "role": "bodyExample"
+                            },
+                            "content": "{\n    \"customerAcceptedFixes\": true\n}\n"
+                          }
+                        ]
+                      }
+                    ],
+                    "responses": [
+                      {
+                        "name": "200",
+                        "description": "",
+                        "headers": [
+                          {
+                            "name": "Content-Type",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": "{\n    \"id\": \"abc\",\n    \"stepType\": \"finalFixes\",\n    \"startsAt\": \"20150129T1355+00:00\",\n    \"endsAt\": \"20150129T1355+00:00\",\n    \"completed\": null,\n    \"customerAcceptedFixes\": true\n}\n",
+                        "schema": "",
+                        "content": [
+                          {
+                            "element": "asset",
+                            "attributes": {
+                              "role": "bodyExample"
+                            },
+                            "content": "{\n    \"id\": \"abc\",\n    \"stepType\": \"finalFixes\",\n    \"startsAt\": \"20150129T1355+00:00\",\n    \"endsAt\": \"20150129T1355+00:00\",\n    \"completed\": null,\n    \"customerAcceptedFixes\": true\n}\n"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "content": []
+          },
+          {
+            "element": "resource",
+            "name": "A collection of submissions",
+            "description": "",
+            "uriTemplate": "/projects/{work_id}/steps/{step_id}/submissions",
+            "model": {},
+            "parameters": [
+              {
+                "name": "work_id",
+                "description": "",
+                "type": "string",
+                "required": true,
+                "default": "",
+                "example": "abc",
+                "values": []
+              },
+              {
+                "name": "step_id",
+                "description": "",
+                "type": "string",
+                "required": true,
+                "default": "",
+                "example": "abc",
+                "values": []
+              }
+            ],
+            "actions": [
+              {
+                "name": "Get a collection of submissions",
+                "description": "Get all the submissions under the given work step\n\n",
+                "method": "GET",
+                "parameters": [],
+                "attributes": {
+                  "relation": "",
+                  "uriTemplate": ""
+                },
+                "content": [],
+                "examples": [
+                  {
+                    "name": "",
+                    "description": "",
+                    "requests": [],
+                    "responses": [
+                      {
+                        "name": "200",
+                        "description": "",
+                        "headers": [
+                          {
+                            "name": "Content-Type",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": "[\n  {\n    \"id\": \"abc\",\n    \"createdAt\": \"2015-05-05T20:53:41.467Z\",\n    \"downloadUrl\": \"http://placehold.it/400x800\",\n    \"submitter\": {\n      \"id\": \"abc\",\n      \"handle\": \"Darth Vader\",\n      \"avatar\": \"http://www.topcoder.com/i/m/cardiboy_big.jpg\"\n    },\n    \"files\": [\n      {\n        \"id\": \"abc\",\n        \"name\": \"super-generic-file-1.jpg\",\n        \"images\": {\n          \"thumbnail\": \"http://placehold.it/50x40\",\n          \"small\": \"http://placehold.it/160x130\",\n          \"large\": \"http://placehold.it/200x400\",\n          \"full\": \"http://placehold.it/400x800\"\n        },\n        \"threads\": [\n          {\n            \"id\": \"guid-or-identifier-for-thread-object\",\n            \"subject\": \"Messages for file\",\n            \"unreadCount\": 1,\n            \"messages\": [\n              {\n                \"id\": \"guid-or-identifier-for-message-object\",\n                \"threadId\": \"guid-or-identifier-for-thread-object\",\n                \"body\": \"Some insightful comment about this file.\",\n                \"createdAt\": \"2015-11-azax05T08:15:30-05:00\",\n                \"publisherId\": \"sselvadurai\",\n                \"read\": false\n              }\n            ]\n          }\n        ]\n      },\n      {\n        \"id\": \"def\",\n        \"name\": \"super-generic-file-2.jpg\",\n        \"images\": {\n          \"thumbnail\": \"http://placehold.it/50x40\",\n          \"small\": \"http://placehold.it/160x130\",\n          \"large\": \"http://placehold.it/200x400\",\n          \"full\": \"http://placehold.it/400x800\"\n        },\n        \"threads\": [\n          {\n            \"id\": \"guid-or-identifier-for-thread-object\",\n            \"subject\": \"Messages for file\",\n            \"unreadCount\": 2,\n            \"messages\": [\n              {\n                \"id\": \"abc\",\n                \"threadId\": \"guid-or-identifier-for-thread-object\",\n                \"body\": \"Some insightful comment about this file.\",\n                \"createdAt\": \"2015-11-05T08:15:30-05:00\",\n                \"publisherId\": \"sselvadurai\",\n                \"read\": false\n              },\n              {\n                \"id\": \"def\",\n                \"threadId\": \"guid-or-identifier-for-thread-object\",\n                \"body\": \"Another deeply insightful comment about this file.\",\n                \"createdAt\": \"2015-11-05T08:15:30-05:00\",\n                \"publisherId\": \"aselbie\",\n                \"read\": false\n              }\n            ]\n          }\n        ]\n      },\n      {\n        \"id\": \"ghi\",\n        \"name\": \"super-generic-file-3.jpg\",\n        \"images\": {\n          \"thumbnail\": \"http://placehold.it/50x40\",\n          \"small\": \"http://placehold.it/160x130\",\n          \"large\": \"http://placehold.it/200x400\",\n          \"full\": \"http://placehold.it/400x800\"\n        },\n        \"threads\": [\n          {\n            \"id\": \"guid-or-identifier-for-thread-object\",\n            \"subject\": \"Messages for file\",\n            \"unreadCount\": 0,\n            \"messages\": [\n              {\n                \"id\": \"guid-or-identifier-for-message-object\",\n                \"threadId\": \"guid-or-identifier-for-thread-object\",\n                \"body\": \"Some insightful comment about this file.\",\n                \"createdAt\": \"2015-11-05T08:15:30-05:00\",\n                \"publisherId\": \"sselvadurai\",\n                \"read\": true\n              }\n            ]\n          }\n        ]\n      }\n    ]\n  },\n  {\n    \"id\": \"def\",\n    \"createdAt\": \"2015-05-05T20:53:41.467Z\",\n    \"downloadUrl\": \"http://placehold.it/400x800\",\n    \"submitter\": {\n      \"id\": \"abc\",\n      \"handle\": \"Darth Vader\",\n      \"avatar\": \"http://www.topcoder.com/i/m/cardiboy_big.jpg\"\n    },\n    \"files\": [\n      {\n        \"id\": \"abc\",\n        \"name\": \"super-generic-file-1.jpg\",\n        \"images\": {\n          \"thumbnail\": \"http://placehold.it/50x40\",\n          \"small\": \"http://placehold.it/160x130\",\n          \"large\": \"http://placehold.it/200x400\",\n          \"full\": \"http://placehold.it/400x800\"\n        },\n        \"threads\": [\n          {\n            \"id\": \"guid-or-identifier-for-thread-object\",\n            \"subject\": \"Messages for file\",\n            \"unreadCount\": 1,\n            \"messages\": [\n              {\n                \"id\": \"guid-or-identifier-for-message-object\",\n                \"threadId\": \"guid-or-identifier-for-thread-object\",\n                \"body\": \"Some insightful comment about this file.\",\n                \"createdAt\": \"2015-11-azax05T08:15:30-05:00\",\n                \"publisherId\": \"sselvadurai\",\n                \"read\": false\n              }\n            ]\n          }\n        ]\n      },\n      {\n        \"id\": \"def\",\n        \"name\": \"super-generic-file-2.jpg\",\n        \"images\": {\n          \"thumbnail\": \"http://placehold.it/50x40\",\n          \"small\": \"http://placehold.it/160x130\",\n          \"large\": \"http://placehold.it/200x400\",\n          \"full\": \"http://placehold.it/400x800\"\n        },\n        \"threads\": [\n          {\n            \"id\": \"guid-or-identifier-for-thread-object\",\n            \"subject\": \"Messages for file\",\n            \"unreadCount\": 2,\n            \"messages\": [\n              {\n                \"id\": \"abc\",\n                \"threadId\": \"guid-or-identifier-for-thread-object\",\n                \"body\": \"Some insightful comment about this file.\",\n                \"createdAt\": \"2015-11-05T08:15:30-05:00\",\n                \"publisherId\": \"sselvadurai\",\n                \"read\": false\n              },\n              {\n                \"id\": \"def\",\n                \"threadId\": \"guid-or-identifier-for-thread-object\",\n                \"body\": \"Another deeply insightful comment about this file.\",\n                \"createdAt\": \"2015-11-05T08:15:30-05:00\",\n                \"publisherId\": \"aselbie\",\n                \"read\": false\n              }\n            ]\n          }\n        ]\n      },\n      {\n        \"id\": \"ghi\",\n        \"name\": \"super-generic-file-3.jpg\",\n        \"images\": {\n          \"thumbnail\": \"http://placehold.it/50x40\",\n          \"small\": \"http://placehold.it/160x130\",\n          \"large\": \"http://placehold.it/200x400\",\n          \"full\": \"http://placehold.it/400x800\"\n        },\n        \"threads\": [\n          {\n            \"id\": \"guid-or-identifier-for-thread-object\",\n            \"subject\": \"Messages for file\",\n            \"unreadCount\": 0,\n            \"messages\": [\n              {\n                \"id\": \"guid-or-identifier-for-message-object\",\n                \"threadId\": \"guid-or-identifier-for-thread-object\",\n                \"body\": \"Some insightful comment about this file.\",\n                \"createdAt\": \"2015-11-05T08:15:30-05:00\",\n                \"publisherId\": \"sselvadurai\",\n                \"read\": true\n              }\n            ]\n          }\n        ]\n      }\n    ]\n  },\n  {\n    \"id\": \"ghi\",\n    \"createdAt\": \"2015-05-05T20:53:41.467Z\",\n    \"downloadUrl\": \"http://placehold.it/400x800\",\n    \"submitter\": {\n      \"id\": \"abc\",\n      \"handle\": \"Darth Vader\",\n      \"avatar\": \"http://www.topcoder.com/i/m/cardiboy_big.jpg\"\n    },\n    \"files\": [\n      {\n        \"id\": \"abc\",\n        \"name\": \"super-generic-file-1.jpg\",\n        \"images\": {\n          \"thumbnail\": \"http://placehold.it/50x40\",\n          \"small\": \"http://placehold.it/160x130\",\n          \"large\": \"http://placehold.it/200x400\",\n          \"full\": \"http://placehold.it/400x800\"\n        },\n        \"threads\": [\n          {\n            \"id\": \"guid-or-identifier-for-thread-object\",\n            \"subject\": \"Messages for file\",\n            \"unreadCount\": 1,\n            \"messages\": [\n              {\n                \"id\": \"guid-or-identifier-for-message-object\",\n                \"threadId\": \"guid-or-identifier-for-thread-object\",\n                \"body\": \"Some insightful comment about this file.\",\n                \"createdAt\": \"2015-11-azax05T08:15:30-05:00\",\n                \"publisherId\": \"sselvadurai\",\n                \"read\": false\n              }\n            ]\n          }\n        ]\n      },\n      {\n        \"id\": \"def\",\n        \"name\": \"super-generic-file-2.jpg\",\n        \"images\": {\n          \"thumbnail\": \"http://placehold.it/50x40\",\n          \"small\": \"http://placehold.it/160x130\",\n          \"large\": \"http://placehold.it/200x400\",\n          \"full\": \"http://placehold.it/400x800\"\n        },\n        \"threads\": [\n          {\n            \"id\": \"guid-or-identifier-for-thread-object\",\n            \"subject\": \"Messages for file\",\n            \"unreadCount\": 2,\n            \"messages\": [\n              {\n                \"id\": \"abc\",\n                \"threadId\": \"guid-or-identifier-for-thread-object\",\n                \"body\": \"Some insightful comment about this file.\",\n                \"createdAt\": \"2015-11-05T08:15:30-05:00\",\n                \"publisherId\": \"sselvadurai\",\n                \"read\": false\n              },\n              {\n                \"id\": \"def\",\n                \"threadId\": \"guid-or-identifier-for-thread-object\",\n                \"body\": \"Another deeply insightful comment about this file.\",\n                \"createdAt\": \"2015-11-05T08:15:30-05:00\",\n                \"publisherId\": \"aselbie\",\n                \"read\": false\n              }\n            ]\n          }\n        ]\n      },\n      {\n        \"id\": \"ghi\",\n        \"name\": \"super-generic-file-3.jpg\",\n        \"images\": {\n          \"thumbnail\": \"http://placehold.it/50x40\",\n          \"small\": \"http://placehold.it/160x130\",\n          \"large\": \"http://placehold.it/200x400\",\n          \"full\": \"http://placehold.it/400x800\"\n        },\n        \"threads\": [\n          {\n            \"id\": \"guid-or-identifier-for-thread-object\",\n            \"subject\": \"Messages for file\",\n            \"unreadCount\": 0,\n            \"messages\": [\n              {\n                \"id\": \"guid-or-identifier-for-message-object\",\n                \"threadId\": \"guid-or-identifier-for-thread-object\",\n                \"body\": \"Some insightful comment about this file.\",\n                \"createdAt\": \"2015-11-05T08:15:30-05:00\",\n                \"publisherId\": \"sselvadurai\",\n                \"read\": true\n              }\n            ]\n          }\n        ]\n      }\n    ]\n  }\n]\n",
+                        "schema": "",
+                        "content": [
+                          {
+                            "element": "asset",
+                            "attributes": {
+                              "role": "bodyExample"
+                            },
+                            "content": "[\n  {\n    \"id\": \"abc\",\n    \"createdAt\": \"2015-05-05T20:53:41.467Z\",\n    \"downloadUrl\": \"http://placehold.it/400x800\",\n    \"submitter\": {\n      \"id\": \"abc\",\n      \"handle\": \"Darth Vader\",\n      \"avatar\": \"http://www.topcoder.com/i/m/cardiboy_big.jpg\"\n    },\n    \"files\": [\n      {\n        \"id\": \"abc\",\n        \"name\": \"super-generic-file-1.jpg\",\n        \"images\": {\n          \"thumbnail\": \"http://placehold.it/50x40\",\n          \"small\": \"http://placehold.it/160x130\",\n          \"large\": \"http://placehold.it/200x400\",\n          \"full\": \"http://placehold.it/400x800\"\n        },\n        \"threads\": [\n          {\n            \"id\": \"guid-or-identifier-for-thread-object\",\n            \"subject\": \"Messages for file\",\n            \"unreadCount\": 1,\n            \"messages\": [\n              {\n                \"id\": \"guid-or-identifier-for-message-object\",\n                \"threadId\": \"guid-or-identifier-for-thread-object\",\n                \"body\": \"Some insightful comment about this file.\",\n                \"createdAt\": \"2015-11-azax05T08:15:30-05:00\",\n                \"publisherId\": \"sselvadurai\",\n                \"read\": false\n              }\n            ]\n          }\n        ]\n      },\n      {\n        \"id\": \"def\",\n        \"name\": \"super-generic-file-2.jpg\",\n        \"images\": {\n          \"thumbnail\": \"http://placehold.it/50x40\",\n          \"small\": \"http://placehold.it/160x130\",\n          \"large\": \"http://placehold.it/200x400\",\n          \"full\": \"http://placehold.it/400x800\"\n        },\n        \"threads\": [\n          {\n            \"id\": \"guid-or-identifier-for-thread-object\",\n            \"subject\": \"Messages for file\",\n            \"unreadCount\": 2,\n            \"messages\": [\n              {\n                \"id\": \"abc\",\n                \"threadId\": \"guid-or-identifier-for-thread-object\",\n                \"body\": \"Some insightful comment about this file.\",\n                \"createdAt\": \"2015-11-05T08:15:30-05:00\",\n                \"publisherId\": \"sselvadurai\",\n                \"read\": false\n              },\n              {\n                \"id\": \"def\",\n                \"threadId\": \"guid-or-identifier-for-thread-object\",\n                \"body\": \"Another deeply insightful comment about this file.\",\n                \"createdAt\": \"2015-11-05T08:15:30-05:00\",\n                \"publisherId\": \"aselbie\",\n                \"read\": false\n              }\n            ]\n          }\n        ]\n      },\n      {\n        \"id\": \"ghi\",\n        \"name\": \"super-generic-file-3.jpg\",\n        \"images\": {\n          \"thumbnail\": \"http://placehold.it/50x40\",\n          \"small\": \"http://placehold.it/160x130\",\n          \"large\": \"http://placehold.it/200x400\",\n          \"full\": \"http://placehold.it/400x800\"\n        },\n        \"threads\": [\n          {\n            \"id\": \"guid-or-identifier-for-thread-object\",\n            \"subject\": \"Messages for file\",\n            \"unreadCount\": 0,\n            \"messages\": [\n              {\n                \"id\": \"guid-or-identifier-for-message-object\",\n                \"threadId\": \"guid-or-identifier-for-thread-object\",\n                \"body\": \"Some insightful comment about this file.\",\n                \"createdAt\": \"2015-11-05T08:15:30-05:00\",\n                \"publisherId\": \"sselvadurai\",\n                \"read\": true\n              }\n            ]\n          }\n        ]\n      }\n    ]\n  },\n  {\n    \"id\": \"def\",\n    \"createdAt\": \"2015-05-05T20:53:41.467Z\",\n    \"downloadUrl\": \"http://placehold.it/400x800\",\n    \"submitter\": {\n      \"id\": \"abc\",\n      \"handle\": \"Darth Vader\",\n      \"avatar\": \"http://www.topcoder.com/i/m/cardiboy_big.jpg\"\n    },\n    \"files\": [\n      {\n        \"id\": \"abc\",\n        \"name\": \"super-generic-file-1.jpg\",\n        \"images\": {\n          \"thumbnail\": \"http://placehold.it/50x40\",\n          \"small\": \"http://placehold.it/160x130\",\n          \"large\": \"http://placehold.it/200x400\",\n          \"full\": \"http://placehold.it/400x800\"\n        },\n        \"threads\": [\n          {\n            \"id\": \"guid-or-identifier-for-thread-object\",\n            \"subject\": \"Messages for file\",\n            \"unreadCount\": 1,\n            \"messages\": [\n              {\n                \"id\": \"guid-or-identifier-for-message-object\",\n                \"threadId\": \"guid-or-identifier-for-thread-object\",\n                \"body\": \"Some insightful comment about this file.\",\n                \"createdAt\": \"2015-11-azax05T08:15:30-05:00\",\n                \"publisherId\": \"sselvadurai\",\n                \"read\": false\n              }\n            ]\n          }\n        ]\n      },\n      {\n        \"id\": \"def\",\n        \"name\": \"super-generic-file-2.jpg\",\n        \"images\": {\n          \"thumbnail\": \"http://placehold.it/50x40\",\n          \"small\": \"http://placehold.it/160x130\",\n          \"large\": \"http://placehold.it/200x400\",\n          \"full\": \"http://placehold.it/400x800\"\n        },\n        \"threads\": [\n          {\n            \"id\": \"guid-or-identifier-for-thread-object\",\n            \"subject\": \"Messages for file\",\n            \"unreadCount\": 2,\n            \"messages\": [\n              {\n                \"id\": \"abc\",\n                \"threadId\": \"guid-or-identifier-for-thread-object\",\n                \"body\": \"Some insightful comment about this file.\",\n                \"createdAt\": \"2015-11-05T08:15:30-05:00\",\n                \"publisherId\": \"sselvadurai\",\n                \"read\": false\n              },\n              {\n                \"id\": \"def\",\n                \"threadId\": \"guid-or-identifier-for-thread-object\",\n                \"body\": \"Another deeply insightful comment about this file.\",\n                \"createdAt\": \"2015-11-05T08:15:30-05:00\",\n                \"publisherId\": \"aselbie\",\n                \"read\": false\n              }\n            ]\n          }\n        ]\n      },\n      {\n        \"id\": \"ghi\",\n        \"name\": \"super-generic-file-3.jpg\",\n        \"images\": {\n          \"thumbnail\": \"http://placehold.it/50x40\",\n          \"small\": \"http://placehold.it/160x130\",\n          \"large\": \"http://placehold.it/200x400\",\n          \"full\": \"http://placehold.it/400x800\"\n        },\n        \"threads\": [\n          {\n            \"id\": \"guid-or-identifier-for-thread-object\",\n            \"subject\": \"Messages for file\",\n            \"unreadCount\": 0,\n            \"messages\": [\n              {\n                \"id\": \"guid-or-identifier-for-message-object\",\n                \"threadId\": \"guid-or-identifier-for-thread-object\",\n                \"body\": \"Some insightful comment about this file.\",\n                \"createdAt\": \"2015-11-05T08:15:30-05:00\",\n                \"publisherId\": \"sselvadurai\",\n                \"read\": true\n              }\n            ]\n          }\n        ]\n      }\n    ]\n  },\n  {\n    \"id\": \"ghi\",\n    \"createdAt\": \"2015-05-05T20:53:41.467Z\",\n    \"downloadUrl\": \"http://placehold.it/400x800\",\n    \"submitter\": {\n      \"id\": \"abc\",\n      \"handle\": \"Darth Vader\",\n      \"avatar\": \"http://www.topcoder.com/i/m/cardiboy_big.jpg\"\n    },\n    \"files\": [\n      {\n        \"id\": \"abc\",\n        \"name\": \"super-generic-file-1.jpg\",\n        \"images\": {\n          \"thumbnail\": \"http://placehold.it/50x40\",\n          \"small\": \"http://placehold.it/160x130\",\n          \"large\": \"http://placehold.it/200x400\",\n          \"full\": \"http://placehold.it/400x800\"\n        },\n        \"threads\": [\n          {\n            \"id\": \"guid-or-identifier-for-thread-object\",\n            \"subject\": \"Messages for file\",\n            \"unreadCount\": 1,\n            \"messages\": [\n              {\n                \"id\": \"guid-or-identifier-for-message-object\",\n                \"threadId\": \"guid-or-identifier-for-thread-object\",\n                \"body\": \"Some insightful comment about this file.\",\n                \"createdAt\": \"2015-11-azax05T08:15:30-05:00\",\n                \"publisherId\": \"sselvadurai\",\n                \"read\": false\n              }\n            ]\n          }\n        ]\n      },\n      {\n        \"id\": \"def\",\n        \"name\": \"super-generic-file-2.jpg\",\n        \"images\": {\n          \"thumbnail\": \"http://placehold.it/50x40\",\n          \"small\": \"http://placehold.it/160x130\",\n          \"large\": \"http://placehold.it/200x400\",\n          \"full\": \"http://placehold.it/400x800\"\n        },\n        \"threads\": [\n          {\n            \"id\": \"guid-or-identifier-for-thread-object\",\n            \"subject\": \"Messages for file\",\n            \"unreadCount\": 2,\n            \"messages\": [\n              {\n                \"id\": \"abc\",\n                \"threadId\": \"guid-or-identifier-for-thread-object\",\n                \"body\": \"Some insightful comment about this file.\",\n                \"createdAt\": \"2015-11-05T08:15:30-05:00\",\n                \"publisherId\": \"sselvadurai\",\n                \"read\": false\n              },\n              {\n                \"id\": \"def\",\n                \"threadId\": \"guid-or-identifier-for-thread-object\",\n                \"body\": \"Another deeply insightful comment about this file.\",\n                \"createdAt\": \"2015-11-05T08:15:30-05:00\",\n                \"publisherId\": \"aselbie\",\n                \"read\": false\n              }\n            ]\n          }\n        ]\n      },\n      {\n        \"id\": \"ghi\",\n        \"name\": \"super-generic-file-3.jpg\",\n        \"images\": {\n          \"thumbnail\": \"http://placehold.it/50x40\",\n          \"small\": \"http://placehold.it/160x130\",\n          \"large\": \"http://placehold.it/200x400\",\n          \"full\": \"http://placehold.it/400x800\"\n        },\n        \"threads\": [\n          {\n            \"id\": \"guid-or-identifier-for-thread-object\",\n            \"subject\": \"Messages for file\",\n            \"unreadCount\": 0,\n            \"messages\": [\n              {\n                \"id\": \"guid-or-identifier-for-message-object\",\n                \"threadId\": \"guid-or-identifier-for-thread-object\",\n                \"body\": \"Some insightful comment about this file.\",\n                \"createdAt\": \"2015-11-05T08:15:30-05:00\",\n                \"publisherId\": \"sselvadurai\",\n                \"read\": true\n              }\n            ]\n          }\n        ]\n      }\n    ]\n  }\n]\n"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "content": []
+          }
+        ]
+      },
+      {
+        "name": "Timeline",
+        "description": "",
+        "resources": [
+          {
+            "element": "resource",
+            "name": "Timeline Events",
+            "description": "Authroization header has to be provided along with this request to identify the user. A timeline object has the following fields:\n\n+ confirmEmail - the object describing the work event that a confirmation email has been sent \n\n+ assignCopilot - the object describing the work event that a copilot has been assigned\n\n+ quote - the object describing the work event about estimation of the project\n\n+ paymentAccepted - the object describing the work event that whether the payment has been accepted or not\n\n+ launch -  the object describing the work event that the project has been launched\n\n+ members - a list of members who have joined the project\n\n+ lastMessage -  the object describing the last (unread) message in a launch event\n\n+ desingConcepts -  the object describing the phase of deisgn concepts\n\n+ finalDesigns - the object describing the phase of final deisgns\n\n+ finalFixexs -  the object describing the phase of final fixes\n\n+ completed - the object describing the work event that whether the project has been completed or not\n\n",
+            "uriTemplate": "/work/{work_id}/timeline",
+            "model": {},
+            "parameters": [
+              {
+                "name": "work_id",
+                "description": "ID of the work in form of an integer",
+                "type": "number",
+                "required": true,
+                "default": "",
+                "example": "",
+                "values": []
+              }
+            ],
+            "actions": [
+              {
+                "name": "Get the timeline events",
+                "description": "Get information of the timeline events\n\n",
+                "method": "GET",
+                "parameters": [],
+                "attributes": {
+                  "relation": "",
+                  "uriTemplate": ""
+                },
+                "content": [],
+                "examples": [
+                  {
+                    "name": "",
+                    "description": "",
+                    "requests": [],
+                    "responses": [
+                      {
+                        "name": "200",
+                        "description": "",
+                        "headers": [
+                          {
+                            "name": "Content-Type",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": "{\n    \"id\": \"-455f1770:14d6dd97f63:-7f9c\",\n    \"result\": {\n        \"success\": true,\n        \"status\": 200,\n        \"metadata\": null,\n        \"content\": {\n            \"confirmEmail\": {\n                \"created\": \"12:30pm April 5 2015\",\n                \"address\": \"john@example.com\"\n            },\n            \"assignCopilot\": {\n                \"created\": \"12:30pm April 5 2015\",\n                \"userId\": 123,\n                \"handle\": \"Batman\"\n            },\n            \"quote\": {\n                \"created\": \"12:30pm April 5 2015\",\n                \"price\": 1500,\n                \"duration\": 20,\n                \"accepted\": true\n            },\n            \"paymentAccepted\": {\n                \"created\": \"12:30pm April 5 2015\"\n            },\n            \"launch\": {\n                \"created\": \"12:30pm April 5 2015\",\n            },\n            \"members\": [{\n                \"handle\": \"Batman #{i}\",\n                \"avatar\": \"avatar\"\n            }],\n            \"lastMessage\": {\n                \"avatar\": \"avatar\",\n                \"handle\": \"Batman\",\n                \"unreadMessageCount\": 5,\n                \"threadId\": \"abc123\",\n                \"message\": \"Maybe its best if we stick with something something something something.\"\n            },\n            \"designConcepts\": {\n                \"created\": \"12:30pm April 5 2015\",\n                \"submissionUrl\": \"http://www.google.com\",\n                \"submitterAvatars\": [\n                    \"http://www.freakpic.in/wp-content/uploads/2014/10/funny-avatar-6-300x300.jpg\"\n                ],\n                \"comments\": [{\n                    \"avatar\": \"avatar\",\n                    \"handle\": \"Batman\",\n                    \"unreadMessageCount\": 5,\n                    \"lastComment\": \"last comment\",\n                    \"threadId\": \"abc123\"\n                }],\n                \"winnerUrls\": [\n                    \"http://winnerUrls\"\n                ],\n                \"winnerAvatars\": [\n                    \"http://www.freakpic.in/wp-content/uploads/2014/10/funny-avatar-6-300x300.jpg\"\n                ]\n            },\n            \"finalDesigns\": {\n                \"created\": \"12:30pm April 5 2015\",\n                \"submissionUrl\": \"http://www.google.com\",\n                \"submitterAvatars\": [\n                    \"http://www.freakpic.in/wp-content/uploads/2014/10/funny-avatar-6-300x300.jpg\"\n                ],\n                \"winnerAvatars\": [\n                    \"http://www.freakpic.in/wp-content/uploads/2014/10/funny-avatar-6-300x300.jpg\"\n                ]\n            },\n            \"finalFixes\": {\n                \"created\": \"12:30pm April 5 2015\",\n                \"submissionUrl\": \"http://www.google.com\",\n                \"submitterAvatars\": [\n                    \"http://www.freakpic.in/wp-content/uploads/2014/10/funny-avatar-6-300x300.jpg\"\n                ],\n                \"comments\": [{\n                    \"avatar\": \"avatar\",\n                    \"handle\": \"Batman\",\n                    \"unreadMessageCount\": 5,\n                    “lastComment”: “last comment”,\n                    \"threadId\": \"abc123\"\n                }],\n                \"winnerUrl\": \"http://winnerUrls\",\n                \"winnerAvatar\": \"http://www.freakpic.in/wp-content/uploads/2014/10/funny-avatar-6-300x300.jpg\"\n            },\n            \"completed\": {\n                \"created\": \"12:30pm April 5 2015\"\n            }\n        }\n    },\n    \"version\": \"v3\"\n}\n",
+                        "schema": "",
+                        "content": [
+                          {
+                            "element": "asset",
+                            "attributes": {
+                              "role": "bodyExample"
+                            },
+                            "content": "{\n    \"id\": \"-455f1770:14d6dd97f63:-7f9c\",\n    \"result\": {\n        \"success\": true,\n        \"status\": 200,\n        \"metadata\": null,\n        \"content\": {\n            \"confirmEmail\": {\n                \"created\": \"12:30pm April 5 2015\",\n                \"address\": \"john@example.com\"\n            },\n            \"assignCopilot\": {\n                \"created\": \"12:30pm April 5 2015\",\n                \"userId\": 123,\n                \"handle\": \"Batman\"\n            },\n            \"quote\": {\n                \"created\": \"12:30pm April 5 2015\",\n                \"price\": 1500,\n                \"duration\": 20,\n                \"accepted\": true\n            },\n            \"paymentAccepted\": {\n                \"created\": \"12:30pm April 5 2015\"\n            },\n            \"launch\": {\n                \"created\": \"12:30pm April 5 2015\",\n            },\n            \"members\": [{\n                \"handle\": \"Batman #{i}\",\n                \"avatar\": \"avatar\"\n            }],\n            \"lastMessage\": {\n                \"avatar\": \"avatar\",\n                \"handle\": \"Batman\",\n                \"unreadMessageCount\": 5,\n                \"threadId\": \"abc123\",\n                \"message\": \"Maybe its best if we stick with something something something something.\"\n            },\n            \"designConcepts\": {\n                \"created\": \"12:30pm April 5 2015\",\n                \"submissionUrl\": \"http://www.google.com\",\n                \"submitterAvatars\": [\n                    \"http://www.freakpic.in/wp-content/uploads/2014/10/funny-avatar-6-300x300.jpg\"\n                ],\n                \"comments\": [{\n                    \"avatar\": \"avatar\",\n                    \"handle\": \"Batman\",\n                    \"unreadMessageCount\": 5,\n                    \"lastComment\": \"last comment\",\n                    \"threadId\": \"abc123\"\n                }],\n                \"winnerUrls\": [\n                    \"http://winnerUrls\"\n                ],\n                \"winnerAvatars\": [\n                    \"http://www.freakpic.in/wp-content/uploads/2014/10/funny-avatar-6-300x300.jpg\"\n                ]\n            },\n            \"finalDesigns\": {\n                \"created\": \"12:30pm April 5 2015\",\n                \"submissionUrl\": \"http://www.google.com\",\n                \"submitterAvatars\": [\n                    \"http://www.freakpic.in/wp-content/uploads/2014/10/funny-avatar-6-300x300.jpg\"\n                ],\n                \"winnerAvatars\": [\n                    \"http://www.freakpic.in/wp-content/uploads/2014/10/funny-avatar-6-300x300.jpg\"\n                ]\n            },\n            \"finalFixes\": {\n                \"created\": \"12:30pm April 5 2015\",\n                \"submissionUrl\": \"http://www.google.com\",\n                \"submitterAvatars\": [\n                    \"http://www.freakpic.in/wp-content/uploads/2014/10/funny-avatar-6-300x300.jpg\"\n                ],\n                \"comments\": [{\n                    \"avatar\": \"avatar\",\n                    \"handle\": \"Batman\",\n                    \"unreadMessageCount\": 5,\n                    “lastComment”: “last comment”,\n                    \"threadId\": \"abc123\"\n                }],\n                \"winnerUrl\": \"http://winnerUrls\",\n                \"winnerAvatar\": \"http://www.freakpic.in/wp-content/uploads/2014/10/funny-avatar-6-300x300.jpg\"\n            },\n            \"completed\": {\n                \"created\": \"12:30pm April 5 2015\"\n            }\n        }\n    },\n    \"version\": \"v3\"\n}\n"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "content": []
+          }
+        ]
+      }
+    ],
+    "content": [
+      {
+        "element": "category",
+        "attributes": {
+          "name": "Work Steps"
+        },
+        "content": [
+          {
+            "element": "resource",
+            "name": "A collection of steps",
+            "description": "",
+            "uriTemplate": "/projects/{work_id}/steps{?stepType}",
+            "model": {},
+            "parameters": [
+              {
+                "name": "work_id",
+                "description": "",
+                "type": "string",
+                "required": true,
+                "default": "",
+                "example": "abc",
+                "values": []
+              },
+              {
+                "name": "stepType",
+                "description": "Type of the  work step, can be designConcepts, completeDesigns or finalFixes",
+                "type": "string",
+                "required": false,
+                "default": "",
+                "example": "designConcepts",
+                "values": []
+              }
+            ],
+            "actions": [
+              {
+                "name": "Get a collection of steps",
+                "description": "Get all the work steps for the given project_id and work type\n\n",
+                "method": "GET",
+                "parameters": [],
+                "attributes": {
+                  "relation": "",
+                  "uriTemplate": ""
+                },
+                "content": [],
+                "examples": [
+                  {
+                    "name": "",
+                    "description": "",
+                    "requests": [],
+                    "responses": [
+                      {
+                        "name": "200",
+                        "description": "",
+                        "headers": [
+                          {
+                            "name": "Content-Type",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": "[\n  {\n    \"id\": \"abc\",\n    \"stepType\": \"designConcepts\",\n    \"startsAt\": \"20150129T1355+00:00\",\n    \"endsAt\": \"20150129T1355+00:00\",\n    \"completed\": null,\n    \"numberOfRanks\": 3,\n    \"rankedSubmissions\": [\n      {\n        \"rank\": 1,\n        \"submissionId\": \"123\"\n      }\n    ],\n    \"customerConfirmedRanks\": null\n  },\n  {\n    \"id\": \"def\",\n    \"stepType\": \"completeDesigns\",\n    \"startsAt\": \"20150129T1355+00:00\",\n    \"endsAt\": \"20150129T1355+00:00\",\n    \"completed\": null,\n    \"numberOfRanks\": 3,\n    \"rankedSubmissions\": [],\n    \"customerConfirmedRanks\": null\n  },\n  {\n    \"id\": \"ghi\",\n    \"stepType\": \"finalFixes\",\n    \"startsAt\": \"20150129T1355+00:00\",\n    \"endsAt\": \"20150129T1355+00:00\",\n    \"completed\": null,\n    \"customerAcceptedFixes\": null\n  }\n]\n",
+                        "schema": "",
+                        "content": [
+                          {
+                            "element": "asset",
+                            "attributes": {
+                              "role": "bodyExample"
+                            },
+                            "content": "[\n  {\n    \"id\": \"abc\",\n    \"stepType\": \"designConcepts\",\n    \"startsAt\": \"20150129T1355+00:00\",\n    \"endsAt\": \"20150129T1355+00:00\",\n    \"completed\": null,\n    \"numberOfRanks\": 3,\n    \"rankedSubmissions\": [\n      {\n        \"rank\": 1,\n        \"submissionId\": \"123\"\n      }\n    ],\n    \"customerConfirmedRanks\": null\n  },\n  {\n    \"id\": \"def\",\n    \"stepType\": \"completeDesigns\",\n    \"startsAt\": \"20150129T1355+00:00\",\n    \"endsAt\": \"20150129T1355+00:00\",\n    \"completed\": null,\n    \"numberOfRanks\": 3,\n    \"rankedSubmissions\": [],\n    \"customerConfirmedRanks\": null\n  },\n  {\n    \"id\": \"ghi\",\n    \"stepType\": \"finalFixes\",\n    \"startsAt\": \"20150129T1355+00:00\",\n    \"endsAt\": \"20150129T1355+00:00\",\n    \"completed\": null,\n    \"customerAcceptedFixes\": null\n  }\n]\n"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "content": []
+          },
+          {
+            "element": "resource",
+            "name": "A step",
+            "description": "The following properties may be PATCHed **one at a time**:\n\n+ rankedSubmissions\n\n+ customerConfirmedRanks\n\n+ customerAcceptedFixes\n\n",
+            "uriTemplate": "/projects/{work_id}/steps/{step_id}",
+            "model": {},
+            "parameters": [
+              {
+                "name": "work_id",
+                "description": "",
+                "type": "string",
+                "required": true,
+                "default": "",
+                "example": "abc",
+                "values": []
+              },
+              {
+                "name": "step_id",
+                "description": "",
+                "type": "string",
+                "required": true,
+                "default": "",
+                "example": "abc",
+                "values": []
+              }
+            ],
+            "actions": [
+              {
+                "name": "Get a step",
+                "description": "",
+                "method": "GET",
+                "parameters": [],
+                "attributes": {
+                  "relation": "",
+                  "uriTemplate": ""
+                },
+                "content": [],
+                "examples": [
+                  {
+                    "name": "",
+                    "description": "",
+                    "requests": [],
+                    "responses": [
+                      {
+                        "name": "200",
+                        "description": "",
+                        "headers": [
+                          {
+                            "name": "Content-Type",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": "{\n  \"id\": \"abc\",\n  \"stepType\": \"designConcepts\",\n  \"startsAt\": \"20150129T1355+00:00\",\n  \"endsAt\": \"20150129T1355+00:00\",\n  \"completed\": null,\n  \"numberOfRanks\": 3,\n  \"rankedSubmissions\": [\n    {\n      \"rank\": 1,\n      \"submissionId\": \"abc\"\n    }\n  ],\n  \"customerConfirmedRanks\": null\n}\n",
+                        "schema": "",
+                        "content": [
+                          {
+                            "element": "asset",
+                            "attributes": {
+                              "role": "bodyExample"
+                            },
+                            "content": "{\n  \"id\": \"abc\",\n  \"stepType\": \"designConcepts\",\n  \"startsAt\": \"20150129T1355+00:00\",\n  \"endsAt\": \"20150129T1355+00:00\",\n  \"completed\": null,\n  \"numberOfRanks\": 3,\n  \"rankedSubmissions\": [\n    {\n      \"rank\": 1,\n      \"submissionId\": \"abc\"\n    }\n  ],\n  \"customerConfirmedRanks\": null\n}\n"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "Update a step",
+                "description": "Update partial information of a work step with PATCH\n\n",
+                "method": "PATCH",
+                "parameters": [],
+                "attributes": {
+                  "relation": "",
+                  "uriTemplate": ""
+                },
+                "content": [],
+                "examples": [
+                  {
+                    "name": "",
+                    "description": "",
+                    "requests": [
+                      {
+                        "name": "",
+                        "description": "",
+                        "headers": [
+                          {
+                            "name": "Content-Type",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": "{\n    \"rankedSubmissions\": [\n        {\n          \"rank\": 1,\n          \"submissionId\": \"abc\"\n        },\n        {\n          \"rank\": 2,\n          \"submissionId\": \"def\"\n        },\n        {\n          \"rank\": 3,\n          \"submissionId\": \"ghi\"\n        }\n    ]\n}\n",
+                        "schema": "",
+                        "content": [
+                          {
+                            "element": "asset",
+                            "attributes": {
+                              "role": "bodyExample"
+                            },
+                            "content": "{\n    \"rankedSubmissions\": [\n        {\n          \"rank\": 1,\n          \"submissionId\": \"abc\"\n        },\n        {\n          \"rank\": 2,\n          \"submissionId\": \"def\"\n        },\n        {\n          \"rank\": 3,\n          \"submissionId\": \"ghi\"\n        }\n    ]\n}\n"
+                          }
+                        ]
+                      }
+                    ],
+                    "responses": [
+                      {
+                        "name": "200",
+                        "description": "",
+                        "headers": [
+                          {
+                            "name": "Content-Type",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": "{\n  \"id\": \"abc\",\n  \"stepType\": \"designConcepts\",\n  \"startsAt\": \"20150129T1355+00:00\",\n  \"endsAt\": \"20150129T1355+00:00\",\n  \"completed\": null,\n  \"numberOfRanks\": 3,\n  \"rankedSubmissions\": [\n    {\n      \"rank\": 1,\n      \"submissionId\": \"abc\"\n    },\n    {\n      \"rank\": 2,\n      \"submissionId\": \"def\"\n    },\n    {\n      \"rank\": 3,\n      \"submissionId\": \"ghi\"\n    }\n  ],\n  \"customerConfirmedRanks\": true\n}\n",
+                        "schema": "",
+                        "content": [
+                          {
+                            "element": "asset",
+                            "attributes": {
+                              "role": "bodyExample"
+                            },
+                            "content": "{\n  \"id\": \"abc\",\n  \"stepType\": \"designConcepts\",\n  \"startsAt\": \"20150129T1355+00:00\",\n  \"endsAt\": \"20150129T1355+00:00\",\n  \"completed\": null,\n  \"numberOfRanks\": 3,\n  \"rankedSubmissions\": [\n    {\n      \"rank\": 1,\n      \"submissionId\": \"abc\"\n    },\n    {\n      \"rank\": 2,\n      \"submissionId\": \"def\"\n    },\n    {\n      \"rank\": 3,\n      \"submissionId\": \"ghi\"\n    }\n  ],\n  \"customerConfirmedRanks\": true\n}\n"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "name": "",
+                    "description": "",
+                    "requests": [
+                      {
+                        "name": "",
+                        "description": "",
+                        "headers": [
+                          {
+                            "name": "Content-Type",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": "{\n    \"customerConfirmedRanks\": true\n}\n",
+                        "schema": "",
+                        "content": [
+                          {
+                            "element": "asset",
+                            "attributes": {
+                              "role": "bodyExample"
+                            },
+                            "content": "{\n    \"customerConfirmedRanks\": true\n}\n"
+                          }
+                        ]
+                      }
+                    ],
+                    "responses": [
+                      {
+                        "name": "200",
+                        "description": "",
+                        "headers": [
+                          {
+                            "name": "Content-Type",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": "{\n  \"id\": \"abc\",\n  \"stepType\": \"designConcepts\",\n  \"startsAt\": \"20150129T1355+00:00\",\n  \"endsAt\": \"20150129T1355+00:00\",\n  \"completed\": null,\n  \"numberOfRanks\": 3,\n  \"rankedSubmissions\": [\n    {\n      \"rank\": 1,\n      \"submissionId\": \"abc\"\n    },\n    {\n      \"rank\": 2,\n      \"submissionId\": \"def\"\n    },\n    {\n      \"rank\": 3,\n      \"submissionId\": \"ghi\"\n    }\n  ],\n  \"customerConfirmedRanks\": true\n}\n",
+                        "schema": "",
+                        "content": [
+                          {
+                            "element": "asset",
+                            "attributes": {
+                              "role": "bodyExample"
+                            },
+                            "content": "{\n  \"id\": \"abc\",\n  \"stepType\": \"designConcepts\",\n  \"startsAt\": \"20150129T1355+00:00\",\n  \"endsAt\": \"20150129T1355+00:00\",\n  \"completed\": null,\n  \"numberOfRanks\": 3,\n  \"rankedSubmissions\": [\n    {\n      \"rank\": 1,\n      \"submissionId\": \"abc\"\n    },\n    {\n      \"rank\": 2,\n      \"submissionId\": \"def\"\n    },\n    {\n      \"rank\": 3,\n      \"submissionId\": \"ghi\"\n    }\n  ],\n  \"customerConfirmedRanks\": true\n}\n"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "name": "",
+                    "description": "",
+                    "requests": [
+                      {
+                        "name": "",
+                        "description": "",
+                        "headers": [
+                          {
+                            "name": "Content-Type",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": "{\n    \"customerAcceptedFixes\": true\n}\n",
+                        "schema": "",
+                        "content": [
+                          {
+                            "element": "asset",
+                            "attributes": {
+                              "role": "bodyExample"
+                            },
+                            "content": "{\n    \"customerAcceptedFixes\": true\n}\n"
+                          }
+                        ]
+                      }
+                    ],
+                    "responses": [
+                      {
+                        "name": "200",
+                        "description": "",
+                        "headers": [
+                          {
+                            "name": "Content-Type",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": "{\n    \"id\": \"abc\",\n    \"stepType\": \"finalFixes\",\n    \"startsAt\": \"20150129T1355+00:00\",\n    \"endsAt\": \"20150129T1355+00:00\",\n    \"completed\": null,\n    \"customerAcceptedFixes\": true\n}\n",
+                        "schema": "",
+                        "content": [
+                          {
+                            "element": "asset",
+                            "attributes": {
+                              "role": "bodyExample"
+                            },
+                            "content": "{\n    \"id\": \"abc\",\n    \"stepType\": \"finalFixes\",\n    \"startsAt\": \"20150129T1355+00:00\",\n    \"endsAt\": \"20150129T1355+00:00\",\n    \"completed\": null,\n    \"customerAcceptedFixes\": true\n}\n"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "content": []
+          },
+          {
+            "element": "resource",
+            "name": "A collection of submissions",
+            "description": "",
+            "uriTemplate": "/projects/{work_id}/steps/{step_id}/submissions",
+            "model": {},
+            "parameters": [
+              {
+                "name": "work_id",
+                "description": "",
+                "type": "string",
+                "required": true,
+                "default": "",
+                "example": "abc",
+                "values": []
+              },
+              {
+                "name": "step_id",
+                "description": "",
+                "type": "string",
+                "required": true,
+                "default": "",
+                "example": "abc",
+                "values": []
+              }
+            ],
+            "actions": [
+              {
+                "name": "Get a collection of submissions",
+                "description": "Get all the submissions under the given work step\n\n",
+                "method": "GET",
+                "parameters": [],
+                "attributes": {
+                  "relation": "",
+                  "uriTemplate": ""
+                },
+                "content": [],
+                "examples": [
+                  {
+                    "name": "",
+                    "description": "",
+                    "requests": [],
+                    "responses": [
+                      {
+                        "name": "200",
+                        "description": "",
+                        "headers": [
+                          {
+                            "name": "Content-Type",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": "[\n  {\n    \"id\": \"abc\",\n    \"createdAt\": \"2015-05-05T20:53:41.467Z\",\n    \"downloadUrl\": \"http://placehold.it/400x800\",\n    \"submitter\": {\n      \"id\": \"abc\",\n      \"handle\": \"Darth Vader\",\n      \"avatar\": \"http://www.topcoder.com/i/m/cardiboy_big.jpg\"\n    },\n    \"files\": [\n      {\n        \"id\": \"abc\",\n        \"name\": \"super-generic-file-1.jpg\",\n        \"images\": {\n          \"thumbnail\": \"http://placehold.it/50x40\",\n          \"small\": \"http://placehold.it/160x130\",\n          \"large\": \"http://placehold.it/200x400\",\n          \"full\": \"http://placehold.it/400x800\"\n        },\n        \"threads\": [\n          {\n            \"id\": \"guid-or-identifier-for-thread-object\",\n            \"subject\": \"Messages for file\",\n            \"unreadCount\": 1,\n            \"messages\": [\n              {\n                \"id\": \"guid-or-identifier-for-message-object\",\n                \"threadId\": \"guid-or-identifier-for-thread-object\",\n                \"body\": \"Some insightful comment about this file.\",\n                \"createdAt\": \"2015-11-azax05T08:15:30-05:00\",\n                \"publisherId\": \"sselvadurai\",\n                \"read\": false\n              }\n            ]\n          }\n        ]\n      },\n      {\n        \"id\": \"def\",\n        \"name\": \"super-generic-file-2.jpg\",\n        \"images\": {\n          \"thumbnail\": \"http://placehold.it/50x40\",\n          \"small\": \"http://placehold.it/160x130\",\n          \"large\": \"http://placehold.it/200x400\",\n          \"full\": \"http://placehold.it/400x800\"\n        },\n        \"threads\": [\n          {\n            \"id\": \"guid-or-identifier-for-thread-object\",\n            \"subject\": \"Messages for file\",\n            \"unreadCount\": 2,\n            \"messages\": [\n              {\n                \"id\": \"abc\",\n                \"threadId\": \"guid-or-identifier-for-thread-object\",\n                \"body\": \"Some insightful comment about this file.\",\n                \"createdAt\": \"2015-11-05T08:15:30-05:00\",\n                \"publisherId\": \"sselvadurai\",\n                \"read\": false\n              },\n              {\n                \"id\": \"def\",\n                \"threadId\": \"guid-or-identifier-for-thread-object\",\n                \"body\": \"Another deeply insightful comment about this file.\",\n                \"createdAt\": \"2015-11-05T08:15:30-05:00\",\n                \"publisherId\": \"aselbie\",\n                \"read\": false\n              }\n            ]\n          }\n        ]\n      },\n      {\n        \"id\": \"ghi\",\n        \"name\": \"super-generic-file-3.jpg\",\n        \"images\": {\n          \"thumbnail\": \"http://placehold.it/50x40\",\n          \"small\": \"http://placehold.it/160x130\",\n          \"large\": \"http://placehold.it/200x400\",\n          \"full\": \"http://placehold.it/400x800\"\n        },\n        \"threads\": [\n          {\n            \"id\": \"guid-or-identifier-for-thread-object\",\n            \"subject\": \"Messages for file\",\n            \"unreadCount\": 0,\n            \"messages\": [\n              {\n                \"id\": \"guid-or-identifier-for-message-object\",\n                \"threadId\": \"guid-or-identifier-for-thread-object\",\n                \"body\": \"Some insightful comment about this file.\",\n                \"createdAt\": \"2015-11-05T08:15:30-05:00\",\n                \"publisherId\": \"sselvadurai\",\n                \"read\": true\n              }\n            ]\n          }\n        ]\n      }\n    ]\n  },\n  {\n    \"id\": \"def\",\n    \"createdAt\": \"2015-05-05T20:53:41.467Z\",\n    \"downloadUrl\": \"http://placehold.it/400x800\",\n    \"submitter\": {\n      \"id\": \"abc\",\n      \"handle\": \"Darth Vader\",\n      \"avatar\": \"http://www.topcoder.com/i/m/cardiboy_big.jpg\"\n    },\n    \"files\": [\n      {\n        \"id\": \"abc\",\n        \"name\": \"super-generic-file-1.jpg\",\n        \"images\": {\n          \"thumbnail\": \"http://placehold.it/50x40\",\n          \"small\": \"http://placehold.it/160x130\",\n          \"large\": \"http://placehold.it/200x400\",\n          \"full\": \"http://placehold.it/400x800\"\n        },\n        \"threads\": [\n          {\n            \"id\": \"guid-or-identifier-for-thread-object\",\n            \"subject\": \"Messages for file\",\n            \"unreadCount\": 1,\n            \"messages\": [\n              {\n                \"id\": \"guid-or-identifier-for-message-object\",\n                \"threadId\": \"guid-or-identifier-for-thread-object\",\n                \"body\": \"Some insightful comment about this file.\",\n                \"createdAt\": \"2015-11-azax05T08:15:30-05:00\",\n                \"publisherId\": \"sselvadurai\",\n                \"read\": false\n              }\n            ]\n          }\n        ]\n      },\n      {\n        \"id\": \"def\",\n        \"name\": \"super-generic-file-2.jpg\",\n        \"images\": {\n          \"thumbnail\": \"http://placehold.it/50x40\",\n          \"small\": \"http://placehold.it/160x130\",\n          \"large\": \"http://placehold.it/200x400\",\n          \"full\": \"http://placehold.it/400x800\"\n        },\n        \"threads\": [\n          {\n            \"id\": \"guid-or-identifier-for-thread-object\",\n            \"subject\": \"Messages for file\",\n            \"unreadCount\": 2,\n            \"messages\": [\n              {\n                \"id\": \"abc\",\n                \"threadId\": \"guid-or-identifier-for-thread-object\",\n                \"body\": \"Some insightful comment about this file.\",\n                \"createdAt\": \"2015-11-05T08:15:30-05:00\",\n                \"publisherId\": \"sselvadurai\",\n                \"read\": false\n              },\n              {\n                \"id\": \"def\",\n                \"threadId\": \"guid-or-identifier-for-thread-object\",\n                \"body\": \"Another deeply insightful comment about this file.\",\n                \"createdAt\": \"2015-11-05T08:15:30-05:00\",\n                \"publisherId\": \"aselbie\",\n                \"read\": false\n              }\n            ]\n          }\n        ]\n      },\n      {\n        \"id\": \"ghi\",\n        \"name\": \"super-generic-file-3.jpg\",\n        \"images\": {\n          \"thumbnail\": \"http://placehold.it/50x40\",\n          \"small\": \"http://placehold.it/160x130\",\n          \"large\": \"http://placehold.it/200x400\",\n          \"full\": \"http://placehold.it/400x800\"\n        },\n        \"threads\": [\n          {\n            \"id\": \"guid-or-identifier-for-thread-object\",\n            \"subject\": \"Messages for file\",\n            \"unreadCount\": 0,\n            \"messages\": [\n              {\n                \"id\": \"guid-or-identifier-for-message-object\",\n                \"threadId\": \"guid-or-identifier-for-thread-object\",\n                \"body\": \"Some insightful comment about this file.\",\n                \"createdAt\": \"2015-11-05T08:15:30-05:00\",\n                \"publisherId\": \"sselvadurai\",\n                \"read\": true\n              }\n            ]\n          }\n        ]\n      }\n    ]\n  },\n  {\n    \"id\": \"ghi\",\n    \"createdAt\": \"2015-05-05T20:53:41.467Z\",\n    \"downloadUrl\": \"http://placehold.it/400x800\",\n    \"submitter\": {\n      \"id\": \"abc\",\n      \"handle\": \"Darth Vader\",\n      \"avatar\": \"http://www.topcoder.com/i/m/cardiboy_big.jpg\"\n    },\n    \"files\": [\n      {\n        \"id\": \"abc\",\n        \"name\": \"super-generic-file-1.jpg\",\n        \"images\": {\n          \"thumbnail\": \"http://placehold.it/50x40\",\n          \"small\": \"http://placehold.it/160x130\",\n          \"large\": \"http://placehold.it/200x400\",\n          \"full\": \"http://placehold.it/400x800\"\n        },\n        \"threads\": [\n          {\n            \"id\": \"guid-or-identifier-for-thread-object\",\n            \"subject\": \"Messages for file\",\n            \"unreadCount\": 1,\n            \"messages\": [\n              {\n                \"id\": \"guid-or-identifier-for-message-object\",\n                \"threadId\": \"guid-or-identifier-for-thread-object\",\n                \"body\": \"Some insightful comment about this file.\",\n                \"createdAt\": \"2015-11-azax05T08:15:30-05:00\",\n                \"publisherId\": \"sselvadurai\",\n                \"read\": false\n              }\n            ]\n          }\n        ]\n      },\n      {\n        \"id\": \"def\",\n        \"name\": \"super-generic-file-2.jpg\",\n        \"images\": {\n          \"thumbnail\": \"http://placehold.it/50x40\",\n          \"small\": \"http://placehold.it/160x130\",\n          \"large\": \"http://placehold.it/200x400\",\n          \"full\": \"http://placehold.it/400x800\"\n        },\n        \"threads\": [\n          {\n            \"id\": \"guid-or-identifier-for-thread-object\",\n            \"subject\": \"Messages for file\",\n            \"unreadCount\": 2,\n            \"messages\": [\n              {\n                \"id\": \"abc\",\n                \"threadId\": \"guid-or-identifier-for-thread-object\",\n                \"body\": \"Some insightful comment about this file.\",\n                \"createdAt\": \"2015-11-05T08:15:30-05:00\",\n                \"publisherId\": \"sselvadurai\",\n                \"read\": false\n              },\n              {\n                \"id\": \"def\",\n                \"threadId\": \"guid-or-identifier-for-thread-object\",\n                \"body\": \"Another deeply insightful comment about this file.\",\n                \"createdAt\": \"2015-11-05T08:15:30-05:00\",\n                \"publisherId\": \"aselbie\",\n                \"read\": false\n              }\n            ]\n          }\n        ]\n      },\n      {\n        \"id\": \"ghi\",\n        \"name\": \"super-generic-file-3.jpg\",\n        \"images\": {\n          \"thumbnail\": \"http://placehold.it/50x40\",\n          \"small\": \"http://placehold.it/160x130\",\n          \"large\": \"http://placehold.it/200x400\",\n          \"full\": \"http://placehold.it/400x800\"\n        },\n        \"threads\": [\n          {\n            \"id\": \"guid-or-identifier-for-thread-object\",\n            \"subject\": \"Messages for file\",\n            \"unreadCount\": 0,\n            \"messages\": [\n              {\n                \"id\": \"guid-or-identifier-for-message-object\",\n                \"threadId\": \"guid-or-identifier-for-thread-object\",\n                \"body\": \"Some insightful comment about this file.\",\n                \"createdAt\": \"2015-11-05T08:15:30-05:00\",\n                \"publisherId\": \"sselvadurai\",\n                \"read\": true\n              }\n            ]\n          }\n        ]\n      }\n    ]\n  }\n]\n",
+                        "schema": "",
+                        "content": [
+                          {
+                            "element": "asset",
+                            "attributes": {
+                              "role": "bodyExample"
+                            },
+                            "content": "[\n  {\n    \"id\": \"abc\",\n    \"createdAt\": \"2015-05-05T20:53:41.467Z\",\n    \"downloadUrl\": \"http://placehold.it/400x800\",\n    \"submitter\": {\n      \"id\": \"abc\",\n      \"handle\": \"Darth Vader\",\n      \"avatar\": \"http://www.topcoder.com/i/m/cardiboy_big.jpg\"\n    },\n    \"files\": [\n      {\n        \"id\": \"abc\",\n        \"name\": \"super-generic-file-1.jpg\",\n        \"images\": {\n          \"thumbnail\": \"http://placehold.it/50x40\",\n          \"small\": \"http://placehold.it/160x130\",\n          \"large\": \"http://placehold.it/200x400\",\n          \"full\": \"http://placehold.it/400x800\"\n        },\n        \"threads\": [\n          {\n            \"id\": \"guid-or-identifier-for-thread-object\",\n            \"subject\": \"Messages for file\",\n            \"unreadCount\": 1,\n            \"messages\": [\n              {\n                \"id\": \"guid-or-identifier-for-message-object\",\n                \"threadId\": \"guid-or-identifier-for-thread-object\",\n                \"body\": \"Some insightful comment about this file.\",\n                \"createdAt\": \"2015-11-azax05T08:15:30-05:00\",\n                \"publisherId\": \"sselvadurai\",\n                \"read\": false\n              }\n            ]\n          }\n        ]\n      },\n      {\n        \"id\": \"def\",\n        \"name\": \"super-generic-file-2.jpg\",\n        \"images\": {\n          \"thumbnail\": \"http://placehold.it/50x40\",\n          \"small\": \"http://placehold.it/160x130\",\n          \"large\": \"http://placehold.it/200x400\",\n          \"full\": \"http://placehold.it/400x800\"\n        },\n        \"threads\": [\n          {\n            \"id\": \"guid-or-identifier-for-thread-object\",\n            \"subject\": \"Messages for file\",\n            \"unreadCount\": 2,\n            \"messages\": [\n              {\n                \"id\": \"abc\",\n                \"threadId\": \"guid-or-identifier-for-thread-object\",\n                \"body\": \"Some insightful comment about this file.\",\n                \"createdAt\": \"2015-11-05T08:15:30-05:00\",\n                \"publisherId\": \"sselvadurai\",\n                \"read\": false\n              },\n              {\n                \"id\": \"def\",\n                \"threadId\": \"guid-or-identifier-for-thread-object\",\n                \"body\": \"Another deeply insightful comment about this file.\",\n                \"createdAt\": \"2015-11-05T08:15:30-05:00\",\n                \"publisherId\": \"aselbie\",\n                \"read\": false\n              }\n            ]\n          }\n        ]\n      },\n      {\n        \"id\": \"ghi\",\n        \"name\": \"super-generic-file-3.jpg\",\n        \"images\": {\n          \"thumbnail\": \"http://placehold.it/50x40\",\n          \"small\": \"http://placehold.it/160x130\",\n          \"large\": \"http://placehold.it/200x400\",\n          \"full\": \"http://placehold.it/400x800\"\n        },\n        \"threads\": [\n          {\n            \"id\": \"guid-or-identifier-for-thread-object\",\n            \"subject\": \"Messages for file\",\n            \"unreadCount\": 0,\n            \"messages\": [\n              {\n                \"id\": \"guid-or-identifier-for-message-object\",\n                \"threadId\": \"guid-or-identifier-for-thread-object\",\n                \"body\": \"Some insightful comment about this file.\",\n                \"createdAt\": \"2015-11-05T08:15:30-05:00\",\n                \"publisherId\": \"sselvadurai\",\n                \"read\": true\n              }\n            ]\n          }\n        ]\n      }\n    ]\n  },\n  {\n    \"id\": \"def\",\n    \"createdAt\": \"2015-05-05T20:53:41.467Z\",\n    \"downloadUrl\": \"http://placehold.it/400x800\",\n    \"submitter\": {\n      \"id\": \"abc\",\n      \"handle\": \"Darth Vader\",\n      \"avatar\": \"http://www.topcoder.com/i/m/cardiboy_big.jpg\"\n    },\n    \"files\": [\n      {\n        \"id\": \"abc\",\n        \"name\": \"super-generic-file-1.jpg\",\n        \"images\": {\n          \"thumbnail\": \"http://placehold.it/50x40\",\n          \"small\": \"http://placehold.it/160x130\",\n          \"large\": \"http://placehold.it/200x400\",\n          \"full\": \"http://placehold.it/400x800\"\n        },\n        \"threads\": [\n          {\n            \"id\": \"guid-or-identifier-for-thread-object\",\n            \"subject\": \"Messages for file\",\n            \"unreadCount\": 1,\n            \"messages\": [\n              {\n                \"id\": \"guid-or-identifier-for-message-object\",\n                \"threadId\": \"guid-or-identifier-for-thread-object\",\n                \"body\": \"Some insightful comment about this file.\",\n                \"createdAt\": \"2015-11-azax05T08:15:30-05:00\",\n                \"publisherId\": \"sselvadurai\",\n                \"read\": false\n              }\n            ]\n          }\n        ]\n      },\n      {\n        \"id\": \"def\",\n        \"name\": \"super-generic-file-2.jpg\",\n        \"images\": {\n          \"thumbnail\": \"http://placehold.it/50x40\",\n          \"small\": \"http://placehold.it/160x130\",\n          \"large\": \"http://placehold.it/200x400\",\n          \"full\": \"http://placehold.it/400x800\"\n        },\n        \"threads\": [\n          {\n            \"id\": \"guid-or-identifier-for-thread-object\",\n            \"subject\": \"Messages for file\",\n            \"unreadCount\": 2,\n            \"messages\": [\n              {\n                \"id\": \"abc\",\n                \"threadId\": \"guid-or-identifier-for-thread-object\",\n                \"body\": \"Some insightful comment about this file.\",\n                \"createdAt\": \"2015-11-05T08:15:30-05:00\",\n                \"publisherId\": \"sselvadurai\",\n                \"read\": false\n              },\n              {\n                \"id\": \"def\",\n                \"threadId\": \"guid-or-identifier-for-thread-object\",\n                \"body\": \"Another deeply insightful comment about this file.\",\n                \"createdAt\": \"2015-11-05T08:15:30-05:00\",\n                \"publisherId\": \"aselbie\",\n                \"read\": false\n              }\n            ]\n          }\n        ]\n      },\n      {\n        \"id\": \"ghi\",\n        \"name\": \"super-generic-file-3.jpg\",\n        \"images\": {\n          \"thumbnail\": \"http://placehold.it/50x40\",\n          \"small\": \"http://placehold.it/160x130\",\n          \"large\": \"http://placehold.it/200x400\",\n          \"full\": \"http://placehold.it/400x800\"\n        },\n        \"threads\": [\n          {\n            \"id\": \"guid-or-identifier-for-thread-object\",\n            \"subject\": \"Messages for file\",\n            \"unreadCount\": 0,\n            \"messages\": [\n              {\n                \"id\": \"guid-or-identifier-for-message-object\",\n                \"threadId\": \"guid-or-identifier-for-thread-object\",\n                \"body\": \"Some insightful comment about this file.\",\n                \"createdAt\": \"2015-11-05T08:15:30-05:00\",\n                \"publisherId\": \"sselvadurai\",\n                \"read\": true\n              }\n            ]\n          }\n        ]\n      }\n    ]\n  },\n  {\n    \"id\": \"ghi\",\n    \"createdAt\": \"2015-05-05T20:53:41.467Z\",\n    \"downloadUrl\": \"http://placehold.it/400x800\",\n    \"submitter\": {\n      \"id\": \"abc\",\n      \"handle\": \"Darth Vader\",\n      \"avatar\": \"http://www.topcoder.com/i/m/cardiboy_big.jpg\"\n    },\n    \"files\": [\n      {\n        \"id\": \"abc\",\n        \"name\": \"super-generic-file-1.jpg\",\n        \"images\": {\n          \"thumbnail\": \"http://placehold.it/50x40\",\n          \"small\": \"http://placehold.it/160x130\",\n          \"large\": \"http://placehold.it/200x400\",\n          \"full\": \"http://placehold.it/400x800\"\n        },\n        \"threads\": [\n          {\n            \"id\": \"guid-or-identifier-for-thread-object\",\n            \"subject\": \"Messages for file\",\n            \"unreadCount\": 1,\n            \"messages\": [\n              {\n                \"id\": \"guid-or-identifier-for-message-object\",\n                \"threadId\": \"guid-or-identifier-for-thread-object\",\n                \"body\": \"Some insightful comment about this file.\",\n                \"createdAt\": \"2015-11-azax05T08:15:30-05:00\",\n                \"publisherId\": \"sselvadurai\",\n                \"read\": false\n              }\n            ]\n          }\n        ]\n      },\n      {\n        \"id\": \"def\",\n        \"name\": \"super-generic-file-2.jpg\",\n        \"images\": {\n          \"thumbnail\": \"http://placehold.it/50x40\",\n          \"small\": \"http://placehold.it/160x130\",\n          \"large\": \"http://placehold.it/200x400\",\n          \"full\": \"http://placehold.it/400x800\"\n        },\n        \"threads\": [\n          {\n            \"id\": \"guid-or-identifier-for-thread-object\",\n            \"subject\": \"Messages for file\",\n            \"unreadCount\": 2,\n            \"messages\": [\n              {\n                \"id\": \"abc\",\n                \"threadId\": \"guid-or-identifier-for-thread-object\",\n                \"body\": \"Some insightful comment about this file.\",\n                \"createdAt\": \"2015-11-05T08:15:30-05:00\",\n                \"publisherId\": \"sselvadurai\",\n                \"read\": false\n              },\n              {\n                \"id\": \"def\",\n                \"threadId\": \"guid-or-identifier-for-thread-object\",\n                \"body\": \"Another deeply insightful comment about this file.\",\n                \"createdAt\": \"2015-11-05T08:15:30-05:00\",\n                \"publisherId\": \"aselbie\",\n                \"read\": false\n              }\n            ]\n          }\n        ]\n      },\n      {\n        \"id\": \"ghi\",\n        \"name\": \"super-generic-file-3.jpg\",\n        \"images\": {\n          \"thumbnail\": \"http://placehold.it/50x40\",\n          \"small\": \"http://placehold.it/160x130\",\n          \"large\": \"http://placehold.it/200x400\",\n          \"full\": \"http://placehold.it/400x800\"\n        },\n        \"threads\": [\n          {\n            \"id\": \"guid-or-identifier-for-thread-object\",\n            \"subject\": \"Messages for file\",\n            \"unreadCount\": 0,\n            \"messages\": [\n              {\n                \"id\": \"guid-or-identifier-for-message-object\",\n                \"threadId\": \"guid-or-identifier-for-thread-object\",\n                \"body\": \"Some insightful comment about this file.\",\n                \"createdAt\": \"2015-11-05T08:15:30-05:00\",\n                \"publisherId\": \"sselvadurai\",\n                \"read\": true\n              }\n            ]\n          }\n        ]\n      }\n    ]\n  }\n]\n"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "content": []
+          }
+        ]
+      },
+      {
+        "element": "category",
+        "attributes": {
+          "name": "Timeline"
+        },
+        "content": [
+          {
+            "element": "resource",
+            "name": "Timeline Events",
+            "description": "Authroization header has to be provided along with this request to identify the user. A timeline object has the following fields:\n\n+ confirmEmail - the object describing the work event that a confirmation email has been sent \n\n+ assignCopilot - the object describing the work event that a copilot has been assigned\n\n+ quote - the object describing the work event about estimation of the project\n\n+ paymentAccepted - the object describing the work event that whether the payment has been accepted or not\n\n+ launch -  the object describing the work event that the project has been launched\n\n+ members - a list of members who have joined the project\n\n+ lastMessage -  the object describing the last (unread) message in a launch event\n\n+ desingConcepts -  the object describing the phase of deisgn concepts\n\n+ finalDesigns - the object describing the phase of final deisgns\n\n+ finalFixexs -  the object describing the phase of final fixes\n\n+ completed - the object describing the work event that whether the project has been completed or not\n\n",
+            "uriTemplate": "/work/{work_id}/timeline",
+            "model": {},
+            "parameters": [
+              {
+                "name": "work_id",
+                "description": "ID of the work in form of an integer",
+                "type": "number",
+                "required": true,
+                "default": "",
+                "example": "",
+                "values": []
+              }
+            ],
+            "actions": [
+              {
+                "name": "Get the timeline events",
+                "description": "Get information of the timeline events\n\n",
+                "method": "GET",
+                "parameters": [],
+                "attributes": {
+                  "relation": "",
+                  "uriTemplate": ""
+                },
+                "content": [],
+                "examples": [
+                  {
+                    "name": "",
+                    "description": "",
+                    "requests": [],
+                    "responses": [
+                      {
+                        "name": "200",
+                        "description": "",
+                        "headers": [
+                          {
+                            "name": "Content-Type",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": "{\n    \"id\": \"-455f1770:14d6dd97f63:-7f9c\",\n    \"result\": {\n        \"success\": true,\n        \"status\": 200,\n        \"metadata\": null,\n        \"content\": {\n            \"confirmEmail\": {\n                \"created\": \"12:30pm April 5 2015\",\n                \"address\": \"john@example.com\"\n            },\n            \"assignCopilot\": {\n                \"created\": \"12:30pm April 5 2015\",\n                \"userId\": 123,\n                \"handle\": \"Batman\"\n            },\n            \"quote\": {\n                \"created\": \"12:30pm April 5 2015\",\n                \"price\": 1500,\n                \"duration\": 20,\n                \"accepted\": true\n            },\n            \"paymentAccepted\": {\n                \"created\": \"12:30pm April 5 2015\"\n            },\n            \"launch\": {\n                \"created\": \"12:30pm April 5 2015\",\n            },\n            \"members\": [{\n                \"handle\": \"Batman #{i}\",\n                \"avatar\": \"avatar\"\n            }],\n            \"lastMessage\": {\n                \"avatar\": \"avatar\",\n                \"handle\": \"Batman\",\n                \"unreadMessageCount\": 5,\n                \"threadId\": \"abc123\",\n                \"message\": \"Maybe its best if we stick with something something something something.\"\n            },\n            \"designConcepts\": {\n                \"created\": \"12:30pm April 5 2015\",\n                \"submissionUrl\": \"http://www.google.com\",\n                \"submitterAvatars\": [\n                    \"http://www.freakpic.in/wp-content/uploads/2014/10/funny-avatar-6-300x300.jpg\"\n                ],\n                \"comments\": [{\n                    \"avatar\": \"avatar\",\n                    \"handle\": \"Batman\",\n                    \"unreadMessageCount\": 5,\n                    \"lastComment\": \"last comment\",\n                    \"threadId\": \"abc123\"\n                }],\n                \"winnerUrls\": [\n                    \"http://winnerUrls\"\n                ],\n                \"winnerAvatars\": [\n                    \"http://www.freakpic.in/wp-content/uploads/2014/10/funny-avatar-6-300x300.jpg\"\n                ]\n            },\n            \"finalDesigns\": {\n                \"created\": \"12:30pm April 5 2015\",\n                \"submissionUrl\": \"http://www.google.com\",\n                \"submitterAvatars\": [\n                    \"http://www.freakpic.in/wp-content/uploads/2014/10/funny-avatar-6-300x300.jpg\"\n                ],\n                \"winnerAvatars\": [\n                    \"http://www.freakpic.in/wp-content/uploads/2014/10/funny-avatar-6-300x300.jpg\"\n                ]\n            },\n            \"finalFixes\": {\n                \"created\": \"12:30pm April 5 2015\",\n                \"submissionUrl\": \"http://www.google.com\",\n                \"submitterAvatars\": [\n                    \"http://www.freakpic.in/wp-content/uploads/2014/10/funny-avatar-6-300x300.jpg\"\n                ],\n                \"comments\": [{\n                    \"avatar\": \"avatar\",\n                    \"handle\": \"Batman\",\n                    \"unreadMessageCount\": 5,\n                    “lastComment”: “last comment”,\n                    \"threadId\": \"abc123\"\n                }],\n                \"winnerUrl\": \"http://winnerUrls\",\n                \"winnerAvatar\": \"http://www.freakpic.in/wp-content/uploads/2014/10/funny-avatar-6-300x300.jpg\"\n            },\n            \"completed\": {\n                \"created\": \"12:30pm April 5 2015\"\n            }\n        }\n    },\n    \"version\": \"v3\"\n}\n",
+                        "schema": "",
+                        "content": [
+                          {
+                            "element": "asset",
+                            "attributes": {
+                              "role": "bodyExample"
+                            },
+                            "content": "{\n    \"id\": \"-455f1770:14d6dd97f63:-7f9c\",\n    \"result\": {\n        \"success\": true,\n        \"status\": 200,\n        \"metadata\": null,\n        \"content\": {\n            \"confirmEmail\": {\n                \"created\": \"12:30pm April 5 2015\",\n                \"address\": \"john@example.com\"\n            },\n            \"assignCopilot\": {\n                \"created\": \"12:30pm April 5 2015\",\n                \"userId\": 123,\n                \"handle\": \"Batman\"\n            },\n            \"quote\": {\n                \"created\": \"12:30pm April 5 2015\",\n                \"price\": 1500,\n                \"duration\": 20,\n                \"accepted\": true\n            },\n            \"paymentAccepted\": {\n                \"created\": \"12:30pm April 5 2015\"\n            },\n            \"launch\": {\n                \"created\": \"12:30pm April 5 2015\",\n            },\n            \"members\": [{\n                \"handle\": \"Batman #{i}\",\n                \"avatar\": \"avatar\"\n            }],\n            \"lastMessage\": {\n                \"avatar\": \"avatar\",\n                \"handle\": \"Batman\",\n                \"unreadMessageCount\": 5,\n                \"threadId\": \"abc123\",\n                \"message\": \"Maybe its best if we stick with something something something something.\"\n            },\n            \"designConcepts\": {\n                \"created\": \"12:30pm April 5 2015\",\n                \"submissionUrl\": \"http://www.google.com\",\n                \"submitterAvatars\": [\n                    \"http://www.freakpic.in/wp-content/uploads/2014/10/funny-avatar-6-300x300.jpg\"\n                ],\n                \"comments\": [{\n                    \"avatar\": \"avatar\",\n                    \"handle\": \"Batman\",\n                    \"unreadMessageCount\": 5,\n                    \"lastComment\": \"last comment\",\n                    \"threadId\": \"abc123\"\n                }],\n                \"winnerUrls\": [\n                    \"http://winnerUrls\"\n                ],\n                \"winnerAvatars\": [\n                    \"http://www.freakpic.in/wp-content/uploads/2014/10/funny-avatar-6-300x300.jpg\"\n                ]\n            },\n            \"finalDesigns\": {\n                \"created\": \"12:30pm April 5 2015\",\n                \"submissionUrl\": \"http://www.google.com\",\n                \"submitterAvatars\": [\n                    \"http://www.freakpic.in/wp-content/uploads/2014/10/funny-avatar-6-300x300.jpg\"\n                ],\n                \"winnerAvatars\": [\n                    \"http://www.freakpic.in/wp-content/uploads/2014/10/funny-avatar-6-300x300.jpg\"\n                ]\n            },\n            \"finalFixes\": {\n                \"created\": \"12:30pm April 5 2015\",\n                \"submissionUrl\": \"http://www.google.com\",\n                \"submitterAvatars\": [\n                    \"http://www.freakpic.in/wp-content/uploads/2014/10/funny-avatar-6-300x300.jpg\"\n                ],\n                \"comments\": [{\n                    \"avatar\": \"avatar\",\n                    \"handle\": \"Batman\",\n                    \"unreadMessageCount\": 5,\n                    “lastComment”: “last comment”,\n                    \"threadId\": \"abc123\"\n                }],\n                \"winnerUrl\": \"http://winnerUrls\",\n                \"winnerAvatar\": \"http://www.freakpic.in/wp-content/uploads/2014/10/funny-avatar-6-300x300.jpg\"\n            },\n            \"completed\": {\n                \"created\": \"12:30pm April 5 2015\"\n            }\n        }\n    },\n    \"version\": \"v3\"\n}\n"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "content": []
+          }
+        ]
+      }
+    ]
+  },
+  "warnings": [],
+  "sourcemap": null
+}

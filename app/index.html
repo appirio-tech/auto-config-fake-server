@@ -36,6 +36,7 @@
       AutoConfigFakeServer.consume(window.FIXTURES['app/lyft.swagger.json']);
       AutoConfigFakeServer.consume(window.FIXTURES['app/uber.swagger.json']);
       AutoConfigFakeServer.consume(window.FIXTURES['app/work.apiary.json']);
+      AutoConfigFakeServer.consume(window.FIXTURES['app/app.apiary.json']);
 
       var urls = [
         { url: 'https://api.uber.com/v1/estimates/price', expect: 'success' },
@@ -63,8 +64,9 @@
         { url: 'http://api.topcoder.com/v3/work-files/123', expect: 'success' },
         { url: 'http://api.topcoder.com/v3/work-files?filter=workId%3D12345', expect: 'success' },
         { url: 'http://api.topcoder.com/v3/work-files?filter=workId%3D123%26assetType%3Dspecs', expect: 'success' },
+        { url: 'https://api.topcoder.com/v3/projects/abc/steps', expect: 'success' }
       ];
-
+ 
       for (var i = 0; i < urls.length; i += 1) {
         var li = document.createElement('li');
         li.id = 'response-' + i;

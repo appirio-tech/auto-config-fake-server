@@ -159,6 +159,10 @@ getApiaryMetadata = (schema, name) ->
 formatApiaryUriRegex = (host, uriTemplate) ->
   # TODO: Do something with params
   [path, params] = uriTemplate.split '?'
+
+  # Optional params are represented as {?param} in apiary,
+  # leaving us with a trailing { on our path
+  path           = path.replace /\{$/, ''
   uri            = host + path
   uri            = uri.replace /\{([a-zA-Z0-9_\\-]+)\}/g, '([a-zA-Z0-9_\\-]+)'
 
