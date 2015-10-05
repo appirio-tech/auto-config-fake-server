@@ -67,6 +67,7 @@ buildDefinition = (definition, api, isArray = null) ->
 
 buildProperty = (property, api) ->
   build = null
+  property ||= {}
 
   if property.sample
     build = property.sample
