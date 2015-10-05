@@ -41,6 +41,14 @@ This method will restore the fakeServer instance and unmocked all http requests.
 * Validate parameters
 * Regex path
 
+## Development
+* install npm and npm modules
+* install bower and bower components
+* nvm use; gulp clean; gulp serve;
+* make core changes to app folder
+* write specs and integrations tests
+* gulp build
+
 
 ## License
 
