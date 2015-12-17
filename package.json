@@ -1,8 +1,7 @@
 {
-  "private": true,
-  "engines": {
-    "node": ">=0.10.0"
-  },
+  "name": "auto-config-fake-server",
+  "version": "2.0.601",
+  "main": "dist/auto-config-fake-server.js",
   "devDependencies": {
     "appirio-gulp-tasks": "0.0.24",
     "appirio-work-styles": "0.0.101",
