@@ -1,15 +1,30 @@
 language: node_js
 node_js:
-  - "0.10"
+- '0.10'
 before_install:
-  - npm install -g gulp-cli
-  - npm install -g bower
+- npm install -g gulp-cli
+- npm install -g bower
+- npm install npm-prepublish
 install:
-  - npm install
-  - bower install
+- npm install
+- bower install
 script:
-  - gulp test
-  - gulp build
+- gulp test
+- gulp build
 sudo: false
+before_deploy:
+- npm-prepublish --verbose
 after_success:
-  - gulp coveralls
+- gulp coveralls
+deploy:
+- provider: npm
+  email: "$NPM_EMAIL"
+  api_key: "$NPM_API_KEY"
+  on:
+    tags: true
+env:
+  global:
+  # NPM_EMAIL
+  - secure: "F9AeS8lL76duXsq+KZJ2cxe6ryOpJp/ruF6KcvB5tlQ86d2IN0+szANx2LdEfKgMnVlj616xCXyHNyORfoPeulXUmRubbdgWshihC07D19FMfc0j06Yv0r3hCfDuo0UaM2l38FzZWUU/q3KaiPAGlKMg1Vxac2g1ZjYg5/d2qkM="
+  # NPM_API_KEY
+  - secure: EW/rmse2P6mskydbKM15FaX5it8WGURtDInT+xUYF3qxQS6EddRJBMN03Rpv8z8xdu0eUN0iKnW8w8cvOnUITke4Of+3iA9uWt/96GukGOnBo8n43vN8yCuv2y5/DBwN1/LGsI1h9jXoYxeovnv3+ep2BhPoJ18Y6JywMA7ETzE=
