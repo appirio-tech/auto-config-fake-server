@@ -50,10 +50,10 @@ api =
 
 setSwaggerResponse = AutoConfigFakeServerPrivates.setSwaggerResponse
 fakeServer     = null
-httpPutRegex   = new RegExp('http://api.uber.com/v1/players/' + '([a-zA-Z0-9_\\-]+)' + '(\\?(.)*)?$')
+httpPutRegex   = new RegExp('http://api.uber.com/v1/players/' + '([a-zA-Z0-9_\\-\\.]+)' + '(\\?(.)*)?$')
 httpUrlRegex   = new RegExp('http://api.uber.com/v1/players' + '(\\?(.)*)?$')
 httpsUrlRegex  = new RegExp('https://api.uber.com/v1/players' + '(\\?(.)*)?$')
-inpathUrlRegex = new RegExp('https://api.uber.com/v1/players/' + '([a-zA-Z0-9_\\-]+)' + '/comments/' + '([a-zA-Z0-9_\\-]+)' + '(\\?(.)*)?$')
+inpathUrlRegex = new RegExp('https://api.uber.com/v1/players/' + '([a-zA-Z0-9_\\-\\.]+)' + '/comments/' + '([a-zA-Z0-9_\\-\\.]+)' + '(\\?(.)*)?$')
 response       = [ 200, { 'Content-Type': 'application/json' }, '[{"name":"Batman"},{"name":"Batman"},{"name":"Batman"},{"name":"Batman"},{"name":"Batman"},{"name":"Batman"}]' ]
 postResponse   = [ 200, { 'Content-Type': 'application/json' }, '{"name":"Batman"}' ]
 

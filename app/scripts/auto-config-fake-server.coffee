@@ -122,7 +122,7 @@ setSwaggerResponse = (fakeServer, api) ->
   for scheme in schemes
     for path, methods of api.paths
       for method, methodDefinition of methods
-        regexPath = path.replace /\{([a-zA-Z0-9_\\-]+)\}/g, '([a-zA-Z0-9_\\-]+)'
+        regexPath = path.replace /\{([a-zA-Z0-9_\\-]+)\}/g, '([a-zA-Z0-9_\\-\\.]+)'
         url       = scheme + '://' + api.host + api.basePath + regexPath
         urlRegex  = new RegExp(url + '(\\?(.)*)?$')
 
