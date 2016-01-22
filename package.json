@@ -5,6 +5,7 @@
   "devDependencies": {
     "appirio-gulp-tasks": "0.0.24",
     "appirio-work-styles": "0.0.101",
+    "npm-prepublish": "^1.2.1",
     "gulp": "^3.8.11"
   }
 }
