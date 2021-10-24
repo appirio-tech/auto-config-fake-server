@@ -9,6 +9,6 @@
     "gulp": "^3.8.11"
   },
   "dependencies": {
-    "sinon": "2.0.0-pre"
+    "sinon": "2.4.1"
   }
 }
